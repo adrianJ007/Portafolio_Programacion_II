@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - SUCESOS y MÁS{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>SUCESOS y MÁS</h1>
+        <p>Transformamos tus eventos en momentos inolvidables</p>
+        <a href="{{ url_for('servicios') }}" class="btn-primary">Descubre nuestros servicios</a>
+    </div>
+</section>
+
+<div class="container">
+    <section class="empresa-info">
+        <h2>¿Quiénes Somos?</h2>
+        <p><strong>SUCESOS y MÁS</strong> es una empresa innovadora, confiable, con soluciones tecnológicas y de eventos, colaborando para la solución de sus problemas e incrementando su capacidad de negociación. Especialistas en la organización de eventos corporativos, sociales y espectáculos.</p>
+        
+        <div class="mision-vision">
+            <div class="card">
+                <i class="fas fa-bullseye"></i>
+                <h3>Misión</h3>
+                <p>Crear experiencias únicas a través de eventos de calidad, superando las expectativas de nuestros clientes.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-eye"></i>
+                <h3>Visión</h3>
+                <p>Ser la empresa líder en organización de eventos a nivel nacional, reconocida por nuestra innovación y excelencia.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Editar' if combo else 'Nuevo' }} combo</h2>
+<form method="POST">
+    <div class="mb-3"><label>Nombre</label><input type="text" name="name" class="form-control" value="{{ combo.name if combo else '' }}" required></div>
+    <div class="mb-3"><label>Descripción</label><textarea name="description" class="form-control">{{ combo.description if combo else '' }}</textarea></div>
+    <div class="mb-3"><label>Precio</label><input type="number" step="0.01" name="price" class="form-control" value="{{ combo.price if combo else '' }}" required></div>
+    <div class="mb-3"><label>Empresa</label>
+        <select name="company_id" class="form-select" required>
+            {% for comp in companies %}
+                <option value="{{ comp.id }}" {% if combo and combo.company_id == comp.id %}selected{% endif %}>{{ comp.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+    <label>Comidas incluidas (separadas por comas)</label>
+    <textarea name="items" class="form-control" rows="2" placeholder="Ej: Hamburguesa, Papas fritas, Refresco">{{ combo.items if combo else '' }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{{ url_for('list_combos') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

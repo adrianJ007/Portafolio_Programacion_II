@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Realizar pedido</h2>
+<form method="POST">
+    <div class="mb-3"><label>Nombre del cliente</label><input type="text" name="customer_name" class="form-control" required></div>
+    <div class="mb-3">
+    <label>Seleccionar combo</label>
+    <select name="combo_id" class="form-select" required>
+        {% for combo in combos %}
+            <option value="{{ combo.id }}" {% if selected_combo_id == combo.id %}selected{% endif %}>
+                {{ combo.name }} - ${{ combo.price }} ({{ combo.company.name }})
+            </option>
+        {% endfor %}
+    </select>
+    </div>
+    <div class="mb-3"><label>Cantidad</label><input type="number" name="quantity" class="form-control" value="1" min="1" required></div>
+    <button type="submit" class="btn btn-primary">Crear pedido y enviar correo</button>
+    <a href="{{ url_for('list_orders') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

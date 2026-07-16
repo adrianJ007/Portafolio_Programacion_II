@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Asignaciones de aseo{% endblock %}
+{% block content %}
+<div class="app-page-header">
+  <h1 class="app-page-title h3">Asignaciones de aseo</h1>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-primary" href="{{ url_for('nueva_asignacion') }}">Nueva asignación</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('exportar_asignaciones_json') }}">Descargar JSON</a>
+  </div>
+</div>
+{% if not items %}
+  <p class="app-lead text-muted">No hay registros aún.</p>
+{% else %}
+  <div class="table-responsive app-table-wrap">
+    <table class="table table-striped table-hover mb-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Cedula</th>
+          <th>Edificio</th>
+          <th>Facultad</th>
+          <th>Día</th>
+          <th>Hora</th>
+          <th>Fotos</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for it in items %}
+        <tr>
+          <td>{{ it.id }}</td>
+          <td>{{ it.nombre }} {{ it.apellido }}</td>
+          <td>{{ it.cedula }}</td>
+          <td>{{ it.edificio }}</td>
+          <td>{{ it.facultad or '—' }}</td>
+          <td>{{ it.dia }}</td>
+          <td>{{ it.hora.strftime('%H:%M') }}</td>
+          <td>{{ it._foto_list()|length }}</td>
+          <td class="text-nowrap">
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('editar_asignacion', aid=it.id) }}">Editar</a>
+            <form class="d-inline" method="post" action="{{ url_for('eliminar_asignacion', aid=it.id) }}" onsubmit="return confirm('¿Eliminar este registro?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Gastos{% endblock %}
+{% block content %}
+<div class="app-page-header">
+  <h1 class="app-page-title h3">Gastos almacenados</h1>
+  <a class="btn btn-success" href="{{ url_for('nuevo_gasto') }}">Nuevo gasto</a>
+</div>
+<form method="get" class="row g-2 align-items-end mb-3 app-filter-bar">
+  <div class="col-auto">
+    <label class="form-label mb-0">Categoría</label>
+    <select class="form-select" name="categoria">
+      <option value="">Todas</option>
+      {% for c in categorias %}
+        <option value="{{ c }}" {% if filtro == c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('listar_gastos') }}">Limpiar</a>
+  </div>
+</form>
+<p class="app-total-pill">Total listado: {{ '%.2f'|format(total) }}</p>
+{% if not items %}
+  <p class="app-lead text-muted">No hay gastos en esta vista.</p>
+{% else %}
+  <div class="table-responsive app-table-wrap">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Categoría</th>
+          <th>Concepto</th>
+          <th>Monto (2 dec.)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for g in items %}
+        <tr>
+          <td>{{ g.id }}</td>
+          <td>{{ g.categoria }}</td>
+          <td>{{ g.concepto or '—' }}</td>
+          <td>{{ '%.2f'|format(g.monto|float) }}</td>
+          <td class="text-nowrap">
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('editar_gasto', gid=g.id) }}">Editar</a>
+            <form class="d-inline" method="post" action="{{ url_for('eliminar_gasto', gid=g.id) }}" onsubmit="return confirm('¿Eliminar este gasto?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+{% endblock %}

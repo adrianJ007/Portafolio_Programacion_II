@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm mb-3">🏠 Volver al inicio</a>
+<h2>Simulación de N pedidos (con try-catch)</h2>
+<form method="POST" class="row g-3">
+    <div class="col-auto">
+        <label class="form-label">Número de pedidos:</label>
+    </div>
+    <div class="col-auto">
+        <input type="number" name="n" class="form-control" value="10" min="1" required>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-warning">Ejecutar simulación</button>
+    </div>
+</form>
+
+{% if resultados %}
+<hr>
+<h4>Resultados</h4>
+<p>Total intentos: {{ resultados.total }} | ✅ Exitos: {{ resultados.exitos }} | ❌ Errores: {{ resultados.errores }}</p>
+<div class="card">
+    <div class="card-header">Detalles (últimos 20)</div>
+    <ul class="list-group list-group-flush">
+        {% for det in resultados.detalles %}
+            <li class="list-group-item">{{ det }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}

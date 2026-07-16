@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Sección de presentación (hero) -->
+<div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%); border-radius: 20px;">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-dark">🍽️ Chiriquí Eats</h1>
+        <p class="lead text-muted">Los mejores combos de la provincia, preparados con amor por restaurantes locales.</p>
+        <p class="mb-4">Selecciona tu combo favorito, personaliza tu pedido y recíbelo en minutos.</p>
+        <a href="{{ url_for('create_order') }}" class="btn btn-primary btn-lg me-2">📍 Hacer un pedido</a>
+        <a href="#combos-destacados" class="btn btn-outline-secondary btn-lg">🍕 Ver combos destacados</a>
+    </div>
+</div>
+
+<!-- Sección: Combos Destacados (ancla) -->
+<div id="combos-destacados" class="row mb-4">
+    <div class="col-12">
+        <h2 class="text-center mb-4">🌟 Nuestros Combos Estrella</h2>
+        <p class="text-center text-muted mb-5">Los más pedidos por nuestros clientes</p>
+    </div>
+    
+    {% for combo, imagen, vendidos in combos_con_imagen %}
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 text-center shadow-sm border-0 rounded-4">
+            <img src="{{ url_for('static', filename='imagenes/' + imagen) }}"
+                    class="card-img-top rounded-top-4" alt="{{ combo.name }}"
+                    style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ combo.name }}</h5>
+                <p class="card-text small text-muted">{{ combo.description[:80] }}...</p>
+                <p><strong>🍴 Incluye:</strong> {{ combo.items }}</p>
+                <h4 class="text-warning">${{ "%.2f"|format(combo.price) }}</h4>
+                {% if vendidos > 0 %}
+                    <span class="badge bg-success mb-2">{{ vendidos }} pedidos</span>
+                {% endif %}
+                <a href="{{ url_for('create_order', combo_id=combo.id) }}" class="btn btn-primary w-100 mt-2">Pedir ahora</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Sección de información adicional (opcional) -->
+<div class="row text-center mt-5 pt-4">
+    <div class="col-md-4 mb-3">
+        <div class="p-3 border rounded-3 bg-light">
+            <h3>🚚 Envío rápido</h3>
+            <p>Entregas en menos de 45 minutos en toda la ciudad.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="p-3 border rounded-3 bg-light">
+            <h3>🍔 Ingredientes frescos</h3>
+            <p>Trabajamos con productores locales de la provincia.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="p-3 border rounded-3 bg-light">
+            <h3>💳 Pago online</h3>
+            <p>Aceptamos Yappy, tarjetas y efectivo.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Factura - SUCESOS y MÁS{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="factura-container">
+            <div class="factura-header">
+                <h1>SUCESOS y MÁS</h1>
+                <h2>Factura de Servicios Profesionales</h2>
+                <p>Factura N°: 001-2026-0001</p>
+                <p>Fecha: 24 de Abril de 2026</p>
+            </div>
+
+            <div class="factura-info">
+                <div class="cliente-info">
+                    <h3>Cliente:</h3>
+                    <p>SUCESOS y MÁS (Pyme)</p>
+                    <p>RUC: 1234567-1-123456</p>
+                    <p>Dirección: Calle 50, Panamá</p>
+                </div>
+                <div class="empresa-info">
+                    <h3>Proveedor:</h3>
+                    <p>[Tu Nombre - Consultor Tecnológico]</p>
+                    <p>Cédula: 8-123-456</p>
+                </div>
+            </div>
+
+            <table class="factura-tabla">
+                <thead>
+                    <tr><th>Cantidad</th><th>Descripción</th><th>Precio Unitario</th><th>Subtotal</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Desarrollo de Prototipo Web (Python/Flask)</td><td>$500.00</td><td>$500.00</td></tr>
+                    <tr><td>1</td><td>Diseño UI/UX y CSS Responsive</td><td>$200.00</td><td>$200.00</td></tr>
+                    <tr><td>1</td><td>Sistema de Noticias en Tiempo Real (Admin)</td><td>$150.00</td><td>$150.00</td></tr>
+                    <tr class="cotizacion-adicional"><td colspan="4"><strong>COTIZACIÓN PARA PRÓXIMA IMPLEMENTACIÓN</strong></td></tr>
+                    <tr><td>1</td><td>Hosting Profesional (Anual) - cPanel</td><td>$120.00</td><td>$120.00</td></tr>
+                    <tr><td>1</td><td>Dominio .com (2 años)</td><td>$30.00</td><td>$30.00</td></tr>
+                    <tr><td>1</td><td>Certificado SSL + Mantenimiento Mensual</td><td>$100.00</td><td>$100.00</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr><td colspan="3" class="text-right"><strong>TOTAL ACTUAL (Desarrollo)</strong></td><td><strong>$850.00</strong></td></tr>
+                    <tr><td colspan="3" class="text-right"><strong>COTIZACIÓN FUTURA (Hosting + Dominio + SSL)</strong></td><td><strong>$250.00</strong></td></tr>
+                    <tr><td colspan="3" class="text-right"><strong>TOTAL GENERAL PROYECTADO</strong></td><td><strong>$1,100.00</strong></td></tr>
+                </tfoot>
+            </table>
+
+            <div class="factura-notas">
+                <h3>Notas:</h3>
+                <ul>
+                    <li>El hosting recomendado es Hostinger o SiteGround (servidores en Panamá/Latam)</li>
+                    <li>El dominio sugerido: sucesosymas.com</li>
+                    <li>Servicio adicional: Implementación de pasarela de pagos en línea - Cotización: $300</li>
+                </ul>
+            </div>
+
+            <div class="factura-footer">
+                <div class="condiciones">
+                    <p>Plazo de entrega: 15 días hábiles</p>
+                    <p>Garantía: 3 meses sobre desarrollo</p>
+                </div>
+                <div class="firma">
+                    <p>_____________________</p>
+                    <p>Firma del Cliente</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="boton-imprimir">
+            <button onclick="window.print()" class="btn-primary"><i class="fas fa-print"></i> Imprimir Factura</button>
+        </div>
+    </div>
+</main>
+{% endblock %}

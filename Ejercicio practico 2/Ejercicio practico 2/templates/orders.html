@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm mb-3">🏠 Volver al inicio</a>
+<h2>Pedidos realizados</h2>
+<a href="{{ url_for('create_order') }}" class="btn btn-primary mb-3">+ Nuevo pedido</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Combo</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Confirmado</th>
+            <th>Empresa</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ord in orders %}
+        <tr>
+            <td>{{ ord.id }}</td>
+            <td>{{ ord.customer_name }}</td>
+            <td>{{ ord.combo.name }}</td>
+            <td>{{ ord.quantity }}</td>
+            <td>${{ ord.total_price }}</td>
+            <td>
+                <span class="badge {{ 'bg-success' if ord.status == 'PAGADO' else 'bg-warning' if ord.status == 'PENDIENTE' else 'bg-danger' }}">
+                    {{ ord.status }}
+                </span>
+            </td>
+            <td>
+                {% if ord.confirmed %}
+                    <span class="badge bg-success">✅ Confirmado</span>
+                {% elif ord.status == 'RECHAZADO' %}
+                    <span class="badge bg-danger">❌ Rechazado</span>
+                {% else %}
+                    <span class="badge bg-secondary">⏳ Pendiente</span>
+                {% endif %}
+            </td>
+            <td>{{ ord.company.name }}</td>
+            <td>
+                {% if ord.status == 'PENDIENTE' and ord.confirmed %}
+                    <button class="btn btn-sm btn-success" onclick="openYappyModal('{{ ord.id }}')">💳 Pagar con Yappy</button>
+                {% elif ord.status == 'PENDIENTE' and not ord.confirmed %}
+                    <span class="text-muted">⏳ Esperando confirmación</span>
+                {% elif ord.status == 'PAGADO' %}
+                    <span class="text-muted">✅ Pagado</span>
+                    <a href="{{ url_for('delete_order', id=ord.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este pedido pagado?')">🗑️ Eliminar</a>
+                {% elif ord.status == 'RECHAZADO' %}
+                    <span class="text-muted">❌ Rechazado</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal para pago con Yappy -->
+<div class="modal fade" id="yappyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">💳 Pagar con Yappy Comercial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Por favor, realiza el pago a través de Yappy al siguiente número:</p>
+                <h4 class="text-center text-success">📱 +507 1234-5678</h4>
+                <p class="small text-muted">(Número de ejemplo - reemplazar por el real)</p>
+                <hr>
+                <div class="mb-3">
+                    <label for="transactionId" class="form-label">Número de transacción / referencia Yappy</label>
+                    <input type="text" class="form-control" id="transactionId" placeholder="Ej: YAP-123456" required>
+                </div>
+                <input type="hidden" id="orderIdToPay" value="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="confirmPayBtn">✅ Confirmar pago</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openYappyModal(orderId) {
+    document.getElementById('orderIdToPay').value = orderId;
+    var yappyModal = new bootstrap.Modal(document.getElementById('yappyModal'));
+    yappyModal.show();
+}
+
+document.getElementById('confirmPayBtn').addEventListener('click', function() {
+    var orderId = document.getElementById('orderIdToPay').value;
+    var transactionId = document.getElementById('transactionId').value.trim();
+
+    if (!transactionId) {
+        alert('Por favor, ingresa el número de transacción de Yappy.');
+        return;
+    }
+
+    window.location.href = "{{ url_for('confirm_pay') }}?order_id=" + orderId + "&transaction_id=" + encodeURIComponent(transactionId);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Editar' if company else 'Nueva' }} empresa</h2>
+<form method="POST">
+    <div class="mb-3"><label>Nombre</label><input type="text" name="name" class="form-control" value="{{ company.name if company else '' }}" required></div>
+    <div class="mb-3"><label>Email</label><input type="email" name="email" class="form-control" value="{{ company.email if company else '' }}" required></div>
+    <div class="mb-3"><label>Teléfono</label><input type="text" name="phone" class="form-control" value="{{ company.phone if company else '' }}"></div>
+    <div class="mb-3"><label>Dirección</label><textarea name="address" class="form-control">{{ company.address if company else '' }}</textarea></div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="{{ url_for('list_companies') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

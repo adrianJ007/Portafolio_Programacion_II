@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm mb-3">🏠 Volver al inicio</a>
+<h2>Combos disponibles</h2>
+<a href="{{ url_for('create_combo') }}" class="btn btn-primary mb-3">+ Nuevo combo</a>
+<table class="table">
+    <thead>
+        <tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Precio</th><th>Empresa</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for combo in combos %}
+        <tr>
+            <td>{{ combo.id }}</td>
+            <td>{{ combo.name }}</td>
+            <td>{{ combo.description }}</td>
+            <td>${{ combo.price }}</td>
+            <td>{{ combo.company.name }}</td>
+            <td>
+                <a href="{{ url_for('edit_combo', id=combo.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{{ url_for('delete_combo', id=combo.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar combo?')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

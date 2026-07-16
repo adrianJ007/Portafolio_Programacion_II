@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "titulo": "🎉 ¡Bienvenidos a SUCESOS y MÁS!",
+    "contenido": "Iniciamos operaciones con el objetivo de transformar tus eventos en experiencias inolvidables. Contamos con el mejor equipo de profesionales.",
+    "fecha": "24/04/2026 17:37",
+    "enlace": "#"
+  },
+  {
+    "id": 2,
+    "titulo": "🍽️ Nuevo servicio de catering exclusivo",
+    "contenido": "Ahora ofrecemos servicio de catering gourmet para todo tipo de eventos. ¡Pregunta por nuestros paquetes especiales!",
+    "fecha": "24/04/2026 17:37",
+    "enlace": "#"
+  },
+  {
+    "id": 3,
+    "titulo": "🎊 Descuento especial por lanzamiento",
+    "contenido": "Contrata nuestros servicios antes del 30 de mayo y obtén un 15% de descuento en paquetes seleccionados.",
+    "fecha": "24/04/2026 17:37",
+    "enlace": "/servicios"
+  }
+]

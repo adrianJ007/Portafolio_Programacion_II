@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pedido - Chiriquí Eats</title>
+    <!-- Bootstrap CSS (solo para estilos) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0B1121 0%, #111827 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+        }
+        .card-confirm {
+            max-width: 500px;
+            width: 100%;
+            background: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        .card-confirm h2 {
+            color: #F8FAFC;
+            margin-bottom: 15px;
+        }
+        .card-confirm p {
+            color: #94A3B8;
+            margin-bottom: 25px;
+        }
+        .btn-custom {
+            padding: 12px 35px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #22C55E, #16A34A);
+            color: white;
+        }
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+        }
+        .btn-reject {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+        }
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+        }
+        .btn-secondary-custom {
+            background: #334155;
+            color: #94A3B8;
+            cursor: default;
+        }
+        .btn-secondary-custom:hover {
+            background: #334155;
+            color: #94A3B8;
+        }
+        .detalle {
+            background: #0F172A;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            color: #CBD5E1;
+        }
+        .detalle strong {
+            color: #F8FAFC;
+        }
+        .footer-confirm {
+            margin-top: 25px;
+            color: #475569;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-confirm">
+        {% if estado == 'confirmado' %}
+            <div class="icon">✅</div>
+            <h2>Pedido Confirmado</h2>
+            <p>El pedido <strong>#{{ order.id }}</strong> ha sido confirmado exitosamente.</p>
+            <div class="detalle">
+                <p><strong>Cliente:</strong> {{ order.customer_name }}</p>
+                <p><strong>Combo:</strong> {{ order.combo.name }}</p>
+                <p><strong>Cantidad:</strong> {{ order.quantity }}</p>
+                <p><strong>Total:</strong> ${{ order.total_price }}</p>
+            </div>
+            <p style="color: #94A3B8;">El cliente ya puede proceder con el pago.</p>
+            <a href="#" class="btn-custom btn-secondary-custom" onclick="window.close(); return false;">Cerrar esta ventana</a>
+
+        {% elif estado == 'ya_confirmado' %}
+            <div class="icon">ℹ️</div>
+            <h2>Pedido ya confirmado</h2>
+            <p>Este pedido <strong>#{{ order.id }}</strong> ya había sido confirmado anteriormente.</p>
+            <a href="#" class="btn-custom btn-secondary-custom" onclick="window.close(); return false;">Cerrar esta ventana</a>
+
+        {% elif estado == 'rechazado' %}
+            <div class="icon">❌</div>
+            <h2>Pedido Rechazado</h2>
+            <p>El pedido <strong>#{{ order.id }}</strong> ha sido rechazado.</p>
+            <p style="color: #94A3B8;">Se notificará al cliente que el pedido no pudo ser procesado.</p>
+            <a href="#" class="btn-custom btn-secondary-custom" onclick="window.close(); return false;">Cerrar esta ventana</a>
+
+        {% elif estado == 'ya_rechazado' %}
+            <div class="icon">⚠️</div>
+            <h2>Pedido ya rechazado</h2>
+            <p>Este pedido <strong>#{{ order.id }}</strong> ya había sido rechazado anteriormente.</p>
+            <a href="#" class="btn-custom btn-secondary-custom" onclick="window.close(); return false;">Cerrar esta ventana</a>
+
+        {% else %}
+            <div class="icon">🔒</div>
+            <h2>Enlace inválido</h2>
+            <p>El enlace de confirmación no es válido o ha expirado.</p>
+            <a href="#" class="btn-custom btn-secondary-custom" onclick="window.close(); return false;">Cerrar esta ventana</a>
+        {% endif %}
+        
+        <div class="footer-confirm">
+            Chiriquí Eats S.A. - Confirmación de pedido
+        </div>
+    </div>
+</body>
+</html>

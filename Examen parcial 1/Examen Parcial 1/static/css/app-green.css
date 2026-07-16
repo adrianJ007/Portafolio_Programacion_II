@@ -1,0 +1,403 @@
+/**
+ * Tema verde — Examen Parcial I (Flask)
+ * Carga después de Bootstrap para sobrescribir acentos y superficies.
+ */
+
+.app-theme {
+  --green-950: #052e1f;
+  --green-900: #0a3d2a;
+  --green-800: #0f5132;
+  --green-700: #145c32;
+  --green-600: #198754;
+  --green-500: #22a06b;
+  --green-400: #3ecf8e;
+  --green-200: #b8e6cc;
+  --green-100: #dff5ea;
+  --green-50: #f2fbf6;
+  --mint: #e6f4ec;
+  --surface: #ffffff;
+  --surface-2: rgba(255, 255, 255, 0.92);
+  --text: #143024;
+  --text-muted: #4a6b5a;
+  --border-soft: rgba(20, 92, 50, 0.14);
+  --shadow: 0 10px 40px rgba(10, 61, 42, 0.08);
+  --shadow-sm: 0 4px 18px rgba(10, 61, 42, 0.06);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --font: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font);
+  color: var(--text);
+  background: linear-gradient(165deg, var(--green-50) 0%, var(--mint) 42%, #d4ecdf 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.app-theme code {
+  background: var(--green-100);
+  color: var(--green-900);
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+/* ——— Barra superior ——— */
+.app-navbar {
+  background: linear-gradient(95deg, var(--green-950) 0%, var(--green-800) 48%, var(--green-700) 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-sm);
+  padding-block: 0.65rem;
+}
+
+.app-navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #f4fff8 !important;
+}
+
+.app-navbar .nav-link {
+  color: rgba(244, 255, 248, 0.88) !important;
+  font-weight: 500;
+  border-radius: 999px;
+  padding-inline: 0.85rem !important;
+  margin-inline: 0.1rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.app-navbar .nav-link:hover,
+.app-navbar .nav-link:focus {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ——— Contenido ——— */
+.app-main {
+  padding-bottom: 3rem;
+}
+
+.app-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.app-page-title {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--green-950);
+  margin: 0;
+}
+
+.app-section-title {
+  font-weight: 700;
+  color: var(--green-900);
+  letter-spacing: -0.02em;
+}
+
+.app-lead {
+  color: var(--text-muted) !important;
+  max-width: 52rem;
+  line-height: 1.55;
+}
+
+/* ——— Tarjetas ——— */
+.app-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
+}
+
+.app-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: rgba(20, 92, 50, 0.22);
+}
+
+.app-card .card-body {
+  padding: 1.35rem 1.5rem;
+}
+
+.app-card .card-title,
+.app-card-title {
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 0.65rem;
+}
+
+.app-card .card-text {
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.app-card-accent {
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--green-700), var(--green-400));
+  opacity: 0.9;
+}
+
+.app-form-card {
+  background: var(--surface-2);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.app-result-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--border-soft) !important;
+  background: linear-gradient(135deg, #ffffff 0%, var(--green-50) 100%) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.app-result-card .card-title {
+  color: var(--green-800);
+}
+
+/* ——— Menú: rejilla de módulos ——— */
+.app-menu-hero {
+  margin-bottom: 2rem;
+}
+
+.app-menu-grid .app-card {
+  height: 100%;
+}
+
+.app-menu-tile-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.app-menu-tile-link:focus-visible {
+  outline: 3px solid var(--green-400);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+
+.app-menu-tile-icon {
+  font-size: 3rem;
+  color: var(--green-700);
+  line-height: 1;
+  margin-bottom: 1rem;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.app-menu-tile-label {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--green-900);
+  letter-spacing: -0.02em;
+}
+
+.app-menu-tile-link:hover .app-menu-tile-icon,
+.app-menu-tile-link:focus .app-menu-tile-icon {
+  color: var(--green-600);
+  transform: scale(1.06);
+}
+
+.app-menu-tile-link:hover .app-menu-tile-label,
+.app-menu-tile-link:focus .app-menu-tile-label {
+  color: var(--green-950);
+}
+
+/* ——— Tablas ——— */
+.app-table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.app-table-wrap .table {
+  margin-bottom: 0;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(20, 92, 50, 0.045);
+  --bs-table-hover-bg: rgba(20, 92, 50, 0.07);
+}
+
+.app-table-wrap thead th {
+  background: linear-gradient(180deg, var(--green-800) 0%, var(--green-900) 100%);
+  color: #f0fff6 !important;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: none;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  vertical-align: middle;
+}
+
+.app-table-wrap tbody td {
+  vertical-align: middle;
+  border-color: rgba(20, 92, 50, 0.08);
+  color: var(--text);
+}
+
+.app-total-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--green-100), #fff);
+  border: 1px solid var(--border-soft);
+  color: var(--green-900);
+  font-weight: 700;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ——— Formularios ——— */
+.app-form-card .form-label {
+  font-weight: 600;
+  color: var(--green-900);
+  font-size: 0.9rem;
+}
+
+.app-form-card .form-control,
+.app-form-card .form-select {
+  border-radius: var(--radius-sm);
+  border-color: rgba(20, 92, 50, 0.2);
+}
+
+.app-form-card .form-control:focus,
+.app-form-card .form-select:focus {
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.2);
+}
+
+.app-form-card .form-text {
+  color: var(--text-muted);
+}
+
+.app-form-card .img-thumbnail {
+  border-radius: var(--radius-sm);
+  border-color: var(--border-soft);
+}
+
+.app-foto-preview {
+  max-height: 88px;
+  width: auto;
+  object-fit: cover;
+}
+
+/* ——— Botones (remapeo Bootstrap dentro del tema) ——— */
+.app-theme .btn-primary {
+  --bs-btn-bg: var(--green-700);
+  --bs-btn-border-color: var(--green-800);
+  --bs-btn-hover-bg: var(--green-800);
+  --bs-btn-hover-border-color: var(--green-950);
+  --bs-btn-active-bg: var(--green-950);
+  --bs-btn-active-border-color: var(--green-950);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  font-weight: 600;
+  border-radius: 999px;
+  padding-inline: 1.25rem;
+}
+
+.app-theme .btn-success {
+  --bs-btn-bg: var(--green-600);
+  --bs-btn-border-color: var(--green-700);
+  --bs-btn-hover-bg: var(--green-700);
+  --bs-btn-hover-border-color: var(--green-800);
+  font-weight: 600;
+  border-radius: 999px;
+  padding-inline: 1.25rem;
+}
+
+.app-theme .btn-outline-primary {
+  --bs-btn-color: var(--green-800);
+  --bs-btn-border-color: var(--green-600);
+  --bs-btn-hover-bg: var(--green-100);
+  --bs-btn-hover-border-color: var(--green-700);
+  --bs-btn-hover-color: var(--green-950);
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+.app-theme .btn-outline-secondary {
+  --bs-btn-color: var(--text-muted);
+  --bs-btn-border-color: rgba(20, 92, 50, 0.35);
+  --bs-btn-hover-bg: var(--green-50);
+  --bs-btn-hover-border-color: var(--green-600);
+  --bs-btn-hover-color: var(--green-900);
+  border-radius: 999px;
+}
+
+.app-theme .btn-outline-danger {
+  border-radius: 999px;
+}
+
+.app-theme .btn-sm {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.app-theme .btn-link {
+  color: var(--green-800);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-theme .btn-link:hover {
+  color: var(--green-950);
+  text-decoration: underline;
+}
+
+/* ——— Alertas ——— */
+.app-theme .alert {
+  border-radius: var(--radius-sm);
+  border: none;
+}
+
+.app-theme .alert-success {
+  background: var(--green-100);
+  color: var(--green-900);
+}
+
+.app-theme .alert-danger {
+  background: #fdecef;
+  color: #7a1e2e;
+}
+
+.app-theme .alert-warning {
+  background: #fff8e6;
+  color: #6b4f00;
+}
+
+.app-theme .alert-info {
+  background: #e8f6ff;
+  color: #0b4f6c;
+}
+
+.app-theme .alert .btn-close {
+  filter: none;
+}
+
+/* ——— Filtros en línea ——— */
+.app-filter-bar .form-select {
+  min-width: 11rem;
+  border-radius: var(--radius-sm);
+  border-color: rgba(20, 92, 50, 0.22);
+}
+
+.app-filter-bar .form-label {
+  font-weight: 600;
+  color: var(--green-900);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 576px) {
+  .app-navbar .navbar-nav {
+    padding-top: 0.5rem;
+  }
+}

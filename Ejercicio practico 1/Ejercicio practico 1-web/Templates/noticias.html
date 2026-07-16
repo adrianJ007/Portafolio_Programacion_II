@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Noticias - SUCESOS y MÁS{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Noticias y Eventos</h1>
+        <p class="subtitulo">Mantente informado sobre nuestras novedades</p>
+
+        <!-- PANEL DE ADMIN -->
+        <div class="admin-panel">
+            <div class="admin-header">
+                <i class="fas fa-user-shield"></i>
+                <h2>Panel de Administración</h2>
+                <p>Agrega o elimina noticias en tiempo real</p>
+            </div>
+            <div class="form-noticia">
+                <input type="text" id="tituloNoticia" placeholder="Título de la noticia" required>
+                <textarea id="contenidoNoticia" placeholder="Contenido de la noticia" rows="3" required></textarea>
+                <input type="url" id="enlaceNoticia" placeholder="Enlace / Hipervínculo (opcional)">
+                <button type="button" id="btnPublicar" class="btn-publicar">
+                    <i class="fas fa-plus-circle"></i> Publicar Noticia
+                </button>
+            </div>
+            <div id="mensajeNoticia"></div>
+        </div>
+
+        <!-- LISTADO DE NOTICIAS -->
+        <div class="noticias-lista">
+            <h2><i class="fas fa-newspaper"></i> Todas las Noticias</h2>
+            {% for noticia in noticias %}
+            <div class="noticia-card" data-id="{{ noticia.id }}">
+                <div class="noticia-contenido">
+                    <h3>{{ noticia.titulo }}</h3>
+                    <p>{{ noticia.contenido }}</p>
+                    <small>📅 Publicado: {{ noticia.fecha }}</small>
+                    {% if noticia.enlace != '#' %}
+                    <br><a href="{{ noticia.enlace }}" target="_blank">🔗 Leer más →</a>
+                    {% endif %}
+                </div>
+                <div class="noticia-acciones">
+                    <button type="button" data-id="{{ noticia.id }}" class="btn-eliminar">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-center">No hay noticias disponibles. ¡Agrega la primera!</p>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<script>
+    // Función para agregar noticia
+    document.getElementById('btnPublicar').addEventListener('click', async function() {
+        const titulo = document.getElementById('tituloNoticia').value;
+        const contenido = document.getElementById('contenidoNoticia').value;
+        const enlace = document.getElementById('enlaceNoticia').value;
+        const mensajeDiv = document.getElementById('mensajeNoticia');
+        
+        if (!titulo || !contenido) {
+            alert('❌ Por favor, completa el título y contenido de la noticia');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/agregar_noticia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    titulo: titulo,
+                    contenido: contenido,
+                    enlace: enlace || '#'
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                mensajeDiv.innerHTML = '<div style="background:#28a745; color:white; padding:10px; border-radius:8px; margin-top:10px;">✅ ¡Noticia publicada exitosamente!</div>';
+                document.getElementById('tituloNoticia').value = '';
+                document.getElementById('contenidoNoticia').value = '';
+                document.getElementById('enlaceNoticia').value = '';
+                
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('❌ Error: ' + data.error);
+            }
+        } catch (error) {
+            alert('❌ Error de conexión con el servidor');
+        }
+    });
+
+    // Función para eliminar noticia (usando event listeners en lugar de onclick)
+    document.querySelectorAll('.btn-eliminar').forEach(button => {
+        button.addEventListener('click', async function() {
+            const id = this.getAttribute('data-id');
+            if (confirm('¿Estás seguro de que deseas eliminar esta noticia?')) {
+                try {
+                    const response = await fetch('/api/eliminar_noticia/' + id, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert('✅ Noticia eliminada exitosamente');
+                        location.reload();
+                    } else {
+                        alert('❌ Error: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('❌ Error de conexión con el servidor');
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

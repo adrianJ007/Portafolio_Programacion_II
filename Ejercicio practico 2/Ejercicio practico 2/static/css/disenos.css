@@ -1,0 +1,209 @@
+/* ========== ESTILOS GEMINI ========== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0B1121 0%, #111827 100%);
+    color: #F8FAFC;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+}
+
+/* ========== NAVBAR (gradiente morado-azul) ========== */
+.navbar-custom {
+    background: linear-gradient(90deg, #6D28D9 0%, #3B82F6 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 12px 0;
+}
+
+.navbar-custom .navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+    letter-spacing: -0.5px;
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    margin: 0 4px;
+    transition: 0.2s;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #FDE047 !important;  /* amarillo sutil al pasar */
+    transform: translateY(-1px);
+}
+
+/* ========== TARJETAS Y CONTENEDORES ========== */
+.card, .jumbotron, .bg-light, .table {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: #000000;
+}
+
+.card-header, .table thead th {
+    background-color: #2D3A5E;
+    color: white;
+    font-weight: 600;
+    border-bottom: 2px solid #8B5CF6;
+}
+
+.table {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.table td, .table th {
+    border-color: #334155;
+    padding: 12px;
+}
+
+/* ========== BOTONES ========== */
+/* Botón primario (rosa Gemini) */
+.btn-primary {
+    background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 40px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(225, 29, 72, 0.3);
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(225, 29, 72, 0.4);
+    background: linear-gradient(135deg, #BE123C 0%, #9F1239 100%);
+}
+
+/* Botón secundario (ámbar) */
+.btn-success {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 40px;
+    transition: all 0.2s ease;
+}
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+/* Botón advertencia (morado) */
+.btn-warning {
+    background: #8B5CF6;
+    border: none;
+    color: white;
+}
+.btn-warning:hover {
+    background: #7C3AED;
+}
+
+/* Botón peligro */
+.btn-danger {
+    background: #DC2626;
+    border: none;
+}
+
+/* ========== FOOTER ========== */
+.footer-custom {
+    background: #0F172A;
+    border-top: 1px solid #2D3A5E;
+    padding: 24px 0;
+    margin-top: 50px;
+    text-align: center;
+    color: #94A3B8;
+    font-size: 0.9rem;
+}
+
+/* ========== FORMULARIOS ========== */
+.form-control, .form-select {
+    background-color: #0F172A;
+    border: 1px solid #334155;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 16px;
+}
+.form-control:focus, .form-select:focus {
+    background-color: #1E293B;
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+    color: white;
+}
+label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #CBD5E1;
+}
+
+/* ========== ALERTAS ========== */
+.alert {
+    border-radius: 12px;
+    border: none;
+}
+.alert-success {
+    background-color: #14532D;
+    color: #BBF7D0;
+}
+.alert-danger {
+    background-color: #7F1D1D;
+    color: #FECACA;
+}
+.alert-warning {
+    background-color: #713F12;
+    color: #FDE68A;
+}
+.alert-info {
+    background-color: #1E3A8A;
+    color: #BFDBFE;
+}
+
+/* ========== ENLACES ========== */
+a {
+    color: #A78BFA;
+    text-decoration: none;
+}
+a:hover {
+    color: #C4B5FD;
+}
+
+/* ========== TABLAS ========== */
+.table-hover tbody tr:hover {
+    background-color: #2D3A5E;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .btn-primary, .btn-success {
+        padding: 8px 18px;
+        font-size: 0.9rem;
+    }
+}
+/* Mejoras visuales */
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.btn-primary {
+    background: linear-gradient(135deg, #ff7b00, #e56c00);
+    border: none;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e56c00, #cc5c00);
+}
+.hero-section {
+    background: linear-gradient(135deg, #fff9e6, #fff0d0);
+}

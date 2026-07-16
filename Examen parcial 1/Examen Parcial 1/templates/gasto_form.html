@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{% if item %}Editar{% else %}Nuevo{% endif %} gasto{% endblock %}
+{% block content %}
+<h1 class="app-section-title h3 mb-4">{% if item %}Editar{% else %}Nuevo{% endif %} gasto</h1>
+<form method="post" class="card app-form-card shadow-sm p-4 col-lg-6 border-0">
+  <div class="mb-3">
+    <label class="form-label">Categoría</label>
+    <select class="form-select" name="categoria" required>
+      {% for c in categorias %}
+        <option value="{{ c }}" {% if item and item.categoria == c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Concepto (opcional)</label>
+    <input class="form-control" name="concepto" value="{{ item.concepto if item and item.concepto else '' }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Monto</label>
+    <input class="form-control" name="monto" required step="0.01" min="0" placeholder="0.00"
+      value="{% if item %}{{ '%.2f'|format(item.monto|float) }}{% endif %}">
+    <p class="form-text">Se guarda con 2 cifras decimales después del punto.</p>
+  </div>
+  <button type="submit" class="btn btn-success">Guardar</button>
+  <a class="btn btn-link" href="{{ url_for('listar_gastos') }}">Volver</a>
+</form>
+{% endblock %}

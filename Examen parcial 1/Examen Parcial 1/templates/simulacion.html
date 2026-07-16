@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Simulación N veces{% endblock %}
+{% block content %}
+<h1 class="app-section-title h3 mb-3">Simulación (cálculo N veces)</h1>
+<p class="app-lead text-muted mb-4">Ejecuta un bucle de <code>N</code> iteraciones con valores sintéticos; promedio y suma con 2 decimales. Errores capturados con Try/Except.</p>
+{% if errores %}
+  <div class="alert alert-warning mb-4">
+    <ul class="mb-0">
+      {% for e in errores %}<li>{{ e }}</li>{% endfor %}
+    </ul>
+  </div>
+{% endif %}
+<form method="post" class="card app-form-card shadow-sm p-4 col-md-6 mb-4 border-0">
+  <div class="mb-3">
+    <label class="form-label">N (iteraciones)</label>
+    <input class="form-control" type="number" name="n" min="1" max="100000" value="1000" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Ejecutar simulación</button>
+</form>
+{% if resultado %}
+  <div class="card app-result-card col-md-6 border-0">
+    <div class="card-body">
+      <h2 class="h6 app-card-title">Resultado</h2>
+      <p class="mb-1">Iteraciones: <strong>{{ resultado.n }}</strong></p>
+      <p class="mb-1">Suma acumulada: <strong>{{ '%.2f'|format(resultado.suma) }}</strong></p>
+      <p class="mb-0">Promedio: <strong>{{ '%.2f'|format(resultado.promedio) }}</strong></p>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

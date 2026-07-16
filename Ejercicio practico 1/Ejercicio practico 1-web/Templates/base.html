@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SUCESOS y MÁS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- MENÚ LATERAL IZQUIERDO -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <h2>🎉 SUCESOS<br>y MÁS</h2>
+        </div>
+            <nav class="sidebar-nav">
+        <ul>
+            <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}"><i class="fas fa-home"></i> <span>INICIO</span></a></li>
+            <li><a href="{{ url_for('clientes') }}" class="{% if request.endpoint == 'clientes' %}active{% endif %}"><i class="fas fa-users"></i> <span>CLIENTES</span></a></li>
+            <li><a href="{{ url_for('servicios') }}" class="{% if request.endpoint == 'servicios' %}active{% endif %}"><i class="fas fa-cogs"></i> <span>SERVICIOS</span></a></li>
+            <li><a href="{{ url_for('contacto') }}" class="{% if request.endpoint == 'contacto' %}active{% endif %}"><i class="fas fa-envelope"></i> <span>CONTACTOS</span></a></li>
+            <li><a href="{{ url_for('ubicacion') }}" class="{% if request.endpoint == 'ubicacion' %}active{% endif %}"><i class="fas fa-map-marker-alt"></i> <span>UBICACIÓN</span></a></li>
+            <li><a href="{{ url_for('noticias') }}" class="{% if request.endpoint == 'noticias' %}active{% endif %}"><i class="fas fa-newspaper"></i> <span>NOTICIAS</span></a></li>
+            <li><a href="{{ url_for('factura') }}" class="{% if request.endpoint == 'factura' %}active{% endif %}"><i class="fas fa-file-invoice"></i> <span>FACTURA</span></a></li>
+        </ul>
+        </nav>
+    <div class="sidebar-footer">
+    <h4>SÍGUENOS</h4>
+    <div class="social-sidebar">
+        <a href="https://facebook.com/sucesosymas" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/sucesosymas" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://twitter.com/sucesosymas" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+        <a href="https://wa.me/50712345678" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://tiktok.com/@sucesosymas" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
+    </div>
+    </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script>
+        // No necesita menú hamburguesa porque es lateral fijo
+        console.log('Menú lateral activo');
+    </script>
+</body>
+</html>

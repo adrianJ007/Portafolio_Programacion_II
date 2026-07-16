@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto - SUCESOS y MÁS{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Contáctanos</h1>
+        <p class="subtitulo">Estamos para ayudarte a crear el mejor evento</p>
+
+        <!-- Redes Sociales -->
+        <div class="redes-sociales">
+            <h2>Síguenos en nuestras redes sociales</h2>
+            <div class="redes-grid">
+                <a href="#" class="red-card facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                    <small>/sucesosymas</small>
+                </a>
+                <a href="#" class="red-card instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                    <small>@sucesosymas</small>
+                </a>
+                <a href="#" class="red-card twitter">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter</span>
+                    <small>@sucesosymas</small>
+                </a>
+                <a href="#" class="red-card whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                    <small>+507 1234-5678</small>
+                </a>
+                <a href="#" class="red-card tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
+                    <small>@sucesosymas</small>
+                </a>
+                <a href="#" class="red-card linkedin">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                    <small>SUCESOS y MÁS</small>
+                </a>
+            </div>
+        </div>
+
+<div class="formulario-contacto">
+    <h2>Envíanos un mensaje</h2>
+    <form id="contactForm">
+        <div class="form-group">
+            <input type="text" id="nombre" placeholder="Nombre completo" required>
+        </div>
+        <div class="form-group">
+            <input type="email" id="email" placeholder="Correo electrónico" required>
+        </div>
+        <div class="form-group">
+            <input type="tel" id="telefono" placeholder="Teléfono">
+        </div>
+        <div class="form-group">
+            <select id="servicio">
+                <option value="">Selecciona un servicio</option>
+                <option>Eventos Corporativos</option>
+                <option>Fiestas Privadas</option>
+                <option>Conciertos</option>
+                <option>Otros</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <textarea id="mensaje" rows="5" placeholder="Cuéntanos sobre tu evento..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Enviar mensaje</button>
+    </form>
+    <div id="mensajeRespuesta" style="margin-top: 1rem; text-align: center;"></div>
+</div>
+
+<script>
+    const contactForm = document.getElementById('contactForm');
+    const mensajeRespuesta = document.getElementById('mensajeRespuesta');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                telefono: document.getElementById('telefono').value,
+                servicio: document.getElementById('servicio').value,
+                mensaje: document.getElementById('mensaje').value
+            };
+            
+            try {
+                const response = await fetch('/api/enviar_mensaje', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    mensajeRespuesta.innerHTML = '<div style="background:#28a745; color:white; padding:10px; border-radius:8px;">✅ ¡Mensaje enviado! Nos pondremos en contacto contigo pronto.</div>';
+                    contactForm.reset();
+                    setTimeout(() => {
+                        mensajeRespuesta.innerHTML = '';
+                    }, 5000);
+                } else {
+                    mensajeRespuesta.innerHTML = '<div style="background:#dc3545; color:white; padding:10px; border-radius:8px;">❌ Error al enviar. Intenta de nuevo.</div>';
+                }
+            } catch (error) {
+                mensajeRespuesta.innerHTML = '<div style="background:#dc3545; color:white; padding:10px; border-radius:8px;">❌ Error de conexión.</div>';
+            }
+        });
+    }
+</script>
+{% endblock %}

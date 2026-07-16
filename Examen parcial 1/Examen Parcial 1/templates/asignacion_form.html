@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}{% if item %}Editar{% else %}Nueva{% endif %} asignación{% endblock %}
+{% block content %}
+<h1 class="app-section-title h3 mb-4">{% if item %}Editar{% else %}Nueva{% endif %} asignación de aseo</h1>
+<form method="post" enctype="multipart/form-data" class="card app-form-card shadow-sm p-4 border-0" id="formAsignacion">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Nombre</label>
+      <input class="form-control" name="nombre" required value="{{ item.nombre if item else '' }}">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Apellido</label>
+      <input class="form-control" name="apellido" required value="{{ item.apellido if item else '' }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">CIP</label>
+      <input class="form-control" name="cip" required value="{{ item.cip if item else '' }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Cargo</label>
+      <input class="form-control" name="cargo" required value="{{ item.cargo if item else '' }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Edificio</label>
+      <select class="form-select" name="edificio" required>
+        {% for e in edificios %}
+          <option value="{{ e }}" {% if item and item.edificio == e %}selected{% endif %}>{{ e }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Facultad (opcional)</label>
+      <input class="form-control" name="facultad" value="{{ item.facultad if item and item.facultad else '' }}">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Día</label>
+      <input class="form-control" type="date" name="dia" required value="{{ item.dia.isoformat() if item else '' }}">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Hora (24 h, HH:MM)</label>
+      <input class="form-control" name="hora" required placeholder="14:30" value="{% if item %}{{ item.hora.strftime('%H:%M') }}{% endif %}">
+    </div>
+    <div class="col-12">
+      <label class="form-label">Descripción</label>
+      <textarea class="form-control" name="descripcion" rows="3" required>{{ item.descripcion if item else '' }}</textarea>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Imágenes del registro</label>
+      <input
+        class="form-control"
+        type="file"
+        name="fotos"
+        id="inputFotos"
+        accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+        multiple
+        {% if not item %}required{% endif %}>
+      <p class="form-text mb-2">
+        {% if item %}
+          Tiene {{ item._foto_list()|length }} imagen(es) guardada(s). Puede agregar una o más nuevas; se suman a las actuales (mínimo 1 en total).
+        {% else %}
+          Seleccione una o más imágenes (png, jpg, jpeg, gif, webp). Mínimo 1.
+        {% endif %}
+      </p>
+      {% if item and item._foto_list() %}
+        <p class="form-label small text-muted mb-1">Imágenes actuales</p>
+        <div class="d-flex flex-wrap gap-2 mb-3" id="fotosActuales">
+          {% for fn in item._foto_list() %}
+            <a href="{{ url_for('uploaded_file', filename=fn) }}" target="_blank" rel="noopener">
+              <img src="{{ url_for('uploaded_file', filename=fn) }}" alt="Foto guardada" class="img-thumbnail app-foto-preview">
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <p class="form-label small text-muted mb-1 d-none" id="labelNuevas">Nuevas imágenes a subir</p>
+      <div class="d-flex flex-wrap gap-2" id="previewNuevas"></div>
+    </div>
+  </div>
+  <div class="mt-4">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn btn-link" href="{{ url_for('listar_asignaciones') }}">Cancelar</a>
+  </div>
+</form>
+<script>
+(function () {
+  const input = document.getElementById('inputFotos');
+  const preview = document.getElementById('previewNuevas');
+  const labelNuevas = document.getElementById('labelNuevas');
+  if (!input || !preview) return;
+
+  input.addEventListener('change', function () {
+    preview.innerHTML = '';
+    const files = Array.from(input.files || []);
+    if (!files.length) {
+      labelNuevas.classList.add('d-none');
+      return;
+    }
+    labelNuevas.classList.remove('d-none');
+    files.forEach(function (file) {
+      if (!file.type.startsWith('image/')) return;
+      const img = document.createElement('img');
+      img.className = 'img-thumbnail app-foto-preview';
+      img.alt = file.name;
+      img.title = file.name;
+      const reader = new FileReader();
+      reader.onload = function (e) { img.src = e.target.result; };
+      reader.readAsDataURL(file);
+      preview.appendChild(img);
+    });
+  });
+})();
+</script>
+{% endblock %}
