@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portafolio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .folder-section {
+            margin-bottom: 30px;
+        }
+        .folder-title {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-bottom: 10px;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 5px solid #3498db;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+        /* Estilo especial para resaltar los PDFs */
+        .pdf-link {
+            color: #e74c3c;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+        .pdf-link::before {
+            content: "📄 PDF: ";
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+        .pdf-link:hover {
+            color: #c0392b;
+        }
+        .code-link::before {
+            content: "💻 Código: ";
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+        .pkt-link::before {
+            content: "⚙️ Packet Tracer: ";
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+        .pptx-link::before {
+            content: "📊 Presentación: ";
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Portafolio de Proyectos</h1>
+
+    <!-- Sección Ejercicio Práctico 1 -->
+    <div class="folder-section">
+        <div class="folder-title">📁 Ejercicio práctico 1</div>
+        <ul>
+            <li><a href="Ejercicio practico 1/ejercicio_practico1.pdf" class="pdf-link">ejercicio_practico1.pdf</a></li>
+            <li><a href="Ejercicio practico 1/Ejercicio practico 1-web/app.py" class="code-link">app.py (Web)</a></li>
+            <li><a href="Ejercicio practico 1/Ejercicio_practico_1.pkt" class="pkt-link">Ejercicio_practico_1.pkt</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección Ejercicio Práctico 2 -->
+    <div class="folder-section">
+        <div class="folder-title">📁 Ejercicio práctico 2</div>
+        <ul>
+            <li><a href="Ejercicio practico 2/Ejercicio practico_2.pdf" class="pdf-link">Ejercicio practico_2.pdf</a></li>
+            <li><a href="Ejercicio practico 2/Ejercicio practico 2/app.py" class="code-link">app.py (Web)</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección Examen Parcial 1 -->
+    <div class="folder-section">
+        <div class="folder-title">📁 Examen parcial 1</div>
+        <ul>
+            <li><a href="Examen parcial 1/examen_parcial_1.pdf" class="pdf-link">examen_parcial_1.pdf</a></li>
+            <li><a href="Examen parcial 1/Examen Parcial 1/app.py" class="code-link">app.py (Web)</a></li>
+            <li><a href="Examen parcial 1/Examen parcial_1.pkt" class="pkt-link">Examen parcial_1.pkt</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección Examen Parcial 2 -->
+    <div class="folder-section">
+        <div class="folder-title">📁 Examen parcial 2</div>
+        <ul>
+            <li><a href="Examen parcial 2/Parcial 2.pdf" class="pdf-link">Parcial 2.pdf</a></li>
+            <li><a href="Examen parcial 2/Parcial 2-web/app.py" class="code-link">app.py (Web)</a></li>
+            <li><a href="Examen parcial 2/Red Parcial 2.pkt" class="pkt-link">Red Parcial 2.pkt</a></li>
+        </ul>
+    </div>
+
+    <!-- Sección Investigación -->
+    <div class="folder-section">
+        <div class="folder-title">📁 Investigación</div>
+        <ul>
+            <li><a href="Investigacion/Python_Investigacion1_AdrianJimenez.pdf" class="pdf-link">Python_Investigacion1_AdrianJimenez.pdf</a></li>
+            <li><a href="Investigacion/Python_Investigacion1_AdrianJimenez.pptx" class="pptx-link">Python_Investigacion1_AdrianJimenez.pptx</a></li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
