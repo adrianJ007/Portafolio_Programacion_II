@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section admin-page">
+  <div class="page-actions">
+    <div class="heading"><span class="eyebrow">Verificación administrativa</span><h1>Propuestas de giras</h1><p>Revisa giras enviadas por guías y empresas proveedoras antes de publicarlas.</p></div>
+    <a class="btn ghost" href="{{url_for('admin.dashboard')}}">← Volver al resumen</a>
+  </div>
+  <div class="cards">
+    {% for x in rows %}
+    <article class="card tour-card">
+      <span class="tag">{{x.status}}</span>
+      <h2>{{x.name}}</h2>
+      <p><b>Empresa / responsable:</b> {{x.provider_name or x.guide_name or 'Turismo Chiriquí'}}<br>
+      <b>Destino:</b> {{x.destination}}<br>
+      <b>Duración:</b> {{x.duration}}<br>
+      <b>Precio sugerido:</b> ${{x.suggested_price}}<br>
+      <b>Capacidad:</b> {{x.suggested_capacity}} · <b>Dificultad:</b> {{x.difficulty}}</p>
+      <p>{{x.description}}</p>
+      {% if x.route_options %}<p class="muted"><b>Ruta sugerida:</b> {{x.route_options}}</p>{% endif %}
+      {% if x.requirements %}<p class="muted"><b>Requisitos:</b> {{x.requirements}}</p>{% endif %}
+      <form method="post" action="{{url_for('admin.proposal_action',item_id=x.id,action='approve')}}">
+        <input name="comment" placeholder="Comentario para la empresa">
+        <button class="btn primary">Aprobar y publicar</button>
+      </form>
+      <div class="actions">
+        <form method="post" action="{{url_for('admin.proposal_action',item_id=x.id,action='changes')}}"><button class="btn ghost">Solicitar cambios</button></form>
+        <form method="post" action="{{url_for('admin.proposal_action',item_id=x.id,action='reject')}}"><button class="btn danger">Rechazar</button></form>
+      </div>
+    </article>
+    {% else %}
+    <article class="card">No hay propuestas pendientes.</article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

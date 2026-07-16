@@ -1,0 +1,16 @@
+<nav class="nav">
+  <a class="brand" href="{{url_for('auth.landing')}}">
+    <img src="{{url_for('static',filename='img/branding/logo.webp')}}" alt="Logo Turismo Chiriquí">
+    Turismo Chiriquí
+  </a>
+  <div class="nav-actions">
+    {% if session.user %}
+      <span>{{session.name}} · {{ {'admin':'Administrador','client':'Cliente','worker':'Guía','operator':'Operario','provider':'Proveedor'}.get(session.role,session.role) }}</span>
+      <a class="btn ghost" href="{{url_for('auth.profile')}}">Mi perfil</a>
+      <a class="btn ghost" href="{{url_for('auth.logout')}}">Cerrar sesión</a>
+    {% else %}
+      <a href="{{url_for('auth.login')}}">Ingresar</a>
+      <a class="btn primary" href="{{url_for('auth.register')}}">Registrarse</a>
+    {% endif %}
+  </div>
+</nav>

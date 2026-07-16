@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Explicación del sistema · Turismo Chiriquí</title>
+  <style>
+    :root{--bg:#03090f;--glass:rgba(255,255,255,.07);--line:rgba(255,255,255,.14);--aqua:#39dec7;--cyan:#78efff;--gold:#e1b565;--muted:#9aafb4}
+    *{box-sizing:border-box}body{margin:0;font:15px/1.55 Inter,Segoe UI,system-ui,sans-serif;color:#f2f8f8;background:radial-gradient(circle at 20% 0,rgba(57,222,199,.18),transparent 28rem),linear-gradient(145deg,#02070b,#071722)}
+    .wrap{width:min(1180px,calc(100% - 32px));margin:auto;padding:42px 0}.hero{min-height:70vh;display:grid;align-content:center}.eyebrow{color:var(--aqua);text-transform:uppercase;letter-spacing:.18em;font-weight:900;font-size:.72rem}.hero h1{font-size:clamp(3rem,8vw,7rem);line-height:.82;letter-spacing:-.07em;margin:12px 0}.glass,.card{background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 28px 80px rgba(0,0,0,.28);backdrop-filter:blur(18px)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.flow{display:grid;gap:10px}.step{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}.step b{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--aqua),var(--cyan));color:#021513}.muted{color:var(--muted)}h2{font-size:2.2rem;margin-top:52px}.tag{display:inline-flex;padding:5px 10px;border-radius:999px;background:rgba(57,222,199,.12);color:var(--aqua);border:1px solid rgba(57,222,199,.25);font-weight:800;font-size:.75rem}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">Documentación externa</span>
+      <h1>Turismo Chiriquí</h1>
+      <p class="muted">Resumen visual para explicar roles, flujos y módulos implementados en la plataforma turística.</p>
+    </section>
+    <h2>Roles del sistema</h2>
+    <div class="grid">
+      <div class="card"><span class="tag">Cliente</span><h3>Reserva y confirma</h3><p>Elige tour, ruta, servicios, paga, revisa itinerario y evalúa la gira.</p></div>
+      <div class="card"><span class="tag">Operario</span><h3>Coordina experiencia</h3><p>Propone itinerarios, revisa cambios, seguimiento y proveedores.</p></div>
+      <div class="card"><span class="tag">Admin</span><h3>Control total</h3><p>Aprueba pagos, empresas, guías, servicios y revisa métricas.</p></div>
+      <div class="card"><span class="tag">Guía</span><h3>Ejecuta la gira</h3><p>Acepta asignaciones, actualiza actividades, reporta incidencias y finaliza la gira.</p></div>
+      <div class="card"><span class="tag">Proveedor</span><h3>Ofrece servicios</h3><p>Propone servicios turísticos y consulta participaciones en reservas.</p></div>
+      <div class="card"><span class="tag">Correo</span><h3>Comunicación</h3><p>Envía comprobantes, facturas, itinerarios, estados y alertas en UTF-8.</p></div>
+    </div>
+    <h2>Flujo principal</h2>
+    <div class="glass flow">
+      <div class="step"><b>1</b><p>Cliente selecciona gira, ruta, servicios adicionales y código promocional.</p></div>
+      <div class="step"><b>2</b><p>Sistema calcula monto, valida capacidad y crea pre-reserva.</p></div>
+      <div class="step"><b>3</b><p>Cliente paga por Yappy, tarjeta simulada o efectivo. Se bloquean pagos duplicados.</p></div>
+      <div class="step"><b>4</b><p>Admin u operario valida pago. Se genera factura PDF profesional.</p></div>
+      <div class="step"><b>5</b><p>Operario construye itinerario visual con actividades, mapa, proveedor, responsable y estado.</p></div>
+      <div class="step"><b>6</b><p>Cliente confirma o solicita cambios por actividad. Queda historial.</p></div>
+      <div class="step"><b>7</b><p>Al confirmar, se genera PDF de itinerario y se envía por correo.</p></div>
+      <div class="step"><b>8</b><p>Guía ejecuta la gira, actualiza seguimiento, marca finalización y solicita feedback.</p></div>
+    </div>
+    <h2>Módulos implementados</h2>
+    <div class="grid">
+      <div class="card"><h3>Itinerarios</h3><p>Timeline visual, historial, cambios, PDF, mapa y estados.</p></div>
+      <div class="card"><h3>Pagos</h3><p>Validación, bloqueo de duplicados, factura PDF y comprobantes.</p></div>
+      <div class="card"><h3>Empresas</h3><p>Registro, aprobación, creación de cuenta y servicios propuestos.</p></div>
+      <div class="card"><h3>Guías</h3><p>Solicitud profesional, documentos y creación de usuario al aprobar.</p></div>
+      <div class="card"><h3>Chatbot</h3><p>Burbujas modernas, scroll, typing y respuestas de soporte turístico.</p></div>
+      <div class="card"><h3>UX</h3><p>Glassmorphism, loader premium, microanimaciones y vistas responsive.</p></div>
+    </div>
+    <h2>Limitaciones actuales</h2>
+    <div class="glass"><p>El proyecto usa almacenamiento JSON local para demostración. SMTP depende de credenciales reales del archivo .env. La integración de mapa usa enlaces/URLs visuales; no requiere API externa. Los PDFs son generados internamente sin librerías adicionales.</p></div>
+  </main>
+</body>
+</html>

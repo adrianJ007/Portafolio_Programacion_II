@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block head %}<link rel="stylesheet" href="{{url_for('static',filename='css/landing.css')}}">{% endblock %}
+{% block content %}
+<section class="hero immersive">
+  <div class="hero-orb orb-a"></div>
+  <div class="hero-orb orb-b"></div>
+  <div class="sparkle-field" aria-hidden="true">
+    <span class="sparkle s1"></span>
+    <span class="sparkle s2"></span>
+    <span class="sparkle s3"></span>
+    <span class="sparkle s4"></span>
+    <span class="sparkle s5"></span>
+    <span class="sparkle s6"></span>
+    <span class="sparkle s7"></span>
+    <span class="sparkle s8"></span>
+    <span class="sparkle s9"></span>
+    <span class="sparkle s10"></span>
+  </div>
+  <div class="hero-copy reveal-ready is-visible">
+    <span class="eyebrow">Experiencias auténticas en Panamá</span>
+    <h1>Turismo <span>Chiriquí</span></h1>
+    <p>Reserva giras, vive rutas personalizadas y viaja con guías certificados por volcanes, cafetales, montañas y costas.</p>
+    <div class="actions">
+      <a class="btn primary" href="{{url_for('auth.register')}}">Reservar ahora</a>
+      <a class="btn ghost" href="#tours">Explorar giras</a>
+    </div>
+  </div>
+  <aside class="hero-card glass tilt-card">
+    <span class="tag">Viaja con confianza</span>
+    <h2>Volcán Barú, Boquete y más.</h2>
+    <p>Precios claros, pagos seguros, proveedores aliados y seguimiento antes, durante y después de cada gira.</p>
+    <div class="mini-stats">
+      <span><b>+12</b><small>rutas</small></span>
+      <span><b>24/7</b><small>soporte</small></span>
+      <span><b>100%</b><small>local</small></span>
+    </div>
+  </aside>
+</section>
+
+<section class="section section-ambient" id="tours">
+  <div class="ambient-orb orb-c" aria-hidden="true"></div>
+  <div class="sparkle-field" aria-hidden="true">
+    <span class="sparkle s2"></span>
+    <span class="sparkle s4"></span>
+    <span class="sparkle s6"></span>
+    <span class="sparkle s8"></span>
+    <span class="sparkle s10"></span>
+  </div>
+  <div class="heading">
+    <span class="eyebrow">Tours destacados</span>
+    <h2>Experiencias que se sienten reales.</h2>
+  </div>
+  <div class="cards">
+    {% for t in tours %}
+    <article class="card tour-card tilt-card">
+      <div class="tour-media">
+        {% if t.image %}<img class="landing-card-image" src="{{url_for('auth.public_media',filename=t.image)}}" alt="{{t.name}}">{% endif %}
+        <span class="tag tour-badge">{{t.difficulty}}</span>
+      </div>
+      <div class="tour-body">
+        <h3>{{t.name}}</h3>
+        <p>{{t.description}}</p>
+        <div class="tour-facts">
+          <span>📍 {{t.destination}}</span>
+          <span>◷ {{t.suggested_duration}}</span>
+          <span>👥 Hasta {{t.maximum_people}} personas</span>
+        </div>
+        <div class="tour-footer">
+          <div class="tour-price-box">
+            <small>Desde</small>
+            <strong class="tour-price">${{t.price_base}}</strong>
+          </div>
+          <a class="btn primary tour-btn" href="{{url_for('client.reservation',tour_id=t.id)}}">Reservar gira</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section split">
+  <div>
+    <span class="eyebrow">Cómo funciona</span>
+    <h2>Simple para el viajero, ordenado para la empresa.</h2>
+  </div>
+  <div class="process-grid">
+    <div class="card"><b>01</b><h3>Elige la gira</h3><p>Selecciona ruta, fecha, personas y servicios adicionales.</p></div>
+    <div class="card"><b>02</b><h3>Reserva y paga</h3><p>Recibe total exacto y sube tu comprobante Yappy.</p></div>
+    <div class="card"><b>03</b><h3>Confirma itinerario</h3><p>Operaciones prepara el plan final y tú lo apruebas.</p></div>
+    <div class="card"><b>04</b><h3>Vive Chiriquí</h3><p>Guía, proveedores y seguimiento conectados en una sola experiencia.</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="heading">
+    <span class="eyebrow">Empresas aliadas</span>
+    <h2>Servicios locales que elevan cada experiencia.</h2>
+  </div>
+  <div class="cards">
+    {% for p in providers %}
+    <article class="card">
+      {% if p.logo %}<img class="landing-card-image logo-mode" src="{{url_for('auth.public_media',filename=p.logo)}}" alt="{{p.name}}">{% endif %}
+      <span class="tag">{{p.service_type}}</span>
+      <h3>{{p.name}}</h3>
+      <p>{{p.description}}</p>
+      <small>{{p.address}} · {{p.phone}}</small>
+    </article>
+    {% else %}
+    <article class="card"><h3>Transporte, comida, hotelería y aventura</h3><p>Integramos aliados aprobados para ofrecer mejores giras.</p></article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section split guide-cta">
+  <div>
+    <span class="eyebrow">Alianzas y talento local</span>
+    <h2>Crezcamos juntos en Chiriquí.</h2>
+    <p>Si eres guía o empresa turística, puedes solicitar revisión para trabajar con Turismo Chiriquí.</p>
+  </div>
+  <div class="actions">
+    <a class="btn primary" href="{{url_for('auth.guide_application')}}">Trabaja como guía</a>
+    <a class="btn ghost" href="{{url_for('auth.provider_application')}}">Ofrece tus servicios</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="heading"><span class="eyebrow">Beneficios</span><h2>Hecho para viajar con calma.</h2></div>
+  <div class="cards">
+    <article class="card"><h3>Guías certificados</h3><p>Perfiles revisados, especialidades claras y seguimiento operativo.</p></article>
+    <article class="card"><h3>Pagos seguros</h3><p>Comprobantes, validación y correos de confirmación.</p></article>
+    <article class="card"><h3>Atención personalizada</h3><p>Itinerarios visuales, cambios controlados y contacto de emergencia.</p></article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="heading"><span class="eyebrow">Historias de viajeros</span><h2>Recuerdos que se quedan.</h2></div>
+  <div class="cards">
+    <blockquote class="card">“El amanecer en el Barú fue increíble. Todo estuvo coordinado desde el día anterior.”<footer>— Andrea M.</footer></blockquote>
+    <blockquote class="card">“La ruta de café fue perfecta para nuestra familia y el guía fue muy atento.”<footer>— Carlos R.</footer></blockquote>
+    <blockquote class="card">“Pago sencillo, instrucciones claras y una experiencia preciosa en el Golfo.”<footer>— María C.</footer></blockquote>
+  </div>
+</section>
+
+<section class="section split section-ambient">
+  <div class="ambient-orb orb-d" aria-hidden="true"></div>
+  <div><span class="eyebrow">Preguntas frecuentes</span><h2>Todo claro antes de viajar.</h2></div>
+  <div class="glass info">
+    <details><summary>¿Cómo confirmo mi reserva?</summary><p>Crea una pre-reserva, revisa el precio, paga por Yappy y sube la captura.</p></details>
+    <details><summary>¿Qué ocurre si cambia el clima?</summary><p>Evaluamos seguridad y coordinamos cambios de ruta o fecha cuando sea necesario.</p></details>
+    <details><summary>¿Puedo viajar con niños?</summary><p>Sí. Elige una ruta familiar y revisa el nivel físico recomendado.</p></details>
+  </div>
+</section>
+
+<section class="section split">
+  <div>
+    <span class="eyebrow">Contacto</span>
+    <h2>Planeemos tu próxima experiencia.</h2>
+    <p>info@turismochiriqui.com<br>+507 6000-2026<br>David, Chiriquí, Panamá</p>
+  </div>
+  <a class="btn primary" href="{{url_for('auth.register')}}">Crear cuenta y reservar</a>
+</section>
+
+<footer class="section footer-pro">
+  <div class="brand"><img src="{{url_for('static',filename='img/branding/logo.webp')}}" alt="">Turismo Chiriquí</div>
+  <p>Experiencias reales. Atención cercana. Chiriquí inolvidable.</p>
+</footer>
+{% endblock %}

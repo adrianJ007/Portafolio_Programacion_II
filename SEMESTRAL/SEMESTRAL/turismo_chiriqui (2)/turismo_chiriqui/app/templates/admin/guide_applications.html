@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section admin-page">
+  <div class="page-actions"><div class="heading"><span class="eyebrow">Reclutamiento</span><h1>Solicitudes de guías</h1></div><a class="btn ghost" href="{{url_for('admin.dashboard')}}">← Volver al panel</a></div>
+  <div class="cards">
+    {% for x in rows %}
+    <article class="card">
+      <span class="tag">{{x.status}}</span>
+      {% if x.photo %}<img class="application-photo" src="{{url_for('admin.uploaded_file',filename=x.photo)}}" alt="Foto del solicitante">{% endif %}
+      <h2>{{x.name}}</h2>
+      <p><b>Cédula:</b> {{x.identity}}<br><b>Correo:</b> {{x.email}}<br><b>Teléfono:</b> {{x.phone}}<br><b>Especialidad:</b> {{x.specialty}}<br><b>Idiomas:</b> {{x.languages}}<br><b>Experiencia:</b> {{x.experience}}</p>
+      <div class="actions">
+        {% if x.identity_front %}<a class="btn ghost" href="{{url_for('admin.uploaded_file',filename=x.identity_front)}}" target="_blank">Cédula frontal</a>{% endif %}
+        {% if x.identity_back %}<a class="btn ghost" href="{{url_for('admin.uploaded_file',filename=x.identity_back)}}" target="_blank">Cédula reverso</a>{% endif %}
+        {% if x.certificate %}<a class="btn ghost" href="{{url_for('admin.uploaded_file',filename=x.certificate)}}" target="_blank">Certificación</a>{% endif %}
+        {% if x.resume %}<a class="btn ghost" href="{{url_for('admin.uploaded_file',filename=x.resume)}}" target="_blank">Currículum</a>{% endif %}
+      </div>
+      <form method="post" action="{{url_for('admin.guide_application_approve_account',item_id=x.id)}}"><input name="comment" placeholder="Comentario"><button class="btn primary">Aprobar y crear usuario</button></form>
+      <div class="actions"><form method="post" action="{{url_for('admin.guide_application_action',item_id=x.id,action='info')}}"><button class="btn ghost">Solicitar información</button></form><form method="post" action="{{url_for('admin.guide_application_action',item_id=x.id,action='reject')}}"><button class="btn danger">Rechazar</button></form></div>
+    </article>
+    {% else %}<article class="card">No hay solicitudes.</article>{% endfor %}
+  </div>
+</section>
+{% endblock %}

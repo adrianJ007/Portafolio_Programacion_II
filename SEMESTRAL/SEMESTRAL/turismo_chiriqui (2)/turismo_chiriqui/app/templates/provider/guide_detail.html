@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading"><span class="eyebrow">Ficha profesional</span><h1>{{item.name}}</h1><p>{{item.provider_name}} · {{item.specialty}}</p></div>
+    <div class="actions"><a class="btn ghost" href="{{url_for('provider.guide_form',item_id=item.id)}}">Editar</a><a class="btn ghost" href="{{url_for('provider.guides')}}">Volver</a></div>
+  </div>
+  <div class="split">
+    <div class="glass panel">
+      {% if item.profile_photo %}<img style="width:100%;max-height:360px;object-fit:cover;border-radius:20px;border:1px solid var(--line)" src="{{url_for('admin.uploaded_file',filename=item.profile_photo)}}" alt="{{item.name}}">{% endif %}
+      <h2>{{item.name}}</h2>
+      <p>{{item.professional_description or 'Sin biografía registrada.'}}</p>
+    </div>
+    <div class="glass panel">
+      <h2>Información</h2>
+      <div class="itinerary-facts">
+        <span><small>Teléfono</small>{{item.phone}}</span>
+        <span><small>Correo</small>{{item.email}}</span>
+        <span><small>Idiomas</small>{{item.languages}}</span>
+        <span><small>Experiencia</small>{{item.experience}}</span>
+        <span><small>Disponibilidad</small>{{item.availability}}</span>
+        <span><small>Estado</small>{{item.status}}</span>
+      </div>
+      <h3>Documentos</h3>
+      <div class="actions">
+        {% for key,label in [('identity_front','Cédula frontal'),('identity_back','Cédula reversa'),('certification_document','Certificación'),('license_document','Licencia'),('experience_document','Experiencia')] %}
+          {% if item.get(key) %}<a class="btn ghost" href="{{url_for('admin.uploaded_file',filename=item.get(key))}}" target="_blank">{{label}}</a>{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="glass panel">
+    <h2>Historial de giras</h2>
+    <div class="cards">{% for r in reservations %}<article class="card"><span class="tag">{{r.status}}</span><h3>#{{r.id}} · {{r.tour_name}}</h3><p>{{r.client}} · {{r.date}}<br>{{r.meeting_point or 'Punto por confirmar'}}</p></article>{% else %}<article class="card">Aún no hay giras asignadas a este guía.</article>{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

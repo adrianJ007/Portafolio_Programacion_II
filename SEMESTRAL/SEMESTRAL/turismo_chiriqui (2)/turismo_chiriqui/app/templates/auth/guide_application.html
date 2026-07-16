@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading"><span class="eyebrow">Únete al equipo</span><h1>Trabaja como guía turístico</h1><p>Formulario profesional para validar identidad, experiencia y documentos.</p></div>
+    <a class="btn ghost" href="{{url_for('auth.landing')}}">← Volver al inicio</a>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="glass form admin-form">
+    <label>Nombre completo<input name="name" required></label>
+    <label>Cédula<input name="identity" required pattern="[0-9A-Za-z\\-]+"></label>
+    <label>Correo<input name="email" type="email" required></label>
+    <label>Teléfono<input name="phone" required pattern="[0-9+\\-\\s]{7,20}"></label>
+    <label>Dirección<input name="address" required></label>
+    <label>Especialidad<input name="specialty" placeholder="Senderismo, café, mar..." required></label>
+    <label>Idiomas<input name="languages" required></label>
+    <label>Foto de perfil<input name="photo" type="file" accept="image/png,image/jpeg,image/webp" required></label>
+    <label>Cédula frontal<input name="identity_front" type="file" accept="application/pdf,image/png,image/jpeg,image/webp"></label>
+    <label>Cédula reverso<input name="identity_back" type="file" accept="application/pdf,image/png,image/jpeg,image/webp"></label>
+    <label>Certificaciones<input name="certificate" type="file" accept="application/pdf,image/png,image/jpeg,image/webp"></label>
+    <label>Currículum PDF<input name="resume" type="file" accept="application/pdf"></label>
+    <label>Experiencia<textarea name="experience" required></textarea></label>
+    <label>Presentación<textarea name="message" required></textarea></label>
+    <button class="btn primary">Enviar solicitud</button>
+  </form>
+</section>
+{% endblock %}

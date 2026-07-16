@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading">
+      <span class="eyebrow">Planificación operativa</span>
+      <h1>Itinerarios visuales</h1>
+      <p>Crea el plan final con actividades claras, proveedor, responsable y estado.</p>
+    </div>
+    <a class="btn ghost" href="{{url_for('operator.dashboard')}}">Volver</a>
+  </div>
+
+  <div class="cards itinerary-list">
+    {% for r in reservations %}
+    {% set plan = r.final_itinerary if r.final_itinerary else r.suggested_itinerary %}
+    <article class="card wide-card itinerary-editor{{ ' completed' if r.tracking_status == 'gira finalizada' else '' }}">
+      <div class="itinerary-top">
+        <div>
+          <span class="tag">{{r.itinerary_status or 'ruta sugerida'}}</span>
+          <h2>#{{r.id}} · {{r.tour_name}}</h2>
+          <p>{{r.client}} · {{r.people}} personas · {{r.date}}</p>
+        </div>
+        <div class="itinerary-status-group">
+          <div class="status-pill">{{r.status}}</div>
+          {% if r.tracking_status == 'gira finalizada' %}<span class="completed-badge">✓ Gira completada</span>{% endif %}
+        </div>
+      </div>
+
+      <details class="itinerary-collapse"{% if r.tracking_status != 'gira finalizada' %} open{% endif %}>
+        <summary class="itinerary-collapse-toggle">
+          {% if r.tracking_status == 'gira finalizada' %}Ver detalle de la gira finalizada{% else %}Ocultar / mostrar detalle{% endif %}
+        </summary>
+        <div class="itinerary-collapse-body">
+
+      <div class="itinerary-facts">
+        <span><small>Ruta</small>{{r.route_name}}</span>
+        <span><small>Preferencias</small>{{r.preferences or 'Ninguna'}}</span>
+        <span><small>Restricciones</small>{{r.physical_restrictions or 'Ninguna'}}</span>
+        <span><small>Alergias</small>{{r.allergies or 'Ninguna'}}</span>
+      </div>
+
+      {% if r.itinerary_client_comment %}
+      <div class="glass info warning-panel"><b>Solicitud del cliente:</b> {{r.itinerary_client_comment}}</div>
+      {% endif %}
+
+      <form class="form compact itinerary-form" method="post" action="{{url_for('operator.propose_itinerary',item_id=r.id)}}">
+        <div class="form-grid">
+          <label>Hora de encuentro<input type="time" name="meeting_time" value="{{r.meeting_time or '07:00'}}" required></label>
+          <label>Punto de encuentro<input name="meeting_point" value="{{r.meeting_point or 'Parque Cervantes, David'}}" required></label>
+          <label>Transporte<input name="transport" value="{{r.transport or 'Transporte turístico'}}"></label>
+          <label>Coordenadas / enlace del mapa<input name="map_url" value="{{r.map_url or ''}}" placeholder="https://maps.google.com/..."></label>
+        </div>
+
+        <h3>Actividades del día</h3>
+        <div class="activity-builder" data-builder>
+          {% for a in plan %}
+          <div class="activity-row glass">
+            <input name="activity_time" value="{{a.time}}" placeholder="07:00 AM">
+            <input name="activity_name" value="{{a.activity}}" placeholder="Actividad">
+            <input name="activity_duration" value="{{a.duration}}" placeholder="Duración">
+            <input name="activity_place" value="{{a.place}}" placeholder="Lugar">
+            <input name="activity_responsible" value="{{a.responsible}}" placeholder="Responsable">
+            <input name="activity_provider" value="{{a.provider_name}}" placeholder="Proveedor si aplica">
+            <select name="activity_status">
+              <option {% if a.status=='pendiente' %}selected{% endif %}>pendiente</option>
+              <option {% if a.status=='confirmada' %}selected{% endif %}>confirmada</option>
+              <option {% if a.status=='requiere proveedor' %}selected{% endif %}>requiere proveedor</option>
+              <option {% if a.status=='proveedor confirmado' %}selected{% endif %}>proveedor confirmado</option>
+              <option {% if a.status=='incidencia' %}selected{% endif %}>incidencia</option>
+            </select>
+            <input name="activity_notes" value="{{a.notes}}" placeholder="Nota breve">
+            <button type="button" class="btn danger remove-activity">Quitar</button>
+          </div>
+          {% endfor %}
+        </div>
+        <button type="button" class="btn ghost add-activity">Agregar actividad</button>
+        <label>Recomendaciones finales<textarea name="recommendations" rows="3">{{r.final_recommendations or 'Calzado cerrado, agua, protector solar, abrigo ligero y documento de identidad.'}}</textarea></label>
+        <button class="btn primary">Guardar y enviar al cliente</button>
+      </form>
+      <h3>Solicitudes e historial del cliente</h3>
+      <div class="tracking-line">
+        {% for h in r.itinerary_history %}
+        <div>
+          <b>{{h.action}}</b><small>{{h.date}} · {{h.actor}} · {{h.operator_status or 'pendiente'}}</small>
+          <p>{{h.comment}}</p>
+          <div class="actions">
+            <form method="post" action="{{url_for('operator.itinerary_change_action',item_id=r.id,change_index=loop.index0,action='approve')}}"><input name="comment" placeholder="Comentario"><button class="btn primary">Aprobar</button></form>
+            <form method="post" action="{{url_for('operator.itinerary_change_action',item_id=r.id,change_index=loop.index0,action='reject')}}"><input name="comment" placeholder="Motivo"><button class="btn danger">Rechazar</button></form>
+          </div>
+        </div>
+        {% else %}<p>Sin solicitudes de cambios.</p>{% endfor %}
+      </div>
+
+        </div>
+      </details>
+    </article>
+    {% else %}
+    <article class="card">No hay reservas para planificar.</article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{url_for('static',filename='js/itinerary.js')}}"></script>{% endblock %}

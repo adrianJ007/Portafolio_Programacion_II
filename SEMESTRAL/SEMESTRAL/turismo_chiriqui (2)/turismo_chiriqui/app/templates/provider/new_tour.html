@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth">
+  <div>
+    <span class="eyebrow">Nueva gira de empresa</span>
+    <h1>Ofrece una gira turística</h1>
+    <p>Tu propuesta será revisada por administración. Si se aprueba, quedará publicada para reservas de clientes.</p>
+    <a class="btn ghost" href="{{url_for('provider.dashboard')}}">← Volver a mi empresa</a>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="form glass">
+    <label>Nombre de la gira<input name="name" required placeholder="Ej. Ruta Café Premium en Boquete"></label>
+    <label>Destino<input name="destination" required placeholder="Boquete, Volcán, Golfo de Chiriquí..."></label>
+    <label>Descripción<textarea name="description" rows="4" required placeholder="Describe la experiencia, enfoque, público ideal y valor diferencial."></textarea></label>
+    <div class="form-grid">
+      <label>Precio sugerido por persona<input name="suggested_price" type="number" step="0.01" min="0" required></label>
+      <label>Duración sugerida<input name="duration" required placeholder="6 horas / día completo"></label>
+    </div>
+    <div class="form-grid">
+      <label>Cupos disponibles<input name="suggested_capacity" type="number" min="1" required></label>
+      <label>Dificultad<select name="difficulty"><option>Fácil</option><option>Moderada</option><option>Alta</option><option>Familiar</option><option>Premium</option></select></label>
+    </div>
+    <div class="form-grid">
+      <label>Incluye transporte<select name="includes_transport"><option value="yes">Sí</option><option value="no">No</option></select></label>
+      <label>Incluye comida<select name="includes_food"><option value="yes">Sí</option><option value="no">No</option></select></label>
+    </div>
+    <label>Rutas u horarios sugeridos<textarea name="route_options" rows="3" placeholder="07:00 salida · 08:30 desayuno · 10:00 actividad principal..."></textarea></label>
+    <label>Requisitos para el cliente<textarea name="requirements" rows="3" placeholder="Ropa cómoda, hidratación, edad mínima, clima..."></textarea></label>
+    <label>Política de cancelación o restricciones<textarea name="policy" rows="3"></textarea></label>
+    <label>Imagen de referencia<input name="image" type="file" accept="image/png,image/jpeg,image/webp"></label>
+    <button class="btn primary">Enviar gira a revisión</button>
+  </form>
+</section>
+{% endblock %}

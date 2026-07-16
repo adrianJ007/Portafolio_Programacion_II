@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section admin-page">
+  <div class="page-actions">
+    <div class="heading"><span class="eyebrow">Gestión administrativa</span><h1>{{ module_label }}</h1></div>
+    <a class="btn ghost" href="{{ url_for('admin.dashboard') }}">← Volver al resumen</a>
+  </div>
+
+  <form class="glass form admin-form" method="post" enctype="multipart/form-data" id="recordForm">
+    <input type="hidden" name="id" id="recordId">
+    {% for key,label in fields %}
+    <label>{{ label }}
+      {% if key in ['image','logo','profile_photo','identity_front','identity_back','certification','validation_document'] %}
+      <input name="image_file" type="file" accept="image/png,image/jpeg,image/webp,application/pdf">
+      <input name="{{ key }}" id="field_{{ key }}" type="hidden">
+      {% elif key in ['description','message','response','policy','internal_notes','observations'] %}
+      <textarea name="{{ key }}" id="field_{{ key }}" rows="3"></textarea>
+      {% elif key in ['status','availability','service_type','type','documents_verified'] %}
+      <select name="{{ key }}" id="field_{{ key }}">
+        <option>activo</option><option>pendiente de revisión</option><option>aprobada</option><option>rechazada</option><option>suspendida</option>
+        <option>approved</option><option>pending review</option><option>Disponible</option><option>No disponible</option>
+        <option>transporte</option><option>alimentación</option><option>hospedaje</option><option>fotografía</option><option>seguro</option><option>otro</option>
+      </select>
+      {% else %}
+      <input name="{{ key }}" id="field_{{ key }}" {% if key=='email' or key=='provider_email' %}type="email"{% elif key in ['price','price_base','capacity','people','total','amount','discount_percent','profit_percent','capacity_daily','recommended_capacity'] %}type="number" step="0.01"{% endif %}>
+      {% endif %}
+    </label>
+    {% endfor %}
+    <div class="actions">
+      <button class="btn primary" id="saveButton">Crear registro</button>
+      <button class="btn ghost" type="button" id="cancelEdit" hidden>Cancelar edición</button>
+    </div>
+  </form>
+
+  <form class="search"><input name="q" value="{{ request.args.q }}" placeholder="Buscar en {{ module_label|lower }}"><button class="btn ghost">Buscar</button></form>
+  <div class="table"><table>
+    <thead><tr><th>ID</th>{% for key,label in fields %}<th>{{ label }}</th>{% endfor %}<th>Acciones</th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>#{{ row.id }}</td>
+      {% for key,label in fields %}
+      <td>
+        {% if key in ['image','logo','profile_photo'] and row.get(key) %}
+        <img class="record-thumb" src="{{url_for('admin.uploaded_file',filename=row.get(key))}}" alt="Imagen de {{module_label}}">
+        {% elif key in ['amount','total','price','price_base'] and row.get(key) is not none %}
+        ${{ row.get(key) }}
+        {% else %}
+        {{ {'active':'Activo','inactive':'Inactivo','pending':'Pendiente','received':'Recibido','validated':'Validado','rejected':'Rechazado','open':'Abierta','closed':'Cerrada','approved':'Aprobado','pending review':'Pendiente de revisión'}.get(row.get(key),row.get(key,'—')) }}
+        {% endif %}
+      </td>
+      {% endfor %}
+      <td>
+        <div class="actions">
+          <button type="button" class="btn ghost edit-row" data-row='{{ row|tojson }}'>Editar</button>
+          {% if module=='providers' %}
+          <form method="post" action="{{ url_for('admin.provider_approve_account',item_id=row.id) }}"><input name="comment" placeholder="Comentario"><button class="btn primary">Aprobar y crear cuenta</button></form>
+          <form method="post" action="{{ url_for('admin.provider_action',item_id=row.id,action='approve') }}"><button class="btn primary">Aprobar</button></form>
+          <form method="post" action="{{ url_for('admin.provider_action',item_id=row.id,action='info') }}"><input name="comment" placeholder="Información requerida"><button class="btn ghost">Pedir info</button></form>
+          <form method="post" action="{{ url_for('admin.provider_action',item_id=row.id,action='reject') }}"><input name="comment" placeholder="Motivo"><button class="btn danger">Rechazar</button></form>
+          {% elif module=='provider_services' %}
+          <form method="post" action="{{ url_for('admin.provider_service_action',item_id=row.id,action='approve') }}"><button class="btn primary">Aprobar servicio</button></form>
+          <form method="post" action="{{ url_for('admin.provider_service_action',item_id=row.id,action='reject') }}"><input name="comment" placeholder="Motivo"><button class="btn danger">Rechazar</button></form>
+          {% endif %}
+          <form method="post" action="{{ url_for('admin.remove',module=module,item_id=row.id) }}"><button class="btn danger">Eliminar</button></form>
+        </div>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="30">No hay registros. Puedes crear el primero arriba.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/crud.js') }}"></script>{% endblock %}

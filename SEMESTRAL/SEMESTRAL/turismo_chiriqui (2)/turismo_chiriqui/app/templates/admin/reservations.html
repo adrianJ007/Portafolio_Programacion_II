@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section admin-page">
+  <div class="page-actions">
+    <div class="heading">
+      <span class="eyebrow">Operación de reservas</span>
+      <h1>Reservas y asignaciones</h1>
+      <p>Guías elegibles sincronizados automáticamente desde el módulo de guías y empresas.</p>
+    </div>
+    <a class="btn ghost" href="{{url_for('admin.dashboard')}}">← Volver al resumen</a>
+  </div>
+
+  <div class="glass info">
+    <p><b>Reglas activas:</b> mínimo {{settings.guide_min_people}} persona(s) por guía · máximo {{settings.guide_max_people}} persona(s) por guía · máximo {{settings.reservation_max_people}} por reserva · guía adicional desde {{settings.extra_guide_threshold}} personas.</p>
+  </div>
+
+  <div class="cards">
+    {% for r in rows %}
+    <article class="card">
+      <span class="tag">{{ {'pre-reservation':'Pre-reserva','payment received':'Pago recibido','payment validated':'Pago validado','payment rejected':'Pago rechazado','confirmed':'Confirmada','guide assigned':'Guía asignado','itinerary confirmed':'Itinerario confirmado','in progress':'En proceso','completed':'Completada','cancelled':'Cancelada'}.get(r.status,r.status) }}</span>
+      <h2>#{{r.id}} · {{r.tour_name}}</h2>
+      <p><b>Cliente:</b> {{r.client}}<br><b>Fecha:</b> {{r.date}}<br><b>Personas:</b> {{r.people}}<br><b>Guías requeridos:</b> {{r.required_guides}}<br><b>Total:</b> ${{r.total}}</p>
+      {% if r.tour_provider_name %}<p class="muted"><b>Empresa de la gira:</b> {{r.tour_provider_name}}</p>{% endif %}
+      <form method="post" action="{{url_for('admin.assign_reservation',item_id=r.id)}}">
+        <label>Guía elegible
+          <select name="worker_id" required>
+            {% for w in workers %}
+            <option value="{{w.id}}">{{w.name}} · {{w.provider_name or 'Turismo Chiriquí'}} · {{w.specialty}} · {{w.availability or 'Disponible'}}</option>
+            {% endfor %}
+          </select>
+        </label>
+        {% if not workers %}<p class="error-text">No hay guías elegibles. Activa o registra un guía disponible antes de asignar.</p>{% endif %}
+        <label>Punto de encuentro<input name="meeting_point" value="{{r.meeting_point or 'Terminal de David'}}"></label>
+        <button class="btn primary" {% if not workers %}disabled{% endif %}>Asignar guía</button>
+      </form>
+      <form method="post" action="{{url_for('admin.confirm_itinerary',item_id=r.id)}}"><button class="btn ghost">Confirmar itinerario final</button></form>
+    </article>
+    {% else %}
+    <article class="card">No hay reservas.</article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

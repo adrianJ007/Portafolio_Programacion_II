@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section reservation-layout">
+  <div>
+    <span class="eyebrow">Reserva inteligente</span>
+    <h1>Diseña tu experiencia</h1>
+    <p>Elige tour, ruta, servicios aliados y contacto de emergencia. El monto se calcula automáticamente.</p>
+    <a class="btn ghost" href="{{url_for('client.dashboard')}}">← Volver a mi panel</a>
+    <div class="booking-steps">
+      <span class="active">1. Elegir tour</span><span class="active">2. Elegir ruta</span><span class="active">3. Ver precio</span><span>4. Aceptar términos</span><span>5. Pagar</span><span>6. Itinerario</span>
+    </div>
+    <div class="glass info route-preview" id="routeDescription">
+      <h2>Ruta sugerida</h2>
+      <p>07:00 Salida · 08:30 Preparación · 10:00 Experiencia principal · 12:30 Almuerzo · 17:00 Retorno</p>
+    </div>
+    <div class="glass info price-detail">
+      <h2>Precio transparente</h2>
+      <div><span>Precio base por persona</span><b id="basePrice">$0.00</b></div>
+      <div><span>Personas</span><b id="peopleDetail">0</b></div>
+      <div><span>Servicios adicionales</span><b id="extrasPrice">$0.00</b></div>
+      <div><span>Guías requeridos</span><b id="guidesRequired">1</b></div>
+      <div><span>Costo por guías</span><b id="guidePrice">$0.00</b></div>
+      <div><span>Descuento</span><b id="discountPrice">−$0.00</b></div>
+      <div><span>Cargo de servicio</span><b id="serviceCharge">$0.00</b></div>
+      <div><span>ITBMS 7%</span><b id="taxPrice">$0.00</b></div>
+      <p class="price-final">Total exacto <strong id="total">$0.00</strong></p>
+    </div>
+  </div>
+
+  <form method="post" class="form glass" id="reservationForm">
+    <h2>Datos de la experiencia</h2>
+    <label>Gira
+      <select name="tour_id" id="tourSelect">
+        {% for t in tours %}
+        <option value="{{t.id}}" data-price="{{t.price_base}}" data-discount="{{t.discount_percent}}" data-min="{{t.minimum_people or 1}}" data-max="{{t.maximum_people or t.capacity}}" data-guide-capacity="{{t.guide_capacity or 8}}" data-guide-price="{{t.extra_guide_price or 45}}" data-service-charge="{{t.service_charge_percent or 0}}" {% if selected_tour==t.id %}selected{% endif %}>{{t.name}} · ${{t.price_base}}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Ruta disponible
+      <select name="route_name" id="routeSelect">
+        <option>Ruta clásica</option><option>Ruta familiar</option><option>Ruta aventura</option><option>Ruta premium</option><option>Ruta corta</option><option>Ruta completa</option>
+      </select>
+    </label>
+    <div class="form-grid">
+      <label>Fecha<input name="date" type="date" required></label>
+      <label>Personas<input name="people" id="people" type="number" min="1" value="2" required><small id="capacityHelp"></small></label>
+      <label>Duración<input name="duration" value="Según ruta seleccionada" readonly></label>
+      <label>Teléfono del cliente<input name="client_phone" type="tel" required></label>
+    </div>
+
+    <fieldset class="service-selector">
+      <legend>Servicios adicionales aprobados</legend>
+      {% for s in services %}
+      <label class="check service-option">
+        <input type="checkbox" name="service_ids" value="{{s.id}}" data-price="{{s.price}}">
+        <span><b>{{s.name}}</b><small>{{s.provider_name or 'Turismo Chiriquí'}} · ${{s.price}} · {{s.availability or 'Disponible'}}</small></span>
+      </label>
+      {% else %}
+      <p class="muted">No hay servicios adicionales aprobados por ahora.</p>
+      {% endfor %}
+    </fieldset>
+
+    <label class="check"><input type="checkbox" name="optional_extra_guide" value="yes" id="extraGuide"> Solicitar guía adicional si hay disponibilidad</label>
+    <label>Código promocional
+      <input name="promo_code" id="promoCode" placeholder="Ej. VERDE15">
+      <small class="muted">Si el código está activo, el sistema aplicará el descuento automáticamente.</small>
+    </label>
+
+    <h2>Preferencias del viajero</h2>
+    <div class="form-grid">
+      <label>Restricciones físicas<input name="physical_restrictions" placeholder="Ninguna, movilidad reducida..."></label>
+      <label>Alergias<input name="allergies" placeholder="Alimentos, medicamentos..."></label>
+      <label>¿Quiénes viajan?<select name="traveler_profile"><option>Adultos</option><option>Familia con niños</option><option>Incluye adulto mayor</option><option>Grupo mixto</option></select></label>
+      <label>Ritmo<select name="pace"><option>Equilibrado</option><option>Tranquilo</option><option>Aventura</option></select></label>
+      <label>Hora preferida de salida<input name="preferred_departure" type="time"></label>
+    </div>
+    <label>Comentarios especiales<textarea name="preferences" rows="3"></textarea></label>
+
+    <h2>Contacto de emergencia</h2>
+    <p class="muted">Solo recibirá seguimiento de seguridad si lo autorizas.</p>
+    <div class="form-grid">
+      <label>Nombre<input name="emergency_name"></label>
+      <label>Relación<input name="emergency_relationship" placeholder="Madre, pareja, amistad..."></label>
+      <label>Teléfono<input name="emergency_phone" type="tel"></label>
+      <label>Correo<input name="emergency_email" type="email"></label>
+    </div>
+    <label class="check"><input type="checkbox" name="emergency_authorized" value="yes"> Autorizo enviar actualizaciones de seguridad a este contacto.</label>
+    <label>Correo para notificaciones<input name="email" type="email" required></label>
+    <label class="terms-check"><input type="checkbox" name="terms" required> Acepto los <a href="{{url_for('client.terms')}}" target="_blank">términos y condiciones</a>.</label>
+    <button class="btn primary">Crear pre-reserva y continuar al pago</button>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{url_for('static',filename='js/payments.js')}}"></script>
+<script>
+const routeText={
+  "Ruta clásica":"07:00 Salida · 08:30 Desayuno · 10:00 Actividad principal · 12:30 Almuerzo · 17:00 Retorno",
+  "Ruta familiar":"08:00 Salida · 09:30 Recorrido suave · 12:00 Almuerzo · 15:30 Retorno",
+  "Ruta aventura":"05:30 Salida · 07:00 Senderismo · 11:30 Mirador · 13:00 Almuerzo · 17:00 Retorno",
+  "Ruta premium":"07:30 Transporte privado · 09:00 Experiencia guiada · 12:30 Almuerzo premium · 16:30 Retorno",
+  "Ruta corta":"08:00 Salida · 09:00 Actividad · 12:00 Retorno",
+  "Ruta completa":"06:30 Salida · 08:00 Primera actividad · 12:00 Almuerzo · 14:00 Segunda actividad · 18:00 Retorno"
+};
+routeSelect.onchange=()=>routeDescription.querySelector('p').textContent=routeText[routeSelect.value];
+</script>
+{% endblock %}

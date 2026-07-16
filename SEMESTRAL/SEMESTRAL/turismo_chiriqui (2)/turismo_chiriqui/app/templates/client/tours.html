@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading"><span class="eyebrow">Catálogo turístico</span><h1>Elige tu próxima gira</h1><p>Explora experiencias propias de Turismo Chiriquí y giras ofrecidas por empresas aliadas verificadas.</p></div>
+    <a class="btn ghost" href="{{url_for('client.dashboard')}}">← Volver a mi panel</a>
+  </div>
+  <div class="cards">
+    {% for t in tours %}
+    <article class="card tour-card">
+      {% if t.image %}<div class="tour-image"><span>Imagen disponible</span></div>{% endif %}
+      <span class="tag">{{t.difficulty}}</span>
+      <h2>{{t.name}}</h2>
+      <p>{{t.description}}</p>
+      <div class="tour-facts">
+        <span>📍 {{t.destination}}</span>
+        <span>▷ {{t.suggested_duration}}</span>
+        <span>👥 {{t.capacity}} cupos</span>
+        <span>Empresa: {{t.provider or 'Turismo Chiriquí'}}</span>
+        <span>{{'Transporte incluido' if t.includes_transport else 'Sin transporte incluido'}}</span>
+        <span>{{'Comida incluida' if t.includes_food else 'Sin comida incluida'}}</span>
+      </div>
+      <strong class="tour-price">${{t.price_base}}</strong>
+      <a class="btn primary" href="{{url_for('client.reservation',tour_id=t.id)}}">Seleccionar esta gira</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

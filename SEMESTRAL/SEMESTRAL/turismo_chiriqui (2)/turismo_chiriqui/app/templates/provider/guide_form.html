@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth">
+  <div>
+    <span class="eyebrow">Guía de empresa</span>
+    <h1>{{'Editar guía' if item else 'Registrar guía'}}</h1>
+    <p>El guía quedará asociado automáticamente a {{provider.name if provider else 'tu empresa'}}.</p>
+    <a class="btn ghost" href="{{url_for('provider.guides')}}">← Volver a Mis Guías</a>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="form glass">
+    <div class="form-grid">
+      <label>Nombre completo<input name="name" value="{{item.name if item else ''}}" required></label>
+      <label>Cédula<input name="identity" value="{{item.identity if item else ''}}"></label>
+    </div>
+    <div class="form-grid">
+      <label>Correo<input name="email" type="email" value="{{item.email if item else ''}}" required></label>
+      <label>Teléfono<input name="phone" value="{{item.phone if item else ''}}" required></label>
+    </div>
+    <div class="form-grid">
+      <label>Tipo<input name="type" value="{{item.type if item else 'guía turístico'}}"></label>
+      <label>Especialidad<input name="specialty" value="{{item.specialty if item else ''}}" required></label>
+    </div>
+    <div class="form-grid">
+      <label>Idiomas<input name="languages" value="{{item.languages if item else 'Español'}}"></label>
+      <label>Experiencia<input name="experience" value="{{item.experience if item else ''}}" placeholder="Ej. 5 años"></label>
+    </div>
+    <div class="form-grid">
+      <label>Capacidad recomendada<input name="recommended_capacity" type="number" min="1" value="{{item.recommended_capacity if item else 8}}"></label>
+      <label>Disponibilidad<select name="availability"><option {{'selected' if item and item.availability=='Disponible' else ''}}>Disponible</option><option {{'selected' if item and item.availability=='No disponible' else ''}}>No disponible</option><option {{'selected' if item and item.availability=='Ocupado en gira' else ''}}>Ocupado en gira</option></select></label>
+    </div>
+    <label>Estado<select name="status"><option value="active" {{'selected' if not item or item.status=='active' else ''}}>Activo</option><option value="inactive" {{'selected' if item and item.status=='inactive' else ''}}>Inactivo</option></select></label>
+    {% if item and item.company_confirmation and item.company_confirmation!='accepted' %}
+    <p class="muted">Este guía aún no confirma su incorporación con tu empresa, así que no aparecerá disponible para asignaciones hasta que lo haga. El estado de arriba se aplicará automáticamente en cuanto confirme.</p>
+    {% elif not item %}
+    <p class="muted">Al registrar un guía nuevo se le crea una cuenta y se le notifica por correo. Quedará en estado "Pendiente de confirmación" y no será asignable hasta que el propio guía inicie sesión, complete su perfil y confirme que acepta trabajar contigo.</p>
+    {% endif %}
+    <label>Biografía / descripción profesional<textarea name="professional_description" rows="3">{{item.professional_description if item else ''}}</textarea></label>
+    <fieldset><legend>Fotografías y documentos</legend>
+      <div class="form-grid">
+        <label>Foto de perfil<input name="profile_photo" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        <label>Cédula frontal<input name="identity_front" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+        <label>Cédula reversa<input name="identity_back" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+        <label>Certificación<input name="certification_document" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+        <label>Licencia<input name="license_document" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+        <label>Documento de experiencia<input name="experience_document" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+      </div>
+    </fieldset>
+    <button class="btn primary">Guardar guía</button>
+  </form>
+</section>
+{% endblock %}

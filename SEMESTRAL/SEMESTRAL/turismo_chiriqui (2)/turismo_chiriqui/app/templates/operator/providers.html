@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading">
+      <span class="eyebrow">Cadena de proveedores</span>
+      <h1>Empresas, servicios y seguimiento</h1>
+      <p>Supervisa solicitudes, servicios propuestos y participación de proveedores por reserva.</p>
+    </div>
+    <a class="btn ghost" href="{{url_for('operator.dashboard')}}">Volver</a>
+  </div>
+
+  <div class="metrics">
+    <div class="card"><small>Empresas</small><strong>{{providers|length}}</strong></div>
+    <div class="card"><small>Servicios propuestos</small><strong>{{services|length}}</strong></div>
+    <div class="card"><small>Seguimientos</small><strong>{{tracking|length}}</strong></div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Solicitudes de empresas</h2>
+    <div class="cards">
+      {% for p in providers %}
+      <article class="card provider-card">
+        <span class="tag">{{p.status}}</span>
+        <h3>{{p.name}}</h3>
+        <p>{{p.service_type}} · {{p.legal_representative}}<br>{{p.email}} · {{p.phone}}</p>
+        <p>{{p.description}}</p>
+        <small>{{p.operator_status or 'Pendiente de revisión operativa'}}</small>
+        <form method="post" action="{{url_for('operator.provider_review',item_id=p.id,action='reviewed')}}" class="form compact">
+          <input name="comment" placeholder="Observación del operario">
+          <button class="btn ghost">Documentación revisada</button>
+        </form>
+        <form method="post" action="{{url_for('operator.provider_review',item_id=p.id,action='recommend')}}" class="inline">
+          <input name="comment" placeholder="Recomendación">
+          <button class="btn primary">Recomendar aprobación</button>
+        </form>
+      </article>
+      {% else %}<article class="card">No hay empresas registradas.</article>{% endfor %}
+    </div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Servicios propuestos</h2>
+    <div class="table"><table>
+      <thead><tr><th>Empresa</th><th>Servicio</th><th>Tipo</th><th>Precio</th><th>Zona</th><th>Estado</th></tr></thead>
+      <tbody>{% for s in services %}<tr><td>{{s.provider_name}}</td><td>{{s.name}}</td><td>{{s.type}}</td><td>${{s.price}}</td><td>{{s.coverage_zone}}</td><td><span class="status-pill">{{s.status}}</span></td></tr>{% else %}<tr><td colspan="6">Sin servicios propuestos.</td></tr>{% endfor %}</tbody>
+    </table></div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Seguimiento por reserva</h2>
+    <div class="cards">
+      {% for row in tracking %}
+      <article class="card">
+        <span class="tag">{{row.status}}</span>
+        <h3>#{{row.reservation_id}} · {{row.service}}</h3>
+        <p><b>Cliente:</b> {{row.client}}<br><b>Tour:</b> {{row.tour}}<br><b>Empresa:</b> {{row.provider_name}}<br><b>Contacto:</b> {{row.contact or 'Por confirmar'}}</p>
+        <form method="post" action="{{url_for('operator.provider_tracking_status',item_id=row.id)}}" class="form compact">
+          <div class="form-grid">
+            <label>Hora requerida<input name="required_time" value="{{row.required_time}}"></label>
+            <label>Estado<select name="status"><option>pendiente</option><option>confirmado</option><option>en proceso</option><option>completado</option><option>incidencia</option></select></label>
+          </div>
+          <input name="observations" value="{{row.observations}}" placeholder="Observaciones">
+          <button class="btn primary">Actualizar proveedor</button>
+        </form>
+      </article>
+      {% else %}<article class="card">Aún no hay proveedores conectados a reservas.</article>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

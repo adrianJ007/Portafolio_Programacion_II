@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generador de Comprobantes, Cédulas y Certificados</title>
+    <style>
+        :root {
+            --bg1: #0a1021;
+            --bg2: #13203f;
+            --panel: rgba(255, 255, 255, .10);
+            --line: rgba(255, 255, 255, .16);
+            --text: #f4f8ff;
+            --muted: rgba(244, 248, 255, .72);
+            --paper: #f7f9fc;
+            --ink: #162235;
+            --soft: #e8eef6;
+            --blue: #1d80f4;
+            --blue2: #29b8ff;
+            --green: #2acb73;
+            --green2: #6adca6;
+            --dark: #0e1630;
+            --shadow: 0 24px 60px rgba(0, 0, 0, .28);
+            --radius: 24px;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Inter, Segoe UI, Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 15% 20%, rgba(41, 184, 255, .18), transparent 25%),
+                radial-gradient(circle at 85% 15%, rgba(42, 203, 115, .15), transparent 22%),
+                linear-gradient(135deg, var(--bg1), var(--bg2) 55%, #0d1832);
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .app {
+            width: min(1320px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+        }
+        .hero {
+            grid-column: 1/-1;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, .08));
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 26px;
+        }
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: clamp(28px, 3vw, 42px);
+            letter-spacing: -1px;
+        }
+        .hero p {
+            margin: 0;
+            max-width: 920px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+        .panel {
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .07));
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+        }
+        .form-panel {
+            padding: 22px;
+            position: sticky;
+            top: 18px;
+            align-self: start;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        .preview-panel {
+            padding: 22px;
+            min-height: 700px;
+        }
+        h2 {
+            margin: 0 0 16px;
+            font-size: 18px;
+            letter-spacing: -.2px;
+        }
+        .field {
+            margin-bottom: 14px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .full {
+            grid-column: 1/-1;
+        }
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, .86);
+        }
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, .15);
+            background: rgba(255, 255, 255, .08);
+            color: var(--text);
+            border-radius: 14px;
+            padding: 13px 14px;
+            outline: none;
+            transition: .2s ease;
+            font-size: 14px;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(41, 184, 255, .7);
+            box-shadow: 0 0 0 4px rgba(41, 184, 255, .14);
+            background: rgba(255, 255, 255, .12);
+        }
+        select option {
+            color: #fff;
+            background: #101936;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        input[type="file"] {
+            padding: 8px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px dashed rgba(255, 255, 255, .25);
+            cursor: pointer;
+        }
+        .btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        button {
+            border: 0;
+            border-radius: 16px;
+            cursor: pointer;
+            padding: 14px 16px;
+            font-weight: 900;
+            font-size: 14px;
+            color: #081224;
+            background: linear-gradient(135deg, #ffffff, #cde9ff);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, .18);
+            transition: .18s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button.secondary {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .08));
+            border: 1px solid rgba(255, 255, 255, .14);
+        }
+        .note {
+            margin-top: 15px;
+            border: 1px solid rgba(255, 193, 90, .26);
+            background: rgba(255, 193, 90, .10);
+            color: #ffe0a4;
+            border-radius: 16px;
+            padding: 13px 14px;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .preview-wrap {
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: auto;
+            background:
+                linear-gradient(45deg, rgba(255, 255, 255, .05) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255, 255, 255, .05) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, .05) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, .05) 75%);
+            background-size: 24px 24px;
+            background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+        }
+        .canvas {
+            width: 820px;
+            background: #fff;
+            color: #162235;
+            border-radius: 28px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .28);
+            overflow: hidden;
+            position: relative;
+        }
+        .canvas::after {
+            content: "PROTOTIPO ACADÉMICO";
+            position: absolute;
+            right: 18px;
+            top: 18px;
+            z-index: 20;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            color: rgba(255, 255, 255, .92);
+            background: rgba(8, 16, 34, .24);
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            backdrop-filter: blur(12px);
+            pointer-events: none;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            background: #fff;
+            color: #071223;
+            padding: 14px 16px;
+            border-radius: 15px;
+            font-weight: 900;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+            opacity: 0;
+            transform: translateY(18px);
+            transition: .22s ease;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (max-width:1020px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+            .form-panel {
+                position: static;
+                max-height: none;
+            }
+            .canvas {
+                transform: scale(.8);
+                transform-origin: top center;
+            }
+        }
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .hero,
+            .form-panel,
+            .preview-panel h2,
+            .btns,
+            .note {
+                display: none !important;
+            }
+            .app {
+                display: block;
+                width: 100%;
+                margin: 0;
+            }
+            .preview-panel,
+            .preview-wrap {
+                padding: 0;
+                background: #fff;
+                border: 0;
+                box-shadow: none;
+            }
+            .canvas {
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                transform: none !important;
+            }
+            .canvas::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app">
+        <section class="hero">
+            <h1>Generador de Documentos – Demo Académica</h1>
+            <p>
+                Comprobantes de pago (Yappy, ACH, tarjetas, consentimiento) y documentos de identidad
+                (cédula panameña y certificado de turista). Todos los datos son simulados con fines educativos.
+            </p>
+        </section>
+
+        <section class="panel form-panel">
+            <h2>Configuración</h2>
+
+            <div class="field">
+                <label for="tipo">Tipo de documento</label>
+                <select id="tipo">
+                    <option value="yappy">Comprobante Yappy</option>
+                    <option value="ach">Comprobante ACH</option>
+                    <option value="visa">Tarjeta Visa</option>
+                    <option value="mastercard">Tarjeta Mastercard</option>
+                    <option value="consentimiento">Consentimiento firmado</option>
+                    <option value="cedula">Cédula panameña</option>
+                    <option value="certificado">Certificado de turista</option>
+                </select>
+            </div>
+
+            <div class="grid">
+                <!-- Campos comunes -->
+                <div class="field">
+                    <label for="nombre">Nombre(s)</label>
+                    <input id="nombre" value="María Elena" />
+                </div>
+                <div class="field">
+                    <label for="apellido">Apellido(s)</label>
+                    <input id="apellido" value="González de la Cruz" />
+                </div>
+                <div class="field full">
+                    <label for="lugar">Lugar de emisión</label>
+                    <input id="lugar" value="Ciudad de Panamá" />
+                </div>
+                <div class="field full">
+                    <label for="fechaEmision">Fecha de emisión</label>
+                    <input id="fechaEmision" type="datetime-local" />
+                </div>
+
+                <!-- Campos para comprobantes -->
+                <div class="field comprobante-field">
+                    <label for="remitenteYappy">Remitente (Yappy)</label>
+                    <input id="remitenteYappy" value="Alguien" />
+                </div>
+                <div class="field comprobante-field">
+                    <label for="monto">Monto</label>
+                    <input id="monto" type="number" min="0" step="0.01" value="100.00" />
+                </div>
+                <div class="field comprobante-field">
+                    <label for="moneda">Moneda</label>
+                    <select id="moneda">
+                        <option>USD</option>
+                        <option>PAB</option>
+                    </select>
+                </div>
+                <div class="field comprobante-field">
+                    <label for="estado">Estado</label>
+                    <select id="estado">
+                        <option>Aprobado</option>
+                        <option>Confirmado</option>
+                        <option>Procesado</option>
+                    </select>
+                </div>
+                <div class="field comprobante-field">
+                    <label for="concepto">Concepto</label>
+                    <input id="concepto" value="Pago de reserva turística" />
+                </div>
+                <div class="field comprobante-field">
+                    <label for="banco">Banco / entidad</label>
+                    <input id="banco" value="Caja de Ahorros" />
+                </div>
+                <div class="field full comprobante-field">
+                    <label for="consentText">Texto del consentimiento</label>
+                    <textarea id="consentText">Yo, la persona antes identificada, autorizo voluntariamente el uso de mis datos personales para la gestión de reservas, la confirmación de servicios, el envío de comunicaciones relacionadas con la atención recibida y el registro interno del sistema. Declaro que la información proporcionada es correcta y acepto las condiciones operativas aplicables al servicio solicitado.</textarea>
+                </div>
+
+                <!-- Campos para cédula -->
+                <div class="field cedula-field hidden">
+                    <label for="cedulaNum">Número de cédula</label>
+                    <input id="cedulaNum" value="8-123-456" />
+                </div>
+                <div class="field cedula-field hidden">
+                    <label for="fechaNac">Fecha de nacimiento</label>
+                    <input id="fechaNac" type="date" value="1998-05-15" />
+                </div>
+                <div class="field cedula-field hidden">
+                    <label for="lugarNac">Lugar de nacimiento</label>
+                    <input id="lugarNac" value="Panamá, Panamá" />
+                </div>
+                <div class="field cedula-field hidden">
+                    <label for="fechaExp">Fecha de expedición</label>
+                    <input id="fechaExp" type="date" value="2022-10-01" />
+                </div>
+                <div class="field full cedula-field hidden">
+                    <label for="fotoCedula">Foto (cédula)</label>
+                    <input type="file" id="fotoCedula" accept="image/*" />
+                </div>
+
+                <!-- Campos para certificado -->
+                <div class="field certificado-field hidden">
+                    <label for="nacionalidad">Nacionalidad</label>
+                    <input id="nacionalidad" value="Panameña" />
+                </div>
+                <div class="field certificado-field hidden">
+                    <label for="pasaporte">Número de pasaporte</label>
+                    <input id="pasaporte" value="PA1234567" />
+                </div>
+                <div class="field certificado-field hidden">
+                    <label for="fechaIngreso">Fecha de ingreso</label>
+                    <input id="fechaIngreso" type="date" value="2026-07-01" />
+                </div>
+                <div class="field certificado-field hidden">
+                    <label for="motivo">Motivo de viaje</label>
+                    <input id="motivo" value="Turismo" />
+                </div>
+            </div>
+
+            <div class="btns">
+                <button onclick="shuffleData()">Generar datos</button>
+                <button class="secondary" onclick="downloadPNG()">Descargar PNG</button>
+                <button onclick="downloadPDF()">Descargar PDF</button>
+                <button class="secondary" onclick="window.print()">Imprimir / PDF</button>
+            </div>
+
+            <div class="note">
+                Prototipo académico – todos los documentos son simulados. La foto de cédula se puede cargar desde su equipo.
+            </div>
+        </section>
+
+        <section class="panel preview-panel">
+            <h2>Vista previa</h2>
+            <div class="preview-wrap">
+                <div class="canvas" id="doc"></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast">Listo</div>
+
+    <script>
+        // ----- Elementos DOM -----
+        const el = {
+            tipo: document.getElementById("tipo"),
+            nombre: document.getElementById("nombre"),
+            apellido: document.getElementById("apellido"),
+            lugar: document.getElementById("lugar"),
+            fechaEmision: document.getElementById("fechaEmision"),
+            remitenteYappy: document.getElementById("remitenteYappy"),
+            monto: document.getElementById("monto"),
+            moneda: document.getElementById("moneda"),
+            estado: document.getElementById("estado"),
+            concepto: document.getElementById("concepto"),
+            banco: document.getElementById("banco"),
+            consentText: document.getElementById("consentText"),
+            cedulaNum: document.getElementById("cedulaNum"),
+            fechaNac: document.getElementById("fechaNac"),
+            lugarNac: document.getElementById("lugarNac"),
+            fechaExp: document.getElementById("fechaExp"),
+            fotoCedula: document.getElementById("fotoCedula"),
+            nacionalidad: document.getElementById("nacionalidad"),
+            pasaporte: document.getElementById("pasaporte"),
+            fechaIngreso: document.getElementById("fechaIngreso"),
+            motivo: document.getElementById("motivo"),
+            doc: document.getElementById("doc")
+        };
+
+        let fotoCedulaDataURL = null;
+
+        // ----- Utilidades -----
+        function pad(n) { return String(n).padStart(2, "0"); }
+
+        function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function money(v) {
+            return Number(v || 0).toLocaleString("es-PA", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function prettyDate(v) {
+            const d = new Date(v);
+            return d.toLocaleDateString("es-PA", { year: "numeric", month: "long", day: "numeric" }) + " · " +
+                d.toLocaleTimeString("es-PA", { hour: "numeric", minute: "2-digit" });
+        }
+
+        function safe(str) {
+            return String(str || "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function slug(str) {
+            return String(str || "archivo")
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]+/g, "-")
+                .replace(/^-+|-+$/g, "")
+                .toLowerCase();
+        }
+
+        function fileName(ext) {
+            const t = el.tipo.value;
+            return `${t}-${slug(el.nombre.value + "-" + el.apellido.value)}-${new Date().getFullYear()}${pad(new Date().getMonth()+1)}${pad(new Date().getDate())}.${ext}`;
+        }
+
+        function setNow() {
+            const d = new Date();
+            el.fechaEmision.value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        }
+
+        function getNombreCompleto() {
+            return (el.nombre.value + " " + el.apellido.value).trim();
+        }
+
+        // ----- Mostrar/ocultar campos según tipo -----
+        function toggleFields() {
+            const type = el.tipo.value;
+            const isComprobante = ["yappy", "ach", "visa", "mastercard", "consentimiento"].includes(type);
+            const isCedula = type === "cedula";
+            const isCertificado = type === "certificado";
+            const isYappy = type === "yappy";
+            const isConsent = type === "consentimiento";
+
+            document.querySelectorAll(".comprobante-field").forEach(n => n.classList.toggle("hidden", !isComprobante));
+            document.querySelectorAll(".cedula-field").forEach(n => n.classList.toggle("hidden", !isCedula));
+            document.querySelectorAll(".certificado-field").forEach(n => n.classList.toggle("hidden", !isCertificado));
+
+            // Ocultar remitenteYappy si no es Yappy
+            document.querySelector(".field label[for='remitenteYappy']")?.parentElement?.classList.toggle("hidden", !isYappy);
+            // Ocultar consentText si no es consentimiento
+            document.querySelector(".field label[for='consentText']")?.parentElement?.classList.toggle("hidden", !isConsent);
+        }
+
+        // ----- Generar datos aleatorios -----
+        function shuffleData() {
+            const nombres = ["María Elena", "Carlos José", "Ana Lucía", "Luis Alberto", "Marta Isabel", "Jorge Enrique", "Sofía del Carmen"];
+            const apellidos = ["González de la Cruz", "Pérez Rodríguez", "Martínez Gómez", "Sánchez Herrera", "Ramírez Morales", "Torres Vásquez"];
+            const cedulas = ["8-123-456", "7-987-654", "9-345-678", "4-234-567", "6-876-543", "3-456-789"];
+            const lugares = ["Ciudad de Panamá", "David, Chiriquí", "Colón", "Santiago", "Bocas del Toro"];
+            const nacs = ["Panameña", "Colombiana", "Costarricense", "Mexicana", "Estadounidense"];
+            const pasaportes = ["PA" + randomInt(1000000, 9999999), "CR" + randomInt(1000000, 9999999), "US" + randomInt(1000000, 9999999)];
+            const motivos = ["Turismo", "Negocios", "Estudio", "Visita familiar", "Conferencia"];
+            const concepts = ["Pago de reserva turística", "Abono de servicio", "Confirmación de pago", "Pago de paquete turístico", "Transferencia de prueba"];
+            const banks = ["Caja de Ahorros", "Banco Nacional", "Banco General", "Entidad bancaria"];
+
+            el.nombre.value = nombres[randomInt(0, nombres.length - 1)];
+            el.apellido.value = apellidos[randomInt(0, apellidos.length - 1)];
+            el.lugar.value = lugares[randomInt(0, lugares.length - 1)];
+            el.cedulaNum.value = cedulas[randomInt(0, cedulas.length - 1)];
+
+            const dNac = new Date(1980 + randomInt(0, 25), randomInt(0, 11), randomInt(1, 28));
+            el.fechaNac.value = dNac.toISOString().slice(0, 10);
+            const dExp = new Date(2020 + randomInt(0, 4), randomInt(0, 11), randomInt(1, 28));
+            el.fechaExp.value = dExp.toISOString().slice(0, 10);
+            el.lugarNac.value = lugares[randomInt(0, lugares.length - 1)];
+
+            el.nacionalidad.value = nacs[randomInt(0, nacs.length - 1)];
+            el.pasaporte.value = pasaportes[randomInt(0, pasaportes.length - 1)];
+            const dIng = new Date(2025, randomInt(0, 11), randomInt(1, 28));
+            el.fechaIngreso.value = dIng.toISOString().slice(0, 10);
+            el.motivo.value = motivos[randomInt(0, motivos.length - 1)];
+
+            el.monto.value = (randomInt(10, 350) + Math.random()).toFixed(2);
+            el.banco.value = banks[randomInt(0, banks.length - 1)];
+            el.concepto.value = concepts[randomInt(0, concepts.length - 1)];
+            el.remitenteYappy.value = "Alguien";
+
+            setNow();
+            render();
+            toast("Datos actualizados");
+        }
+
+        // ----- Renderizado principal -----
+        function render() {
+            toggleFields();
+            const type = el.tipo.value;
+            let canvas;
+            switch (type) {
+                case "yappy":
+                    canvas = drawYappyCanvas();
+                    break;
+                case "ach":
+                    canvas = drawACHCanvas();
+                    break;
+                case "visa":
+                case "mastercard":
+                    canvas = drawCardCanvas(type);
+                    break;
+                case "consentimiento":
+                    canvas = drawConsentCanvas();
+                    break;
+                case "cedula":
+                    canvas = drawCedulaCanvas();
+                    break;
+                case "certificado":
+                    canvas = drawCertificadoCanvas();
+                    break;
+                default:
+                    canvas = drawYappyCanvas();
+            }
+            const img = canvas.toDataURL("image/png");
+            el.doc.innerHTML = `<img src="${img}" style="width:100%;display:block;" alt="Documento generado"/>`;
+        }
+
+        // ----- Funciones de dibujo (canvas) -----
+
+        // --- Funciones auxiliares ---
+        function makeCanvas(w, h) {
+            const canvas = document.createElement("canvas");
+            const scale = 2;
+            canvas.width = w * scale;
+            canvas.height = h * scale;
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
+            const ctx = canvas.getContext("2d");
+            ctx.scale(scale, scale);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+            return { canvas, ctx, w, h };
+        }
+
+        function drawRoundRect(ctx, x, y, w, h, r) {
+            const rr = Math.min(r, w / 2, h / 2);
+            ctx.beginPath();
+            ctx.moveTo(x + rr, y);
+            ctx.arcTo(x + w, y, x + w, y + h, rr);
+            ctx.arcTo(x + w, y + h, x, y + h, rr);
+            ctx.arcTo(x, y + h, x, y, rr);
+            ctx.arcTo(x, y, x + w, y, rr);
+            ctx.closePath();
+        }
+
+        function fillRoundRect(ctx, x, y, w, h, r, fill) {
+            drawRoundRect(ctx, x, y, w, h, r);
+            ctx.fillStyle = fill;
+            ctx.fill();
+        }
+
+        function strokeRoundRect(ctx, x, y, w, h, r, stroke, lineWidth) {
+            drawRoundRect(ctx, x, y, w, h, r);
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = lineWidth || 1;
+            ctx.stroke();
+        }
+
+        function drawText(ctx, text, x, y, size, color, weight, align) {
+            ctx.font = `${weight || "700"} ${size}px Arial, sans-serif`;
+            ctx.fillStyle = color || "#162235";
+            ctx.textAlign = align || "left";
+            ctx.textBaseline = "top";
+            ctx.fillText(String(text || ""), x, y);
+        }
+
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight, size, color, weight) {
+            ctx.font = `${weight || "500"} ${size || 16}px Arial, sans-serif`;
+            ctx.fillStyle = color || "#162235";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+            const words = String(text || "").split(/\s+/);
+            let line = "";
+            let yy = y;
+            for (const word of words) {
+                const test = line ? line + " " + word : word;
+                if (ctx.measureText(test).width > maxWidth && line) {
+                    ctx.fillText(line, x, yy);
+                    line = word;
+                    yy += lineHeight;
+                } else {
+                    line = test;
+                }
+            }
+            if (line) ctx.fillText(line, x, yy);
+            return yy + lineHeight;
+        }
+
+        function drawDemoTag(ctx, w) {
+            ctx.save();
+            fillRoundRect(ctx, w - 200, 18, 178, 28, 14, "rgba(12,24,44,.30)");
+            drawText(ctx, "PROTOTIPO ACADÉMICO", w - 111, 25, 10, "#ffffff", "900", "center");
+            ctx.restore();
+        }
+
+        function yappyRef() {
+            return `#${["ANM","YPZ","QRT","MXW","RNV"][randomInt(0,4)]}${["RW","TR","PK","WL","CN"][randomInt(0,4)]}-${randomInt(1000000,9999999)}`;
+        }
+
+        function achRef() {
+            return `${randomInt(1000000000,9999999999)}`;
+        }
+
+        function maskedAccount() {
+            return `${randomInt(40,59)}*****${randomInt(1000,9999)}`;
+        }
+
+        function accountCode() {
+            return `${randomInt(1000000,9999999)}`;
+        }
+
+        function cardNumber() {
+            return `${randomInt(4000,4999)} ${randomInt(1000,9999)} ${randomInt(1000,9999)} ${randomInt(1000,9999)}`;
+        }
+
+        function cardDate() {
+            return `${pad(randomInt(1,12))}/${String(randomInt(27,32)).padStart(2,"0")}`;
+        }
+
+        // --- Dibujar Yappy ---
+        function drawYappyCanvas() {
+            const { canvas, ctx, w, h } = makeCanvas(820, 960);
+            ctx.fillStyle = "#f5f7fb";
+            ctx.fillRect(0, 0, w, h);
+
+            drawText(ctx, `Un comprobante demo de`, w / 2, 55, 30, "#115aa8", "900", "center");
+            drawText(ctx, `que te pasaron ${money(el.monto.value)} dólares`, w / 2, 94, 30, "#115aa8", "900", "center");
+
+            const wave = ctx.createLinearGradient(0, 350, 0, 940);
+            wave.addColorStop(0, "#34b4ff");
+            wave.addColorStop(1, "#1d8ff6");
+            ctx.fillStyle = wave;
+            ctx.beginPath();
+            ctx.moveTo(0, 350);
+            ctx.bezierCurveTo(120, 400, 170, 440, 210, 530);
+            ctx.lineTo(210, h);
+            ctx.lineTo(0, h);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(w, 350);
+            ctx.bezierCurveTo(700, 400, 650, 440, 610, 530);
+            ctx.lineTo(610, h);
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fill();
+
+            drawText(ctx, "✦", 64, 377, 33, "#fff", "900");
+            drawText(ctx, "•", 88, 452, 28, "#fff", "900");
+            drawText(ctx, "•", 116, 492, 18, "#fff", "900");
+            drawText(ctx, "✦", 710, 460, 33, "#fff", "900");
+            drawText(ctx, "•", 744, 527, 28, "#fff", "900");
+            drawText(ctx, "•", 704, 562, 18, "#fff", "900");
+
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,.28)";
+            ctx.shadowBlur = 30;
+            ctx.shadowOffsetY = 18;
+            fillRoundRect(ctx, 220, 178, 380, 700, 42, "#111111");
+            ctx.restore();
+
+            fillRoundRect(ctx, 230, 188, 360, 680, 34, "#28a8ea");
+            fillRoundRect(ctx, 345, 190, 130, 25, 0, "#1c1c1c");
+
+            drawText(ctx, "●", 260, 226, 22, "#7ae6ff", "900");
+            drawText(ctx, "●", 278, 226, 22, "#d6f2ff", "900");
+            drawText(ctx, "yappy", 306, 230, 20, "#ffffff", "900");
+
+            drawText(ctx, `${el.remitenteYappy.value || "Alguien"} te envió`, 258, 292, 26, "#ffffff", "800");
+            drawText(ctx, "$" + money(el.monto.value), 258, 330, 56, "#ffffff", "1000");
+            fillRoundRect(ctx, 498, 340, 28, 28, 14, "#20ba6f");
+            drawText(ctx, "✓", 512, 345, 18, "#ffffff", "900", "center");
+
+            ctx.save();
+            ctx.shadowColor = "rgba(4,27,48,.12)";
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 10;
+            fillRoundRect(ctx, 248, 426, 324, 365, 18, "#ffffff");
+            ctx.restore();
+
+            const rows = [
+                ["Enviado a", getNombreCompleto(), "👤"],
+                ["Fecha", prettyDate(el.fechaEmision.value), "🗓"],
+                ["Mensaje", el.concepto.value, "💬"],
+                ["Confirmación", yappyRef(), "▦"]
+            ];
+            let y = 445;
+            for (const row of rows) {
+                drawText(ctx, row[0], 270, y, 12, "#96a3b7", "900");
+                if (row[0] === "Enviado a") {
+                    fillRoundRect(ctx, 270, y + 24, 40, 40, 12, "#e8eef6");
+                    drawText(ctx, row[2], 290, y + 34, 18, "#6d7890", "900", "center");
+                    wrapText(ctx, row[1], 324, y + 31, 230, 22, 17, "#162235", "850");
+                } else {
+                    wrapText(ctx, row[1], 270, y + 25, 230, 22, 17, "#162235", "850");
+                    drawText(ctx, row[2], 535, y + 28, 17, "#68758a", "700", "center");
+                }
+                ctx.strokeStyle = "#edf1f6";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(270, y + 80);
+                ctx.lineTo(552, y + 80);
+                ctx.stroke();
+                y += 86;
+            }
+
+            drawDemoTag(ctx, w);
+            return canvas;
+        }
+
+        // --- Dibujar ACH ---
+        function drawACHCanvas() {
+            const { canvas, ctx, w, h } = makeCanvas(820, 980);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = "#0d3b7f";
+            ctx.fillRect(0, 0, w, 58);
+            fillRoundRect(ctx, 18, 14, 32, 32, 16, "#ffffff");
+            drawText(ctx, "ca", 34, 20, 17, "#0d3b7f", "1000", "center");
+            drawText(ctx, el.banco.value, 62, 18, 24, "#ffffff", "900");
+            drawText(ctx, "RESULTADO", w - 24, 20, 15, "#ffffff", "850", "right");
+
+            drawText(ctx, "Tu transferencia demo se realizó", w / 2, 78, 20, "#1f7b3f", "800", "center");
+            drawText(ctx, "correctamente", w / 2, 105, 20, "#1f7b3f", "800", "center");
+
+            strokeRoundRect(ctx, 350, 150, 120, 120, 60, "#46b86d", 4);
+            drawText(ctx, "✓", 410, 173, 70, "#46b86d", "500", "center");
+
+            const left = 70,
+                max = 680;
+            let y = 310;
+            drawText(ctx, "A Terceros", left, y, 32, "#162235", "500");
+            y += 64;
+
+            function sec(title, main, sub1, sub2) {
+                drawText(ctx, title, left, y, 15, "#162235", "900");
+                y += 32;
+                drawText(ctx, main, left, y, 26, "#162235", "800");
+                y += 35;
+                if (sub1) { drawText(ctx, sub1, left, y, 15, "#8190a4", "700");
+                    y += 25; }
+                if (sub2) { drawText(ctx, sub2, left, y, 15, "#8190a4", "700");
+                    y += 25; }
+                ctx.strokeStyle = "#e7edf4";
+                ctx.beginPath();
+                ctx.moveTo(left, y + 4);
+                ctx.lineTo(left + max, y + 4);
+                ctx.stroke();
+                y += 32;
+            }
+
+            sec("Desde", "CUENTA DE AHORROS", maskedAccount(), "");
+            sec("Hacia", getNombreCompleto(), accountCode(), String(el.banco.value).toUpperCase());
+            sec("Descripción", "B/. " + money(el.monto.value), el.concepto.value, "");
+            sec("Fecha", new Date(el.fechaEmision.value).toLocaleString("es-PA"), "", "");
+            sec("Confirmación", achRef(), "", "");
+
+            drawText(ctx, "⤴ Compartir", left, h - 62, 19, "#5f7086", "900");
+            drawText(ctx, "← Volver", w - 70, h - 62, 19, "#5f7086", "900", "right");
+            drawDemoTag(ctx, w);
+            return canvas;
+        }
+
+        // --- Dibujar Tarjeta ---
+        function drawCardCanvas(kind) {
+            const { canvas, ctx, w, h } = makeCanvas(820, 900);
+            ctx.fillStyle = "#f3f5f8";
+            ctx.fillRect(0, 0, w, h);
+
+            const cardX = 70,
+                cardY = 115,
+                cardW = 680,
+                cardH = 400;
+            const grad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
+            if (kind === "visa") {
+                grad.addColorStop(0, "#0a51ae");
+                grad.addColorStop(.50, "#0f6fcc");
+                grad.addColorStop(1, "#128de4");
+            } else {
+                grad.addColorStop(0, "#0a2d69");
+                grad.addColorStop(.35, "#1356b8");
+                grad.addColorStop(.75, "#1f7de0");
+                grad.addColorStop(1, "#32b1ff");
+            }
+
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,.20)";
+            ctx.shadowBlur = 30;
+            ctx.shadowOffsetY = 20;
+            fillRoundRect(ctx, cardX, cardY, cardW, cardH, 28, grad);
+            ctx.restore();
+
+            ctx.save();
+            drawRoundRect(ctx, cardX, cardY, cardW, cardH, 28);
+            ctx.clip();
+            ctx.fillStyle = "rgba(255,255,255,.08)";
+            ctx.fillRect(cardX + 260, cardY, 210, cardH);
+            ctx.fillStyle = "rgba(255,255,255,.05)";
+            ctx.fillRect(cardX + 330, cardY + 40, 270, 90);
+            ctx.restore();
+
+            drawText(ctx, kind === "visa" ? "Visa Empresarial" : "Tarjeta Empresarial", cardX + 42, cardY + 38, 36, "#ffffff",
+                "500");
+
+            const chipX = cardX + 44,
+                chipY = cardY + 118;
+            fillRoundRect(ctx, chipX, chipY, 88, 68, 14, "#d7d2c7");
+            ctx.strokeStyle = "rgba(74,72,68,.35)";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(chipX + 28, chipY + 6);
+            ctx.lineTo(chipX + 28, chipY + 62);
+            ctx.moveTo(chipX + 58, chipY + 6);
+            ctx.lineTo(chipX + 58, chipY + 62);
+            ctx.moveTo(chipX + 12, chipY + 31);
+            ctx.lineTo(chipX + 76, chipY + 31);
+            ctx.stroke();
+
+            const num = cardNumber();
+            drawText(ctx, num, cardX + 46, cardY + 196, 41, "#ffffff", "400");
+            drawText(ctx, num.slice(0, 4), cardX + 46, cardY + 250, 18, "#ffffff", "700");
+            drawText(ctx, "VÁLIDO\nHASTA", cardX + 260, cardY + 255, 13, "#ffffff", "900");
+            drawText(ctx, cardDate(), cardX + 354, cardY + 247, 42, "#ffffff", "400");
+
+            const holder = getNombreCompleto().toUpperCase();
+            drawText(ctx, holder, cardX + 44, cardY + 320, 19, "#ffffff", "700");
+            drawText(ctx, "NOMBRE DE EMPRESA", cardX + 44, cardY + 348, 19, "#ffffff", "700");
+
+            if (kind === "visa") {
+                drawText(ctx, "VISA", cardX + cardW - 34, cardY + cardH - 82, 64, "#ffffff", "1000", "right");
+            } else {
+                fillRoundRect(ctx, cardX + cardW - 150, cardY + cardH - 110, 86, 86, 43, "#ea4335");
+                fillRoundRect(ctx, cardX + cardW - 86, cardY + cardH - 110, 86, 86, 43, "#fbbc04");
+                drawText(ctx, "mastercard", cardX + cardW - 32, cardY + cardH - 34, 21, "#ffffff", "900", "right");
+            }
+
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,.12)";
+            ctx.shadowBlur = 24;
+            ctx.shadowOffsetY = 14;
+            fillRoundRect(ctx, 70, 560, 680, 240, 24, "#ffffff");
+            ctx.restore();
+
+            drawText(ctx, "Detalle del prototipo", 96, 588, 20, "#243347", "900");
+
+            const boxes = [
+                ["Titular", getNombreCompleto()],
+                ["Lugar", el.lugar.value],
+                ["Monto asociado", `${el.moneda.value} ${money(el.monto.value)}`],
+                ["Fecha", prettyDate(el.fechaEmision.value)]
+            ];
+            let bx = 96,
+                by = 630;
+            for (let i = 0; i < boxes.length; i++) {
+                const x = bx + (i % 2) * 330;
+                const y = by + Math.floor(i / 2) * 82;
+                fillRoundRect(ctx, x, y, 305, 62, 16, "#f7fafc");
+                strokeRoundRect(ctx, x, y, 305, 62, 16, "#e7edf4", 1);
+                drawText(ctx, boxes[i][0].toUpperCase(), x + 16, y + 12, 11, "#7a879a", "900");
+                drawText(ctx, boxes[i][1], x + 16, y + 32, 16, "#243347", "900");
+            }
+
+            drawDemoTag(ctx, w);
+            return canvas;
+        }
+
+        // --- Dibujar Consentimiento ---
+        function drawConsentCanvas() {
+            const { canvas, ctx, w, h } = makeCanvas(820, 1040);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+
+            const grad = ctx.createLinearGradient(0, 0, w, 160);
+            grad.addColorStop(0, "#162235");
+            grad.addColorStop(.60, "#394b68");
+            grad.addColorStop(1, "#6d8099");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, 160);
+
+            drawText(ctx, "Consentimiento informado y autorización", 48, 36, 34, "#ffffff", "900");
+            drawText(ctx, "Documento de prototipo para el sistema de gestión y reservas", 48, 88, 17, "rgba(255,255,255,.82)",
+                "700");
+
+            let y = 205;
+            y = wrapText(ctx,
+                `En ${el.lugar.value}, a la fecha ${prettyDate(el.fechaEmision.value)}, yo, ${getNombreCompleto()}, manifiesto de forma libre, voluntaria e informada que autorizo el tratamiento de los datos personales suministrados durante el proceso de atención, reserva, confirmación y seguimiento del servicio solicitado.`,
+                48, y, 724, 30, 17, "#243347", "500") + 8;
+
+            y = wrapText(ctx,
+                "Entiendo que la información proporcionada podrá ser utilizada para fines administrativos, operativos, de contacto, control interno, validación de pagos, coordinación logística y mejora de la atención al cliente, siempre dentro del alcance propio del servicio requerido.",
+                48, y, 724, 30, 17, "#243347", "500") + 22;
+
+            const boxes = [
+                "Autorizo el registro y resguardo de mis datos en el sistema interno de la empresa.",
+                "Autorizo el uso de mis datos para comunicaciones relacionadas con reservas, pagos y asistencia al cliente.",
+                "Declaro que la información suministrada es correcta y fue proporcionada por mí de manera voluntaria."
+            ];
+            for (const b of boxes) {
+                fillRoundRect(ctx, 48, y, 724, 62, 18, "#f7fafc");
+                strokeRoundRect(ctx, 48, y, 724, 62, 18, "#e5ebf3", 1);
+                wrapText(ctx, b, 66, y + 16, 690, 22, 15, "#243347", "800");
+                y += 78;
+            }
+
+            y += 8;
+            y = wrapText(ctx, el.consentText.value, 48, y, 724, 30, 17, "#243347", "500") + 40;
+
+            fillRoundRect(ctx, 48, y, 450, 150, 18, "#fbfdff");
+            strokeRoundRect(ctx, 48, y, 450, 150, 18, "#e5ebf3", 1);
+
+            ctx.strokeStyle = "#172033";
+            ctx.lineWidth = 5;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.beginPath();
+            ctx.moveTo(78, y + 78);
+            ctx.bezierCurveTo(112, y + 35, 135, y + 98, 160, y + 62);
+            ctx.bezierCurveTo(180, y + 38, 184, y + 86, 205, y + 70);
+            ctx.bezierCurveTo(226, y + 48, 236, y + 86, 258, y + 64);
+            ctx.bezierCurveTo(276, y + 46, 300, y + 88, 328, y + 58);
+            ctx.bezierCurveTo(350, y + 39, 372, y + 76, 438, y + 52);
+            ctx.stroke();
+
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(74, y + 108);
+            ctx.lineTo(470, y + 108);
+            ctx.stroke();
+            drawText(ctx, getNombreCompleto(), 66, y + 118, 14, "#1a2638", "900");
+            drawText(ctx, "Firma representada dentro del prototipo", 66, y + 138, 12, "#7e8c9f", "700");
+
+            strokeRoundRect(ctx, 590, y + 4, 150, 150, 75, "rgba(36,51,71,.18)", 4);
+            ctx.save();
+            ctx.translate(665, y + 79);
+            ctx.rotate(-10 * Math.PI / 180);
+            drawText(ctx, "PROTOTIPO", 0, -26, 13, "rgba(36,51,71,.42)", "1000", "center");
+            drawText(ctx, "ACADÉMICO", 0, -4, 13, "rgba(36,51,71,.42)", "1000", "center");
+            ctx.restore();
+
+            drawDemoTag(ctx, w);
+            return canvas;
+        }
+
+        // --- Dibujar Cédula ---
+        function drawCedulaCanvas() {
+            const { canvas, ctx, w, h } = makeCanvas(820, 560);
+            ctx.fillStyle = "#e8edf5";
+            ctx.fillRect(0, 0, w, h);
+
+            const margin = 24;
+            const x = margin,
+                y = margin,
+                cw = w - 2 * margin,
+                ch = h - 2 * margin;
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,.18)";
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetY = 8;
+            fillRoundRect(ctx, x, y, cw, ch, 16, "#ffffff");
+            ctx.restore();
+
+            ctx.fillStyle = "#0d3b7f";
+            ctx.fillRect(x, y, cw, 72);
+            drawText(ctx, "REPÚBLICA DE PANAMÁ", x + cw / 2, y + 20, 24, "#ffffff", "900", "center");
+            drawText(ctx, "CÉDULA DE IDENTIDAD PERSONAL", x + cw / 2, y + 48, 16, "#ffffff", "700", "center");
+
+            // Foto
+            const photoX = x + 40,
+                photoY = y + 100,
+                photoR = 80;
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,.12)";
+            ctx.shadowBlur = 12;
+            ctx.shadowOffsetY = 4;
+            ctx.beginPath();
+            ctx.arc(photoX + photoR, photoY + photoR, photoR, 0, 2 * Math.PI);
+            ctx.fillStyle = "#d0d9e5";
+            ctx.fill();
+            ctx.strokeStyle = "#0d3b7f";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.restore();
+
+            // Dibujar foto si existe
+            if (fotoCedulaDataURL) {
+                const img = new Image();
+                img.onload = function() {
+                    // Se dibuja en el canvas original, pero como ya estamos en el proceso de renderizado,
+                    // necesitamos dibujar la imagen en el canvas actual.
+                    // Para simplificar, dibujamos la imagen en el canvas dentro de esta función.
+                    // Pero como la función se ejecuta antes de que la imagen cargue, usamos un enfoque síncrono.
+                    // La imagen ya está cargada en el evento change, así que la dibujamos directamente.
+                    // Vamos a dibujar la imagen en el canvas actual (ctx)
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(photoX + photoR, photoY + photoR, photoR - 4, 0, 2 * Math.PI);
+                    ctx.clip();
+                    ctx.drawImage(img, photoX + 4, photoY + 4, 2 * (photoR - 4), 2 * (photoR - 4));
+                    ctx.restore();
+                };
+                img.src = fotoCedulaDataURL;
+                // Dibujar inmediatamente si ya está cargada
+                if (img.complete) {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(photoX + photoR, photoY + photoR, photoR - 4, 0, 2 * Math.PI);
+                    ctx.clip();
+                    ctx.drawImage(img, photoX + 4, photoY + 4, 2 * (photoR - 4), 2 * (photoR - 4));
+                    ctx.restore();
+                } else {
+                    // Si no está cargada, la cargamos y luego redibujamos
+                    img.onload = function() {
+                        render();
+                    };
+                }
+            } else {
+                drawText(ctx, "FOTO", photoX + photoR, photoY + photoR - 10, 20, "#6b7b92", "700", "center");
+            }
+
+            // Datos
+            let tx = photoX + 2 * photoR + 40;
+            let ty = y + 110;
+            const lineH = 38;
+
+            function dato(label, valor) {
+                drawText(ctx, label, tx, ty, 12, "#6f7d96", "700");
+                drawText(ctx, valor, tx, ty + 16, 18, "#162235", "800");
+                ty += lineH;
+            }
+            dato("NOMBRE:", getNombreCompleto());
+            dato("CÉDULA:", el.cedulaNum.value);
+            dato("FECHA DE NACIMIENTO:", prettyDate(el.fechaNac.value).split("·")[0].trim());
+            dato("LUGAR DE NACIMIENTO:", el.lugarNac.value);
+            dato("FECHA DE EXPEDICIÓN:", prettyDate(el.fechaExp.value).split("·")[0].trim());
+
+            const sigY = y + ch - 70;
+            ctx.strokeStyle = "#1a2638";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x + 60, sigY);
+            ctx.bezierCurveTo(x + 120, sigY - 18, x + 200, sigY + 10, x + 320, sigY - 6);
+            ctx.stroke();
+            drawText(ctx, "FIRMA DEL PORTADOR", x + 60, sigY + 12, 11, "#6f7d96", "700");
+
+            const barX = x + cw - 180,
+                barY = y + ch - 60,
+                barW = 160,
+                barH = 40;
+            ctx.fillStyle = "#222";
+            for (let i = 0; i < 60; i++) {
+                const ww = 2 + Math.random() * 4;
+                ctx.fillRect(barX + i * 2.8, barY, ww, barH);
+            }
+            drawText(ctx, el.cedulaNum.value, barX + barW / 2, barY + barH + 4, 14, "#222", "900", "center");
+
+            drawDemoTag(ctx, w);
+            return canvas;
+        }
+
+        // --- Dibujar Certificado ---
+        function drawCertificadoCanvas() {
+            const { canvas, ctx, w, h } = makeCanvas(820, 580);
+            ctx.fillStyle = "#fcf9f0";
+            ctx.fillRect(0, 0, w, h);
+
+            const m = 28;
+            ctx.save();
+            ctx.shadowColor = "rgba(0,0,0,.08)";
+            ctx.shadowBlur = 16;
+            ctx.shadowOffsetY = 6;
+            fillRoundRect(ctx, m, m, w - 2 * m, h - 2 * m, 20, "#ffffff");
+            ctx.restore();
+            strokeRoundRect(ctx, m, m, w - 2 * m, h - 2 * m, 20, "#b89a6b", 2);
+            strokeRoundRect(ctx, m + 8, m + 8, w - 2 * m - 16, h - 2 * m - 16, 14, "#b89a6b", 1);
+
+            drawText(ctx, "CERTIFICADO DE TURISMO", w / 2, 80, 34, "#0d3b7f", "900", "center");
+            drawText(ctx, "República de Panamá", w / 2, 124, 18, "#5b6e88", "700", "center");
+
+            ctx.strokeStyle = "#b89a6b";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(120, 150);
+            ctx.lineTo(w - 120, 150);
+            ctx.stroke();
+
+            let y0 = 200;
+            const lh = 34;
+            const col1 = 140,
+                col2 = 320;
+
+            function par(label, valor) {
+                drawText(ctx, label + ":", col1, y0, 16, "#3b4b62", "800");
+                drawText(ctx, valor, col2, y0, 18, "#162235", "700");
+                y0 += lh;
+            }
+            par("Nombre", getNombreCompleto());
+            par("Nacionalidad", el.nacionalidad.value);
+            par("Pasaporte", el.pasaporte.value);
+            par("Fecha de ingreso", prettyDate(el.fechaIngreso.value).split("·")[0].trim());
+            par("Motivo", el.motivo.value);
+            par("Lugar de emisión", el.lugar.value);
+            par("Fecha de emisión", prettyDate(el.fechaEmision.value));
+
+            y0 += 16;
+            const texto =
+                "Este certificado acredita la condición de turista del portador durante su estancia en la República de Panamá. Se expide a solicitud del interesado para fines académicos y de demostración.";
+            wrapText(ctx, texto, 80, y0, w - 160, 26, 15, "#3b4b62", "500");
+
+            const firmY = h - 110;
+            ctx.strokeStyle = "#1a2638";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(120, firmY);
+            ctx.lineTo(340, firmY);
+            ctx.stroke();
+            drawText(ctx, "Firma del funcionario", 120, firmY + 10, 12, "#6f7d96", "700");
+
+            ctx.beginPath();
+            ctx.moveTo(480, firmY);
+            ctx.lineTo(700, firmY);
+            ctx.stroke();
+            drawText(ctx, "Sello institucional", 480, firmY + 10, 12, "#6f7d96", "700");
+
+            ctx.save();
+            ctx.translate(690, firmY - 30);
+            ctx.rotate(-12 * Math.PI / 180);
+            strokeRoundRect(ctx, -30, -30, 60, 60, 30, "#b89a6b", 2);
+            drawText(ctx, "SELLO", 0, -4, 14, "#b89a6b", "900", "center");
+            ctx.restore();
+
+            drawDemoTag(ctx, w);
+            return canvas;
+        }
+
+        // ----- Descargas -----
+        function downloadCanvasForCurrentType() {
+            const type = el.tipo.value;
+            switch (type) {
+                case "yappy":
+                    return drawYappyCanvas();
+                case "ach":
+                    return drawACHCanvas();
+                case "visa":
+                case "mastercard":
+                    return drawCardCanvas(type);
+                case "consentimiento":
+                    return drawConsentCanvas();
+                case "cedula":
+                    return drawCedulaCanvas();
+                case "certificado":
+                    return drawCertificadoCanvas();
+                default:
+                    return drawYappyCanvas();
+            }
+        }
+
+        function downloadPNG() {
+            const canvas = downloadCanvasForCurrentType();
+            const link = document.createElement("a");
+            link.download = fileName("png");
+            link.href = canvas.toDataURL("image/png");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            toast("PNG descargado");
+        }
+
+        function downloadPDF() {
+            const canvas = downloadCanvasForCurrentType();
+            const blob = canvasToPDF(canvas);
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.download = fileName("pdf");
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            toast("PDF descargado");
+        }
+
+        function canvasToPDF(canvas) {
+            const jpg = canvas.toDataURL("image/jpeg", 0.92);
+            const base64 = jpg.split(",")[1];
+            const binary = atob(base64);
+            const imgBytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) imgBytes[i] = binary.charCodeAt(i);
+
+            const pageW = 612;
+            const pageH = Math.round(pageW * canvas.height / canvas.width);
+            const content = `q\n${pageW} 0 0 ${pageH} 0 0 cm\n/Im0 Do\nQ`;
+
+            const enc = new TextEncoder();
+            const parts = [];
+            const offsets = [0];
+
+            const addStr = s => parts.push(enc.encode(s));
+            const addBytes = b => parts.push(b);
+            const totalLen = () => parts.reduce((a, b) => a + b.length, 0);
+
+            function obj(n, body) {
+                offsets[n] = totalLen();
+                addStr(`${n} 0 obj\n${body}\nendobj\n`);
+            }
+
+            addStr("%PDF-1.4\n");
+            obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+            obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+            obj(3,
+                `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`
+                );
+
+            offsets[4] = totalLen();
+            addStr(
+                `4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${canvas.width} /Height ${canvas.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${imgBytes.length} >>\nstream\n`
+                );
+            addBytes(imgBytes);
+            addStr("\nendstream\nendobj\n");
+
+            obj(5, `<< /Length ${content.length} >>\nstream\n${content}\nendstream`);
+
+            const xref = totalLen();
+            addStr("xref\n0 6\n");
+            addStr("0000000000 65535 f \n");
+            for (let i = 1; i <= 5; i++) addStr(String(offsets[i]).padStart(10, "0") + " 00000 n \n");
+            addStr(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+
+            const total = totalLen();
+            const out = new Uint8Array(total);
+            let pos = 0;
+            parts.forEach(p => { out.set(p, pos);
+                pos += p.length; });
+            return new Blob([out], { type: "application/pdf" });
+        }
+
+        function toast(msg) {
+            const t = document.getElementById("toast");
+            t.textContent = msg;
+            t.classList.add("show");
+            clearTimeout(window.__tt);
+            window.__tt = setTimeout(() => t.classList.remove("show"), 1700);
+        }
+
+        // ----- Event listeners -----
+        Object.values(el).forEach(v => {
+            if (v && (v.tagName === "INPUT" || v.tagName === "SELECT" || v.tagName === "TEXTAREA")) {
+                v.addEventListener("input", render);
+                v.addEventListener("change", render);
+            }
+        });
+
+        // Carga de foto para cédula
+        el.fotoCedula.addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    fotoCedulaDataURL = ev.target.result;
+                    render();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fotoCedulaDataURL = null;
+                render();
+            }
+        });
+
+        // Inicialización
+        setNow();
+        toggleFields();
+        render();
+    </script>
+</body>
+</html>

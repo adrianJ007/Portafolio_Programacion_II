@@ -1,0 +1,20 @@
+<div class="sidebar glass">
+  <b>Administración</b>
+  <a href="{{url_for('admin.dashboard')}}">Panel principal</a>
+  <a href="{{url_for('admin.crud',module='clients')}}">Clientes</a>
+  <a href="{{url_for('admin.crud',module='workers')}}">Guías y trabajadores</a>
+  <a href="{{url_for('admin.crud',module='operators')}}">Operarios</a>
+  <a href="{{url_for('admin.crud',module='tours')}}">Giras publicadas</a>
+  <a href="{{url_for('admin.proposals')}}">Propuestas de giras</a>
+  <a href="{{url_for('admin.crud',module='reservations')}}">Reservas</a>
+  <a href="{{url_for('admin.crud',module='payments')}}">Pagos</a>
+  <a href="{{url_for('emails.center')}}">Centro de correos</a>
+  <a href="{{url_for('operator.tracking')}}">Seguimiento</a>
+  <a href="{{url_for('operator.providers')}}">Empresas y proveedores</a>
+  <a href="{{url_for('admin.crud',module='providers')}}">Solicitudes de empresas</a>
+  <a href="{{url_for('admin.crud',module='provider_services')}}">Servicios de empresas</a>
+  <a href="{{url_for('admin.crud',module='complaints')}}">Quejas</a>
+  <a href="{{url_for('admin.crud',module='services')}}">Servicios al cliente</a>
+  <a href="{{url_for('admin.crud',module='promotions')}}">Promociones</a>
+  <a href="{{url_for('json_api.viewer')}}">Exportaciones</a>
+</div>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="dash">
+  <aside>{% include 'partials/sidebar.html' %}</aside>
+  <div>
+    <div class="page-actions">
+      <div class="heading">
+        <span class="eyebrow">Administración</span>
+        <h1>Centro de operaciones</h1>
+        <p>Reservas, pagos, guías, comunicaciones, empresas y seguimiento.</p>
+      </div>
+      <form method="post" action="{{url_for('admin.test_reminders')}}"><button class="btn primary">Enviar recordatorios de prueba</button></form>
+    </div>
+
+    <div class="metrics">
+      {% for key,value in metrics.items() %}
+      <div class="card"><small>{{key}}</small><strong>{% if key=='Ingresos simulados' %}${% endif %}{{value}}</strong></div>
+      {% endfor %}
+    </div>
+
+    <div class="glass panel">
+      <h2>Reglas de asignación de guías</h2>
+      <p class="muted">Estos valores se aplican al cálculo de reservas sin modificar código.</p>
+      <form method="post" action="{{url_for('admin.guide_settings')}}" class="admin-form">
+        <label>Mínimo de personas por guía<input name="guide_min_people" type="number" min="1" value="{{settings.guide_min_people}}"></label>
+        <label>Máximo de personas por guía<input name="guide_max_people" type="number" min="1" value="{{settings.guide_max_people}}"></label>
+        <label>Máximo por reserva<input name="reservation_max_people" type="number" min="1" value="{{settings.reservation_max_people}}"></label>
+        <label>Guía adicional desde<input name="extra_guide_threshold" type="number" min="1" value="{{settings.extra_guide_threshold}}"></label>
+        <label class="check"><input name="allow_sensitive_guide_documents_email" type="checkbox" value="on" {% if settings.allow_sensitive_guide_documents_email %}checked{% endif %}> Permitir documentos sensibles en correos</label>
+        <div class="actions"><button class="btn primary">Guardar reglas</button></div>
+      </form>
+    </div>
+
+    <div class="glass panel">
+      <h2>Actividad reciente</h2>
+      {% for log in logs %}
+      <p><b>{{ {'INSERT':'Creación','UPDATE':'Actualización','DELETE':'Eliminación','STATUS':'Cambio de estado','ASSIGN':'Asignación','CHECK-IN':'Check-in'}.get(log.action,log.action) }} · {{log.entity}}</b> #{{log.entity_id}}<br><small>Guardado principal · Réplica documental · Comprobante generado · Respaldo opcional</small></p>
+      {% else %}
+      <p>Las operaciones aparecerán aquí.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

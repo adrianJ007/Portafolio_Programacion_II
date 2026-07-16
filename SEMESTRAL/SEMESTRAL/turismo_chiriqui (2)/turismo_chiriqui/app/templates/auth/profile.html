@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth">
+  <div>
+    <span class="eyebrow">Configuración</span>
+    <h1>Mi perfil</h1>
+    <p>Actualiza tus datos de contacto, preferencias y contraseña. El sistema sincroniza la información según tu rol.</p>
+    <div class="glass info">
+      <p><b>Rol:</b> {{ {'admin':'Administrador','client':'Cliente','worker':'Guía','operator':'Operario','provider':'Proveedor'}.get(user.role,user.role) }}</p>
+      <p><b>Estado:</b> {{user.status}}</p>
+    </div>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="form glass">
+    <h2>Datos principales</h2>
+    <label>Nombre<input name="name" value="{{user.name}}" required></label>
+    <label>Correo<input name="email" type="email" value="{{user.email}}" required></label>
+    <label>Teléfono<input name="phone" value="{{user.phone or ''}}" pattern="[0-9+\-\s]{7,20}"></label>
+    <label>Foto de perfil<input name="profile_photo" type="file" accept="image/png,image/jpeg,image/webp"></label>
+    <label>Nueva contraseña<input name="password" type="password" minlength="8" placeholder="Déjala vacía si no deseas cambiarla"></label>
+    {% if user.role=='client' %}
+      <label>Preferencias de viaje<textarea name="preferences" rows="3">{{user.preferences or ''}}</textarea></label>
+    {% elif user.role=='worker' %}
+      <div class="form-grid">
+        <label>Idiomas<input name="languages" value="{{user.languages or ''}}"></label>
+        <label>Disponibilidad<select name="availability"><option>Disponible</option><option>No disponible</option><option>Ocupado en gira</option></select></label>
+      </div>
+      <label>Especialidad<input name="specialty" value="{{user.specialty or ''}}"></label>
+      <label>Certificación principal<input name="certification" value="{{user.certification or ''}}" placeholder="Primeros auxilios, guía certificado, turismo sostenible..."></label>
+      <label>Experiencia<textarea name="experience" rows="3">{{user.experience or ''}}</textarea></label>
+      <label>Descripción profesional<textarea name="professional_description" rows="3">{{user.professional_description or ''}}</textarea></label>
+      <fieldset><legend>Documentos del guía</legend>
+        <div class="form-grid">
+          <label>Cédula frontal<input name="identity_front" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+          <label>Cédula reversa<input name="identity_back" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+          <label>Certificación PDF o imagen<input name="certification_document" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+          <label>Documento de experiencia<input name="experience_document" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+        </div>
+        <p class="muted">Los documentos cargados quedan guardados y disponibles para validación administrativa.</p>
+      </fieldset>
+    {% elif user.role=='provider' %}
+      <label>Descripción de empresa<textarea name="description" rows="3">{{user.description or ''}}</textarea></label>
+      <div class="form-grid"><label>Sitio web<input name="website" value="{{user.website or ''}}"></label><label>Redes sociales<input name="social" value="{{user.social or ''}}"></label></div>
+      <label>Documento de validación<input name="validation_document" type="file" accept="image/png,image/jpeg,image/webp,application/pdf"></label>
+    {% endif %}
+    <button class="btn primary">Guardar cambios</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth">
+  <div><span class="eyebrow">Nuevo servicio</span><h1>Propón un servicio turístico</h1><p>El servicio quedará pendiente de revisión hasta que administración lo apruebe.</p></div>
+  <form method="post" class="form glass">
+    <label>Nombre del servicio<input name="name" required></label>
+    <label>Tipo<select name="type"><option>transporte</option><option>alimentación</option><option>hospedaje</option><option>fotografía</option><option>seguro</option><option>alquiler de equipo</option><option>actividad turística</option><option>otro</option></select></label>
+    <label>Descripción<textarea name="description" required></textarea></label>
+    <div class="form-grid"><label>Precio<input name="price" type="number" step="0.01" min="0" required></label><label>Capacidad diaria<input name="capacity_daily" type="number" min="1"></label></div>
+    <div class="form-grid"><label>Aplica ITBMS<select name="applies_itbms"><option>Sí</option><option>No</option></select></label><label>Ganancia para Turismo Chiriquí %<input name="profit_percent" type="number" min="0" max="100" value="15"></label></div>
+    <label>Zona de cobertura<input name="coverage_zone" required></label>
+    <label>Disponibilidad<input name="availability" value="Disponible"></label>
+    <label>Política del servicio<textarea name="policy" placeholder="Cancelación, horarios, restricciones..."></textarea></label>
+    <button class="btn primary">Enviar a revisión</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading">
+      <span class="eyebrow">Portal de proveedor</span>
+      <h1>{{provider.name if provider else session.name}}</h1>
+      <p>Gestiona giras propias, servicios turísticos, guías asociados y seguimiento operativo.</p>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="{{url_for('provider.new_tour')}}">Ofrecer gira</a>
+      <a class="btn ghost" href="{{url_for('provider.new_service')}}">Proponer servicio</a>
+      <a class="btn ghost" href="{{url_for('provider.guides')}}">Mis guías</a>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="card"><small>Giras ofrecidas</small><strong>{{tours|length}}</strong></div>
+    <div class="card"><small>Servicios propuestos</small><strong>{{services|length}}</strong></div>
+    <div class="card"><small>Guías propios</small><strong>{{guides|length}}</strong></div>
+    <div class="card"><small>Participaciones</small><strong>{{tracking|length}}</strong></div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Mis giras ofrecidas</h2>
+    <div class="cards">
+      {% for t in tours %}
+      <article class="card tour-card">
+        <span class="tag">{{t.status}}</span>
+        <h3>{{t.name}}</h3>
+        <p>{{t.destination}} · {{t.duration}}</p>
+        <p>{{t.description}}</p>
+        <div class="tour-facts">
+          <span>Precio sugerido: ${{t.suggested_price}}</span>
+          <span>Cupos: {{t.suggested_capacity}}</span>
+          <span>Dificultad: {{t.difficulty}}</span>
+        </div>
+        {% if t.admin_comment %}<p class="muted">Comentario admin: {{t.admin_comment}}</p>{% endif %}
+      </article>
+      {% else %}
+      <article class="card">Tu empresa aún no ha ofrecido giras. Usa “Ofrecer gira” para enviarla a revisión.</article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Mis guías</h2>
+    <div class="cards">
+      {% for g in guides %}
+      <a class="card" href="{{url_for('provider.guide_detail',item_id=g.id)}}">
+        <span class="tag">{{g.status}}</span>
+        <h3>{{g.name}}</h3>
+        <p>{{g.specialty}}<br>{{g.languages}} · {{g.experience}}</p>
+        <small>{{g.availability}}</small>
+      </a>
+      {% else %}
+      <article class="card">Aún no tienes guías asociados.</article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Mis servicios</h2>
+    <div class="table"><table><thead><tr><th>Servicio</th><th>Tipo</th><th>Precio</th><th>Zona</th><th>Estado</th></tr></thead><tbody>
+      {% for s in services %}<tr><td>{{s.name}}</td><td>{{s.type}}</td><td>${{s.price}}</td><td>{{s.coverage_zone}}</td><td><span class="status-pill">{{s.status}}</span></td></tr>{% else %}<tr><td colspan="5">Aún no has propuesto servicios.</td></tr>{% endfor %}
+    </tbody></table></div>
+  </div>
+
+  <div class="glass panel">
+    <h2>Seguimiento de reservas</h2>
+    <div class="cards">{% for t in tracking %}<article class="card"><span class="tag">{{t.status}}</span><h3>#{{t.reservation_id}} · {{t.service}}</h3><p>{{t.client}} · {{t.tour}}<br>Hora requerida: {{t.required_time}}<br>{{t.observations}}</p></article>{% else %}<article class="card">Aún no hay servicios vinculados a reservas.</article>{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

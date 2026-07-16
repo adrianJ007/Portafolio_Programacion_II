@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading">
+      <span class="eyebrow">Plan de viaje</span>
+      <h1>Mis itinerarios</h1>
+      <p>Revisa el plan visual preparado por operaciones, confirma o solicita cambios.</p>
+    </div>
+    <a class="btn ghost" href="{{url_for('client.dashboard')}}">← Volver</a>
+  </div>
+
+  <div class="cards itinerary-list">
+    {% for r in reservations %}
+    {% set plan = r.final_itinerary if r.final_itinerary else r.suggested_itinerary %}
+    <article class="card itinerary-card wide-card">
+      <div class="itinerary-top">
+        <div>
+          <span class="tag">{{r.itinerary_status or 'ruta sugerida'}}</span>
+          <h2>{{r.tour_name}}</h2>
+          <p>{{r.route_name}} · {{r.date}} · {{r.people}} personas</p>
+        </div>
+        <div class="status-pill">{{ {'pre-reservation':'Pre-reserva','payment received':'Pago recibido','payment validated':'Pago validado','guide assigned':'Guía asignado','itinerary confirmed':'Itinerario confirmado'}.get(r.status,r.status) }}</div>
+      </div>
+
+      <div class="booking-steps progress-steps">
+        {% set steps=['Elegir tour','Elegir ruta','Ver precio','Aceptar términos','Elegir pago','Subir comprobante','Validación','Revisar itinerario','Confirmar','Ver guía','Seguimiento'] %}
+        {% for step in steps %}
+        <span class="{% if loop.index <= (9 if r.itinerary_status in ['confirmado por cliente','confirmed by client'] else 8 if r.final_itinerary else 3) %}active{% endif %}">{{loop.index}}. {{step}}</span>
+        {% endfor %}
+      </div>
+
+      <div class="itinerary-facts">
+        <span><small>Punto de encuentro</small>{{r.meeting_time or 'Pendiente'}} · {{r.meeting_point or 'Por confirmar'}}</span>
+        <span><small>Guía</small>#{{r.worker_id or 'Por asignar'}}</span>
+        <span><small>Total</small>${{r.total}}</span>
+        <span><small>Seguimiento</small>{{r.tracking_status or 'pendiente'}}</span>
+      </div>
+
+      <h3>Línea de tiempo turística</h3>
+      <div class="visual-timeline premium-timeline">
+        {% for a in plan %}
+        <div class="timeline-node activity-card state-{{(a.status or 'pendiente')|replace(' ','-')}}">
+          <time>{{a.time}}</time>
+          <div>
+            <div class="activity-head">
+              <b>{{a.activity}}</b>
+              <span class="status-pill">{{a.status or 'pendiente'}}</span>
+            </div>
+            <p>📍 {{a.place}} · ⏱ {{a.duration}}</p>
+            <p>Responsable: {{a.responsible}}</p>
+            {% if a.provider_name %}<p class="provider-line">Proveedor: {{a.provider_name}}</p>{% endif %}
+            {% if a.notes %}<small>{{a.notes}}</small>{% endif %}
+            {% if r.itinerary_status not in ['confirmado por cliente','itinerary confirmed','finalizado'] %}
+            <form method="post" action="{{url_for('client.itinerary_activity_change',item_id=r.id,activity_index=loop.index0)}}" class="inline activity-change-form">
+              <select name="action"><option>solicitar ajuste de horario</option><option>solicitar cambio de punto de encuentro</option><option>rechazar actividad</option><option>sugerir alternativa</option></select>
+              <input name="comment" placeholder="Observación breve">
+              <button class="btn ghost">Enviar cambio</button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+        {% else %}
+        <p>Operaciones preparará el itinerario final después de validar el pago.</p>
+        {% endfor %}
+      </div>
+
+      {% if r.final_recommendations %}
+      <div class="glass info soft-panel"><h3>Recomendaciones</h3><p>{{r.final_recommendations}}</p></div>
+      {% endif %}
+      {% if r.meeting_point %}
+      <p><a class="btn ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/{{r.meeting_point|urlencode}}">Ver punto de encuentro en mapa</a></p>
+      {% endif %}
+
+      {% if r.final_itinerary and r.itinerary_status not in ['confirmado por cliente','confirmed by client','itinerary confirmed'] %}
+      <div class="actions">
+        <form method="post" action="{{url_for('client.itinerary_action',item_id=r.id,action='confirm')}}">
+          <button class="btn primary">Confirmar itinerario</button>
+        </form>
+        <form method="post" action="{{url_for('client.itinerary_action',item_id=r.id,action='change')}}" class="inline change-form">
+          <input name="comment" required placeholder="Explica el cambio que necesitas">
+          <button class="btn ghost">Solicitar cambio</button>
+        </form>
+      </div>
+      {% endif %}
+      {% if r.itinerary_pdf %}<p><a class="btn primary" href="{{url_for('client.itinerary_pdf',item_id=r.id)}}">Descargar PDF profesional del itinerario</a></p>{% endif %}
+
+      <h3>Historial de cambios</h3>
+      <div class="tracking-line">
+        {% for h in r.itinerary_history %}
+        <div><b>{{h.action}}</b><small>{{h.date}} · {{h.actor}}</small><p>{{h.comment or h.status}}</p></div>
+        {% else %}<p>Sin cambios solicitados todavía.</p>{% endfor %}
+      </div>
+
+      <h3>Seguimiento de gira</h3>
+      <div class="tracking-line">
+        {% for e in events if e.reservation_id==r.id %}
+        <div><b>{{e.status}}</b><small>{{e.created_at}} · {{e.actor}}</small><p>{{e.note}}</p></div>
+        {% else %}
+        <p>El seguimiento comenzará cuando el equipo actualice la gira.</p>
+        {% endfor %}
+      </div>
+    </article>
+    {% else %}
+    <article class="card"><h2>Aún no tienes reservas</h2><a class="btn primary" href="{{url_for('client.reservation')}}">Crear reserva</a></article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

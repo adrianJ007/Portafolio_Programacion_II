@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth provider-join">
+  <div>
+    <span class="eyebrow">Empresas aliadas</span>
+    <h1>Ofrece tus servicios con Turismo Chiriquí</h1>
+    <p>Transporte, alimentación, hospedaje, fotografía, equipo, seguros y experiencias locales pueden integrarse al flujo de reservas después de revisión.</p>
+    <div class="glass info">
+      <p><b>Proceso:</b> solicitud recibida → revisión operativa → aprobación administrativa → servicios visibles al cliente.</p>
+      <p><b>Importante:</b> tus servicios no aparecen al público hasta ser aprobados.</p>
+    </div>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="form glass">
+    <h2>Solicitud de empresa</h2>
+    <div class="form-grid">
+      <label>Nombre comercial<input name="name" required></label>
+      <label>RUC o identificación fiscal<input name="ruc" required></label>
+      <label>Representante legal<input name="legal_representative" required></label>
+      <label>Correo<input name="email" type="email" required></label>
+      <label>Teléfono<input name="phone" required></label>
+      <label>Tipo de servicio
+        <select name="service_type" required>
+          <option>transporte</option><option>alimentación</option><option>hospedaje</option><option>guía especializado</option>
+          <option>fotografía</option><option>seguro</option><option>alquiler de equipo</option><option>actividad turística</option><option>otro</option>
+        </select>
+      </label>
+    </div>
+    <label>Dirección<input name="address" required></label>
+    <label>Descripción<textarea name="description" rows="3" required></textarea></label>
+    <div class="form-grid">
+      <label>Logo o foto<input name="logo" type="file" accept="image/png,image/jpeg,image/webp"></label>
+      <label>Documento de validación<input name="validation_document" type="file" accept="application/pdf,image/png,image/jpeg,image/webp"></label>
+      <label>Sitio web opcional<input name="website" placeholder="https://"></label>
+      <label>Redes sociales<input name="social" placeholder="@empresa"></label>
+    </div>
+    <label>Mensaje de presentación<textarea name="message" rows="3" placeholder="Cuéntanos qué puedes aportar a las experiencias turísticas."></textarea></label>
+    <button class="btn primary">Enviar solicitud</button>
+  </form>
+</section>
+{% endblock %}

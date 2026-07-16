@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% macro assignment_card(r) %}
+<article class="card wide-card">
+  <div class="itinerary-top"><div><span class="tag">{{r.assignment_status or 'Pendiente'}}</span><h2>{{r.tour_name}}</h2><p>{{r.route_name}} · {{r.date}}</p></div><div class="status-pill">{{r.tracking_status or r.status}}</div></div>
+  <div class="itinerary-facts"><span><small>Cliente</small>{{r.client}}</span><span><small>Personas</small>{{r.people}}</span><span><small>Encuentro</small>{{r.meeting_time or 'Pendiente'}} · {{r.meeting_point or 'Por confirmar'}}</span><span><small>Código</small>{{r.verification_code or 'Pendiente'}}</span></div>
+  {% if r.assignment_status=='pending acceptance' %}
+  <form method="post" action="{{url_for('worker.assignment',item_id=r.id)}}" class="actions"><button class="btn primary" name="action" value="accept">Aceptar asignación</button><button class="btn danger" name="action" value="reject">Rechazar</button></form>
+  {% else %}
+  <details class="details-card" {% if r.status!='completed' %}open{% endif %}><summary>Ver itinerario y seguimiento</summary>
+    <p><b>Preferencias:</b> {{r.preferences or 'Sin observaciones'}}<br><b>Contacto de emergencia:</b> {% if r.emergency_authorized %}{{r.emergency_name}} · {{r.emergency_phone}}{% else %}No autorizado{% endif %}</p>
+    <div class="visual-timeline premium-timeline">{% for a in r.final_itinerary %}<div class="timeline-node activity-card"><time>{{a.time}}</time><div><div class="activity-head"><b>{{a.activity}}</b><span class="status-pill">{{a.status or 'pendiente'}}</span></div><p>📍 {{a.place}} · ⏱ {{a.duration}} · Responsable: {{a.responsible}}</p>{% if a.provider_name %}<p class="provider-line">Proveedor: {{a.provider_name}}</p>{% endif %}<div class="actions small-actions"><form method="post" action="{{url_for('worker.activity_state',item_id=r.id,activity_index=loop.index0,state='start')}}"><button class="btn ghost">Iniciar</button></form><form method="post" action="{{url_for('worker.activity_state',item_id=r.id,activity_index=loop.index0,state='complete')}}"><button class="btn primary">Completar</button></form><form method="post" action="{{url_for('worker.activity_state',item_id=r.id,activity_index=loop.index0,state='issue')}}"><button class="btn danger">Incidencia</button></form></div></div></div>{% else %}<p>Pendiente de propuesta del operario.</p>{% endfor %}</div>
+    <form class="form compact" method="post" action="{{url_for('worker.tracking_status',item_id=r.id)}}"><label>Actualizar seguimiento<select name="tracking_status"><option>en camino al punto de encuentro</option><option>cliente en check-in</option><option>gira iniciada</option><option>actividad en progreso</option><option>pausa o almuerzo</option><option>retorno</option><option>gira finalizada</option><option>incidencia reportada</option></select></label><input name="note" placeholder="Detalle breve de la actualización"><button class="btn primary">Publicar actualización</button></form>
+    <div class="actions"><form method="post" action="{{url_for('worker.check_in',item_id=r.id)}}"><button class="btn ghost">Confirmar check-in</button></form><a class="btn ghost" href="{{url_for('worker.location')}}">Enviar ubicación</a><a class="btn danger" href="{{url_for('worker.reports')}}">Reportar problema</a></div>
+  </details>
+  {% endif %}
+</article>
+{% endmacro %}
+{% block content %}
+<section class="section">
+  <div class="page-actions"><div class="heading"><span class="eyebrow">Panel del guía</span><h1>Mis asignaciones</h1><p>Giras organizadas por estado para trabajar sin ruido.</p></div><div class="actions"><a class="btn ghost" href="{{url_for('worker.reports')}}">Reportar problema</a><a class="btn primary" href="{{url_for('worker.proposals')}}">Proponer gira</a></div></div>
+  <form class="glass form inline" method="post" action="{{url_for('worker.availability')}}"><label>Mi disponibilidad<select name="availability"><option>Disponible</option><option>No disponible</option><option>Ocupado en gira</option></select></label><button class="btn ghost">Actualizar</button></form>
+  {% if worker and worker.company_confirmation=='pending' %}
+  <div class="glass info warning-panel">
+    <h3>{{worker.provider_name or 'Una empresa'}} te registró como guía</h3>
+    <p>Revisa y completa tu perfil y documentación en <a href="{{url_for('auth.profile')}}">tu perfil</a>. Confirma si aceptas trabajar con esta empresa; solo después de confirmar tu cuenta quedará activa y podrás recibir giras.</p>
+    <form method="post" action="{{url_for('worker.company_confirm')}}" class="actions" style="display:inline"><button class="btn primary">Aceptar incorporación</button></form>
+    <form method="post" action="{{url_for('worker.company_reject')}}" class="actions" style="display:inline"><button class="btn danger">Rechazar</button></form>
+  </div>
+  {% endif %}
+  {% set active = rows|rejectattr('status','equalto','completed')|list %}
+  {% set completed = rows|selectattr('status','equalto','completed')|list %}
+  <details class="glass panel grouped-panel" open><summary>Activas y próximas · {{active|length}}</summary><div class="cards itinerary-list">{% for r in active %}{{assignment_card(r)}}{% else %}<article class="card">Sin asignaciones activas.</article>{% endfor %}</div></details>
+  <details class="glass panel grouped-panel"><summary>Finalizadas · {{completed|length}}</summary><div class="cards itinerary-list">{% for r in completed %}{{assignment_card(r)}}{% else %}<article class="card">Sin giras finalizadas.</article>{% endfor %}</div></details>
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% macro reservation_card(r) %}
+<article class="card">
+  <span class="tag">{{ {'pre-reservation':'Pre-reserva','payment received':'Pago recibido','payment validated':'Pago validado','payment rejected':'Pago rechazado','guide assigned':'Guía asignado','itinerary confirmed':'Itinerario confirmado','completed':'Finalizada','cancelled':'Cancelada'}.get(r.status,r.status) }}</span>
+  <h3>{{r.tour_name}}</h3>
+  <p>{{r.date}} · {{r.people}} personas · {{r.route_name}}</p>
+  <strong>${{r.total}}</strong>
+  <details class="details-card"><summary>Ver detalles</summary>
+    {% if r.worker_id %}<div class="verification-card"><small>Guía asignado #{{r.worker_id}}</small><strong>{{r.verification_code}}</strong><p>{{ {'pending check-in':'Pendiente de check-in','check-in completed':'Check-in realizado'}.get(r.check_in_status,r.check_in_status) }}</p></div>{% endif %}
+    {% if r.status=='payment rejected' %}<p class="error-text">La captura fue rechazada. Sube una nueva imagen legible.</p>{% endif %}
+    <div class="actions">
+      {% if r.status in ['pre-reservation','payment rejected'] %}<a class="btn primary" href="{{url_for('payments.upload')}}">Continuar al pago</a>{% endif %}
+      {% if r.receipt_path %}<a class="btn ghost" href="{{url_for('client.receipt',item_id=r.id)}}">Comprobante JSON</a>{% endif %}
+      {% if r.itinerary_pdf %}<a class="btn ghost" href="{{url_for('client.itinerary_pdf',item_id=r.id)}}">PDF itinerario</a>{% endif %}
+      {% if r.status=='completed' and r.feedback_status!='recibido' %}<a class="btn primary" href="{{url_for('client.feedback',item_id=r.id)}}">Evaluar gira</a>{% endif %}
+    </div>
+  </details>
+</article>
+{% endmacro %}
+{% block content %}
+<section class="section">
+  <div class="page-actions">
+    <div class="heading"><span class="eyebrow">Área del cliente</span><h1>Hola, {{session.name}}</h1><p>Reservas organizadas por estado para mantener tu panel limpio.</p></div>
+    <a class="btn ghost" href="{{url_for('auth.landing')}}">Inicio</a>
+  </div>
+  <div class="actions"><a class="btn primary" href="{{url_for('client.tours')}}">Explorar giras</a><a class="btn ghost" href="{{url_for('payments.upload')}}">Centro de pago</a><a class="btn ghost" href="{{url_for('client.itinerary')}}">Mis itinerarios</a><a class="btn ghost" href="{{url_for('client.complaints')}}">Mis quejas</a></div>
+  {% set upcoming = reservations|selectattr('status','in',['pre-reservation','payment received','payment validated','guide assigned','itinerary confirmed'])|list %}
+  {% set active = reservations|selectattr('tracking_status','in',['gira iniciada','actividad en progreso','retorno'])|list %}
+  {% set completed = reservations|selectattr('status','equalto','completed')|list %}
+  {% set cancelled = reservations|selectattr('status','in',['cancelled','payment rejected'])|list %}
+  <details class="glass panel grouped-panel" open><summary>Reservas próximas · {{upcoming|length}}</summary><div class="cards">{% for r in upcoming %}{{reservation_card(r)}}{% else %}<article class="card">No hay próximas reservas.</article>{% endfor %}</div></details>
+  <details class="glass panel grouped-panel"><summary>Reservas en curso · {{active|length}}</summary><div class="cards">{% for r in active %}{{reservation_card(r)}}{% else %}<article class="card">No hay giras en curso.</article>{% endfor %}</div></details>
+  <details class="glass panel grouped-panel"><summary>Historial · {{completed|length}}</summary><div class="cards">{% for r in completed %}{{reservation_card(r)}}{% else %}<article class="card">No hay historial todavía.</article>{% endfor %}</div></details>
+  <details class="glass panel grouped-panel"><summary>Canceladas o rechazadas · {{cancelled|length}}</summary><div class="cards">{% for r in cancelled %}{{reservation_card(r)}}{% else %}<article class="card">Sin cancelaciones.</article>{% endfor %}</div></details>
+</section>
+{% endblock %}

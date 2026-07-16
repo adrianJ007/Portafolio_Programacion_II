@@ -1,0 +1,50 @@
+<nav class="role-nav" aria-label="Navegación del panel">
+{% if session.role=='admin' %}
+  <a href="{{url_for('admin.dashboard')}}">Resumen</a>
+  <a href="{{url_for('admin.crud',module='clients')}}">Clientes</a>
+  <a href="{{url_for('admin.crud',module='workers')}}">Guías</a>
+  <a href="{{url_for('admin.crud',module='operators')}}">Operarios</a>
+  <a href="{{url_for('admin.crud',module='tours')}}">Giras</a>
+  <a href="{{url_for('admin.proposals')}}">Propuestas</a>
+  <a href="{{url_for('admin.guide_applications')}}">Solicitudes de guías</a>
+  <a href="{{url_for('admin.crud',module='reservations')}}">Reservas</a>
+  <a href="{{url_for('operator.itineraries')}}">Itinerarios</a>
+  <a href="{{url_for('admin.crud',module='payments')}}">Pagos</a>
+  <a href="{{url_for('operator.consents')}}">Consentimientos</a>
+  <a href="{{url_for('operator.tracking')}}">Seguimiento</a>
+  <a href="{{url_for('operator.providers')}}">Empresas</a>
+  <a href="{{url_for('emails.center')}}">Correos</a>
+  <a href="{{url_for('admin.crud',module='complaints')}}">Quejas</a>
+  <a href="{{url_for('admin.crud',module='services')}}">Servicios</a>
+  <a href="{{url_for('admin.crud',module='provider_services')}}">Servicios de empresas</a>
+  <a href="{{url_for('admin.crud',module='promotions')}}">Promociones</a>
+  <a href="{{url_for('admin.crud',module='providers')}}">Proveedores</a>
+  <a href="{{url_for('json_api.viewer')}}">Exportaciones</a>
+{% elif session.role=='client' %}
+  <a href="{{url_for('client.dashboard')}}">Mi panel</a>
+  <a href="{{url_for('client.tours')}}">Giras</a>
+  <a href="{{url_for('client.reservation')}}">Reservar</a>
+  <a href="{{url_for('payments.upload')}}">Pagos</a>
+  <a href="{{url_for('client.consents')}}">Documentos</a>
+  <a href="{{url_for('client.itinerary')}}">Itinerario</a>
+  <a href="{{url_for('client.complaints')}}">Quejas</a>
+  <a href="{{url_for('client.terms')}}">Términos</a>
+{% elif session.role=='worker' %}
+  <a href="{{url_for('worker.dashboard')}}">Mis giras</a>
+  <a href="{{url_for('worker.location')}}">Enviar ubicación</a>
+  <a href="{{url_for('worker.reports')}}">Reportar problema</a>
+  <a href="{{url_for('worker.proposals')}}">Proponer gira</a>
+{% elif session.role=='operator' %}
+  <a href="{{url_for('operator.dashboard')}}">Operación diaria</a>
+  <a href="{{url_for('operator.itineraries')}}">Itinerarios</a>
+  <a href="{{url_for('operator.tracking')}}">Seguimiento</a>
+  <a href="{{url_for('operator.providers')}}">Empresas y proveedores</a>
+  <a href="{{url_for('operator.consents')}}">Consentimientos</a>
+  <a href="{{url_for('emails.center')}}">Centro de correos</a>
+{% elif session.role=='provider' %}
+  <a href="{{url_for('provider.dashboard')}}">Mi empresa</a>
+  <a href="{{url_for('provider.new_tour')}}">Ofrecer gira</a>
+  <a href="{{url_for('provider.new_service')}}">Proponer servicio</a>
+  <a href="{{url_for('provider.guides')}}">Mis guías</a>
+{% endif %}
+</nav>
