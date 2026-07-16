@@ -3,10 +3,8 @@
    Estilos mejorados con diseño moderno
    ======================================== */
 
-/* ----- Importación de fuentes ----- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
 
-/* ----- Variables globales ----- */
 :root {
     --primary: #6a1b9a;
     --primary-light: #9c4dcc;
@@ -23,7 +21,6 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ----- Reset y base ----- */
 * {
     margin: 0;
     padding: 0;
@@ -44,7 +41,7 @@ body {
     margin: 0 auto;
 }
 
-/* ----- HEADER / PERFIL ----- */
+/* ----- HEADER ----- */
 .profile-header {
     background: var(--card-bg);
     padding: 32px 40px;
@@ -106,12 +103,6 @@ body {
     margin: 2px 0;
 }
 
-.profile-info .subtitle i {
-    margin-right: 6px;
-    opacity: 0.7;
-}
-
-/* Badge de semestre */
 .badge-semestre {
     display: inline-block;
     background: var(--primary);
@@ -124,11 +115,178 @@ body {
     letter-spacing: 0.3px;
 }
 
+/* ----- SOBRE MÍ ----- */
+.about-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    margin-bottom: 40px;
+    transition: var(--transition);
+}
+
+.about-section:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.about-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-image {
+    flex-shrink: 0;
+}
+
+.profile-photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-light);
+    box-shadow: 0 8px 24px rgba(106, 27, 154, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.profile-photo:hover {
+    transform: scale(1.04);
+}
+
+.about-content h2 {
+    color: var(--primary-dark);
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+}
+
+.about-content p {
+    color: var(--text);
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+}
+
+.about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.tag {
+    background: #f0f0f5;
+    color: var(--primary-dark);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid #e0e0e8;
+    transition: var(--transition);
+}
+
+.tag:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* ----- CERTIFICADO ----- */
+.certificate-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    margin-bottom: 48px;
+    border-left: 6px solid var(--secondary);
+    transition: var(--transition);
+}
+
+.certificate-section:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.certificate-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.certificate-info {
+    flex: 1;
+}
+
+.certificate-info h2 {
+    color: var(--primary-dark);
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.certificate-info h3 {
+    color: var(--secondary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.certificate-info p {
+    color: var(--text);
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+}
+
+.certificate-skills {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+}
+
+.certificate-skills li {
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.certificate-image {
+    flex-shrink: 0;
+}
+
+.cert-img {
+    max-width: 280px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    border: 2px solid #eef0f3;
+    transition: transform 0.3s ease;
+}
+
+.cert-img:hover {
+    transform: scale(1.03);
+}
+
+/* ----- TÍTULO DE SECCIÓN ----- */
+.section-title {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.section-title h2 {
+    color: var(--primary-dark);
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+
+.section-title p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
 /* ----- GRID DE PROYECTOS ----- */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 28px;
+    margin-bottom: 48px;
 }
 
 /* ----- TARJETAS ----- */
@@ -180,7 +338,6 @@ body {
     font-size: 1.4rem;
 }
 
-/* ----- LISTA DE ENLACES ----- */
 ul {
     list-style: none;
     padding: 0;
@@ -214,7 +371,6 @@ a:hover {
     box-shadow: 0 4px 12px rgba(106, 27, 154, 0.10);
 }
 
-/* Iconos de tipo de archivo */
 a .icon {
     font-size: 1.2rem;
     width: 28px;
@@ -222,11 +378,45 @@ a .icon {
     flex-shrink: 0;
 }
 
-/* Colores por tipo */
 a.pdf-link .icon { color: #dc3545; }
 a.code-link .icon { color: #0d6efd; }
 a.pkt-link .icon { color: #fd7e14; }
 a.pptx-link .icon { color: #d63384; }
+
+/* ----- FOOTER ----- */
+.footer {
+    text-align: center;
+    padding: 32px 0 16px;
+    border-top: 1px solid #e0e0e8;
+    color: var(--text-muted);
+}
+
+.footer p {
+    margin: 4px 0;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 8px;
+}
+
+.footer-links a {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.footer-links a:hover {
+    background: transparent;
+    transform: none;
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 992px) {
@@ -242,6 +432,20 @@ a.pptx-link .icon { color: #d63384; }
 
     .profile-info h1 {
         font-size: 2rem;
+    }
+
+    .about-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .certificate-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .certificate-skills {
+        justify-content: center;
     }
 }
 
@@ -269,6 +473,23 @@ a.pptx-link .icon { color: #d63384; }
         font-size: 1.1rem;
     }
 
+    .about-section {
+        padding: 24px;
+    }
+
+    .profile-photo {
+        width: 140px;
+        height: 140px;
+    }
+
+    .certificate-section {
+        padding: 24px;
+    }
+
+    .cert-img {
+        max-width: 100%;
+    }
+
     .portfolio-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -282,6 +503,11 @@ a.pptx-link .icon { color: #d63384; }
         font-size: 0.85rem;
         padding: 10px 14px;
     }
+
+    .footer-links {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -292,9 +518,17 @@ a.pptx-link .icon { color: #d63384; }
     .folder-title {
         font-size: 1rem;
     }
+
+    .about-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .certificate-info h2 {
+        font-size: 1.4rem;
+    }
 }
 
-/* ----- ANIMACIONES SUTILES ----- */
+/* ----- ANIMACIONES ----- */
 @keyframes fadeUp {
     from {
         opacity: 0;
@@ -317,3 +551,13 @@ a.pptx-link .icon { color: #d63384; }
 .folder-card:nth-child(5) { animation-delay: 0.25s; }
 .folder-card:nth-child(6) { animation-delay: 0.30s; }
 .folder-card:nth-child(7) { animation-delay: 0.35s; }
+
+.about-section {
+    animation: fadeUp 0.6s ease forwards;
+    animation-delay: 0.1s;
+}
+
+.certificate-section {
+    animation: fadeUp 0.6s ease forwards;
+    animation-delay: 0.2s;
+}
