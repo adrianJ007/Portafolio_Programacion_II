@@ -1,0 +1,29 @@
+{
+    "pedido_id": 24,
+    "cliente": "Napoleon",
+    "email": "napoleon.ibarra@utp.ac.pa",
+    "direccion": "",
+    "total": 34.0,
+    "costo_envio": 0.0,
+    "fecha": "2026-07-03T15:26:28.745745",
+    "lineas": [
+        [
+            "combo",
+            "6",
+            1,
+            20.0
+        ],
+        [
+            "pizza",
+            "8",
+            1,
+            12.5
+        ],
+        [
+            "refresco",
+            "14",
+            1,
+            1.5
+        ]
+    ]
+}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Pizza Personalizada{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h2><i class="fas fa-magic"></i> Pizza Personalizada</h2>
+                <p>Elige los ingredientes que quieras. ¡Tú decides!</p>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('guardar_pizza_personalizada') }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre para tu pizza (opcional)</label>
+                        <input type="text" name="nombre_pizza" class="form-control" placeholder="Ej: Pizza del Chef">
+                    </div>
+                    
+                    <h5>🍕 Base incluida (Precio: $7.00)</h5>
+                    <div class="alert alert-secondary">
+                        ✓ Masa artesanal<br>
+                        ✓ Salsa de tomate<br>
+                        ✓ Queso mozzarella
+                    </div>
+                    
+                    <h5 class="mt-3">✨ Ingredientes adicionales</h5>
+                    <div class="row">
+                        {% for ingrediente in ingredientes %}
+                        <div class="col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="ingredientes_extra" value="{{ ingrediente.id }}" id="ing_{{ ingrediente.id }}">
+                                <label class="form-check-label" for="ing_{{ ingrediente.id }}">
+                                    {{ ingrediente.nombre }} 
+                                    <span class="text-success">(+${{ "%.2f"|format(ingrediente.precio_extra) }})</span>
+                                </label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <h5 class="mt-3">✏️ Ingredientes extra (máximo 10)</h5>
+                    <div class="mb-3">
+                        <input type="text" name="ingredientes_extra_texto" class="form-control" placeholder="Ej: Tocino, Cebolla caramelizada, Piña..." maxlength="100">
+                        <small class="text-muted">Escribe los ingredientes extra separados por coma (máximo 10)</small>
+                    </div>
+
+                    <!-- ===== CAMPO PARA SUBIR IMÁGENES ===== -->
+                    <div class="mb-3">
+                        <label class="form-label">📸 Imágenes de tu pizza (opcional)</label>
+                        <input type="file" name="imagenes" class="form-control" accept="image/*" multiple>
+                        <small class="text-muted">Puedes subir hasta 5 imágenes de tu pizza personalizada</small>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3 text-center">
+                        <strong>Precio base: $7.00</strong> + ingredientes adicionales
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            <i class="fas fa-cart-plus"></i> Agregar pizza personalizada
+                        </button>
+                        <a href="{{ url_for('realizar_pedido') }}" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

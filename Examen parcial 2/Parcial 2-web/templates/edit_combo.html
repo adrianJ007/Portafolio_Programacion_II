@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Editar Combo{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-warning">
+        <h2>Editar Combo</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Nombre del Combo</label>
+                <input type="text" name="nombre" class="form-control" value="{{ combo.nombre }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <textarea name="descripcion" class="form-control" rows="3">{{ combo.descripcion }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Precio (USD)</label>
+                <input type="number" step="0.01" name="precio" class="form-control" value="{{ combo.precio }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Combo</button>
+            <a href="{{ url_for('listar_combos') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

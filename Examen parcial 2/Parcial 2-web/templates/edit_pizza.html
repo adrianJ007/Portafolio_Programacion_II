@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Editar Pizza{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h2>Editar Pizza</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" class="form-control" value="{{ pizza.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Descripción</label>
+                        <textarea name="descripcion" class="form-control">{{ pizza.descripcion }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Precio</label>
+                        <input type="number" step="0.01" name="precio" class="form-control" value="{{ pizza.precio }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Ingredientes</label>
+                        <input type="text" name="ingredientes" class="form-control" value="{{ pizza.ingredientes }}">
+                    </div>
+                    <div class="mb-3">
+                        <label>Imagen actual</label>
+                        {% if pizza.imagen %}
+                        <div class="mb-2">
+                            <img src="{{ url_for('static', filename='img/pizzas/' + pizza.imagen) }}" style="height: 100px;">
+                        </div>
+                        {% else %}
+                        <div class="mb-2">
+                            <p class="text-muted">Sin imagen</p>
+                        </div>
+                        {% endif %}
+                        <input type="file" name="imagen" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp, image/gif">
+                        <input type="hidden" name="imagen_actual" value="{{ pizza.imagen }}">
+                        <small>Dejar en blanco para mantener la imagen actual</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <a href="{{ url_for('listar_pizzas') }}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

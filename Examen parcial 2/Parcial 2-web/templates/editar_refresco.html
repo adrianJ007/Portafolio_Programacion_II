@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Editar Refresco{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h2>Editar Refresco</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombre" class="form-control" value="{{ refresco.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio (USD)</label>
+                        <input type="number" step="0.01" name="precio" class="form-control" value="{{ refresco.precio }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Imagen actual</label>
+                        {% if refresco.imagen %}
+                        <div class="mb-2">
+                            <img src="{{ url_for('static', filename='img/refrescos/' + refresco.imagen) }}" 
+                                    alt="{{ refresco.nombre }}" style="height: 100px;">
+                        </div>
+                        {% endif %}
+                        <input type="file" name="imagen" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp, image/gif">
+                        <input type="hidden" name="imagen_actual" value="{{ refresco.imagen }}">
+                        <small class="text-muted">Dejar en blanco para mantener la imagen actual</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <a href="{{ url_for('listar_refrescos') }}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

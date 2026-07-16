@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Pizzas{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-pizza-slice"></i> Nuestras Pizzas</h2>
+    {% if session.usuario_rol == 'admin' %}
+    <a href="{{ url_for('crear_pizza') }}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Nueva Pizza
+    </a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for pizza in pizzas %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            {% if pizza.imagen %}
+            <img src="{{ url_for('static', filename='img/pizzas/' + pizza.imagen) }}" 
+            alt="{{ pizza.nombre }}"
+            style="height: 200px; width: 100%; object-fit: cover;"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'%3E%3Crect fill=\'%23f0f0f0\' width=\'400\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'20\'%3E🍕%3C/text%3E%3C/svg%3E'">
+        {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+            <i class="fas fa-pizza-slice fa-4x text-secondary"></i>
+            </div>
+        {% endif %}
+            <div class="card-header">
+                <i class="fas fa-pizza-slice"></i> {{ pizza.nombre }}
+            </div>
+            <div class="card-body">
+                <h4 class="text-primary mb-3">${{ "%.2f"|format(pizza.precio) }}</h4>
+                <p class="text-muted">{{ pizza.descripcion }}</p>
+                <p><strong>🍕 Ingredientes:</strong> {{ pizza.ingredientes }}</p>
+            </div>
+            <div class="card-footer text-center">
+                {% if session.usuario_rol == 'admin' %}
+                <a href="{{ url_for('editar_pizza', id=pizza.id) }}" class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a href="{{ url_for('eliminar_pizza', id=pizza.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta pizza?')">
+                    <i class="fas fa-trash"></i> Eliminar
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

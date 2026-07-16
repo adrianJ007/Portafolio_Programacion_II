@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Panel Administrativo{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="fas fa-crown"></i> Panel de Administrador</h2>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <div style="font-size: 3rem;">📋</div>
+                <h5 class="card-title">Gestionar Pedidos</h5>
+                <p class="card-text text-muted">Ver todos los pedidos y su estado</p>
+                <a href="{{ url_for('admin_pedidos') }}" class="btn btn-primary">Ver pedidos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <div style="font-size: 3rem;">🍕</div>
+                <h5 class="card-title">Gestionar Pizzas</h5>
+                <p class="card-text text-muted">Agregar, editar o eliminar pizzas</p>
+                <a href="{{ url_for('listar_pizzas') }}" class="btn btn-primary">Gestionar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <div style="font-size: 3rem;">🥤</div>
+                <h5 class="card-title">Gestionar Refrescos</h5>
+                <p class="card-text text-muted">Agregar, editar o eliminar refrescos</p>
+                <a href="{{ url_for('listar_refrescos') }}" class="btn btn-primary">Gestionar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

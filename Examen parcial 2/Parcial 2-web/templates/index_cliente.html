@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Chinos Café - Cliente{% endblock %}
+{% block content %}
+<div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, #1B5E20, #2E7D32); border-radius: 20px; color: white; margin-bottom: 2rem;">
+    <h1 style="font-size: 2.8rem; font-weight: 700;">🍕 Chinos Café</h1>
+    <p style="font-size: 1.2rem; opacity: 0.9; max-width: 500px; margin: 0 auto 1.5rem;">La mejor pizza de la provincia, ahora con pedidos en línea.</p>
+    <a href="{{ url_for('realizar_pedido') }}" class="btn btn-light btn-lg" style="border-radius: 50px; padding: 0.6rem 2.5rem;">🛒 Hacer pedido</a>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card text-center h-100" style="border-radius: 16px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+            <div class="card-body">
+                <div style="font-size: 3rem;">🍕</div>
+                <h5 class="card-title">Pizzas Artesanales</h5>
+                <p class="card-text text-muted">+5 variedades con ingredientes frescos</p>
+                <a href="{{ url_for('listar_pizzas') }}" class="btn btn-primary btn-sm" style="border-radius: 50px;">Ver pizzas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100" style="border-radius: 16px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+            <div class="card-body">
+                <div style="font-size: 3rem;">🍽️</div>
+                <h5 class="card-title">Combos Especiales</h5>
+                <p class="card-text text-muted">Ofertas familiares con refrescos y extras</p>
+                <a href="{{ url_for('listar_combos') }}" class="btn btn-primary btn-sm" style="border-radius: 50px;">Ver combos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100" style="border-radius: 16px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+            <div class="card-body">
+                <div style="font-size: 3rem;">🚚</div>
+                <h5 class="card-title">Domicilio</h5>
+                <p class="card-text text-muted">Entregamos en toda la provincia. ¡Paga con Yappy!</p>
+                <a href="{{ url_for('realizar_pedido') }}" class="btn btn-primary btn-sm" style="border-radius: 50px;">Ordenar ahora</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <div class="card" style="border-radius: 16px; border: none; background: #f8f9fa;">
+        <div class="card-body">
+            <span style="font-size: 1.1rem;">💳 Aceptamos <strong>Yappy Comercial</strong></span>
+        </div>
+    </div>
+</div>
+{% endblock %}

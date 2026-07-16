@@ -1,0 +1,204 @@
+/* ========== DISEÑO MODERNO ========== */
+:root {
+    --heid-green: #1B5E20;
+    --heid-medium: #2E7D32;
+    --heid-light: #4CAF50;
+    --ubuntu-orange: #E95420;
+    --white: #FFFFFF;
+    --gray-100: #F8F9FA;
+    --gray-200: #E9ECEF;
+    --gray-600: #6C757D;
+    --shadow: 0 4px 12px rgba(0,0,0,0.06);
+    --radius: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: var(--gray-100);
+    color: #212529;
+    min-height: 100vh;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    background: var(--heid-green) !important;
+    padding: 0.7rem 0;
+    border-bottom: 2px solid var(--ubuntu-orange);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white) !important;
+}
+
+.navbar-brand span:first-child {
+    background: var(--heid-light);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-weight: 700;
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+.navbar-brand span:nth-child(2) { color: var(--heid-light); }
+.navbar-brand span:last-child { color: var(--white); }
+
+.nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 6px 16px !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.10);
+    color: var(--white) !important;
+}
+
+/* ========== CARDS ========== */
+.card {
+    border: none;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
+
+.card-header {
+    background: var(--heid-medium);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+    border: none;
+}
+
+.card-footer {
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-200);
+    padding: 0.8rem 1.2rem;
+}
+
+/* ========== BOTONES ========== */
+.btn {
+    border-radius: 40px;
+    padding: 8px 24px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--heid-medium);
+    color: var(--white);
+}
+.btn-primary:hover {
+    background: var(--heid-green);
+    transform: scale(1.02);
+}
+
+.btn-success {
+    background: var(--heid-light);
+    color: var(--white);
+}
+.btn-success:hover {
+    background: var(--heid-green);
+}
+
+.btn-warning {
+    background: var(--ubuntu-orange);
+    color: var(--white);
+}
+.btn-warning:hover {
+    background: #c7441a;
+}
+
+.btn-info {
+    background: #0D6EFD;
+    color: var(--white);
+}
+.btn-info:hover {
+    background: #0b5ed7;
+}
+
+.btn-outline-light {
+    border: 2px solid rgba(255,255,255,0.5);
+    color: var(--white);
+}
+.btn-outline-light:hover {
+    background: var(--white);
+    color: var(--heid-green);
+}
+
+/* ========== FORMULARIOS ========== */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--heid-light);
+    box-shadow: 0 0 0 3px rgba(76,175,80,0.15);
+    outline: none;
+}
+
+label { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; color: #212529; }
+
+/* ========== TABLAS ========== */
+.table {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table thead {
+    background: var(--heid-medium);
+    color: var(--white);
+}
+.table thead th {
+    font-weight: 600;
+    padding: 10px 14px;
+    border: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.table tbody tr:hover { background: #F5F0EB; }
+
+/* ========== FOOTER ========== */
+footer {
+    background: var(--heid-green);
+    color: var(--gray-200);
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 50px;
+    border-top: 2px solid var(--ubuntu-orange);
+}
+footer p { margin: 0; font-size: 0.9rem; }
+footer small { color: var(--heid-light); font-size: 0.8rem; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .navbar-brand { font-size: 1.2rem; }
+    .btn { padding: 6px 18px; font-size: 0.85rem; }
+}

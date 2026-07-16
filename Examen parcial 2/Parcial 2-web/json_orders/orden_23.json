@@ -1,0 +1,53 @@
+{
+    "pedido_id": 23,
+    "cliente": "Prueba",
+    "email": "adrianjz349@gmail.com",
+    "direccion": "",
+    "total": 50.75,
+    "costo_envio": 0.0,
+    "fecha": "2026-07-03T15:02:01.555480",
+    "lineas": [
+        [
+            "combo",
+            "2",
+            1,
+            14.0
+        ],
+        [
+            "pizza",
+            "4",
+            1,
+            10.0
+        ],
+        [
+            "pizza",
+            "8",
+            1,
+            12.5
+        ],
+        [
+            "refresco",
+            "7",
+            1,
+            0.75
+        ],
+        [
+            "refresco",
+            "8",
+            1,
+            1.5
+        ],
+        [
+            "refresco",
+            "9",
+            1,
+            1.5
+        ],
+        [
+            "pizza_personalizada",
+            0,
+            1,
+            10.5
+        ]
+    ]
+}

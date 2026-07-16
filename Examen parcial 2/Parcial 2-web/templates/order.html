@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% block title %}Hacer pedido{% endblock %}
+{% block content %}
+<h2 class="mb-4">🛒 Hacer pedido</h2>
+
+<form method="POST" id="pedidoForm">
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label class="form-label">Nombre completo</label>
+            <input type="text" name="nombre" class="form-control" value="{{ session.usuario_nombre }}" readonly style="background: #f0f0f0;">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" name="email" class="form-control" value="{{ session.usuario_email }}" readonly style="background: #f0f0f0;">
+        </div>
+        <div class="col-md-6" id="direccion_container">
+            <label class="form-label">Dirección (solo para domicilio)</label>
+            <input type="text" name="direccion" class="form-control" placeholder="Calle, número, colonia" value="{{ selecciones.get('direccion', '') }}" {% if selecciones.get('tipo_envio', 'retiro') != 'domicilio' %}disabled{% endif %}>
+            <small class="text-muted">Se activa al seleccionar "Domicilio"</small>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Método de pago</label>
+            <select name="metodo_pago" class="form-select">
+                <option value="YAPPY">Yappy</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Tipo de entrega</label>
+            <select name="tipo_envio" class="form-select" id="tipo_envio">
+                <option value="retiro" {% if selecciones.get('tipo_envio', 'retiro') == 'retiro' %}selected{% endif %}>Retiro en tienda</option>
+                <option value="domicilio" {% if selecciones.get('tipo_envio') == 'domicilio' %}selected{% endif %}>Domicilio (+$3.00)</option>
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ===== COMBOS CON CHECKBOXES ===== -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label class="fw-bold">🍽️ Combos</label>
+            <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                {% for combo in combos %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="combos" value="{{ combo.id }}" id="combo_{{ combo.id }}"
+                        {% if selecciones and combo.id|string in selecciones.get('combos', []) %}checked{% endif %}>
+                    <label class="form-check-label" for="combo_{{ combo.id }}">
+                        {{ combo.nombre }} - ${{ "%.2f"|format(combo.precio) }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ===== PIZZAS CON CHECKBOXES ===== -->
+        <div class="col-md-6">
+            <label class="fw-bold">🍕 Pizzas adicionales</label>
+            <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                {% for pizza in pizzas %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="pizzas" value="{{ pizza.id }}" id="pizza_{{ pizza.id }}"
+                        {% if selecciones and pizza.id|string in selecciones.get('pizzas', []) %}checked{% endif %}>
+                    <label class="form-check-label" for="pizza_{{ pizza.id }}">
+                        {{ pizza.nombre }} - ${{ "%.2f"|format(pizza.precio) }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ===== REFRESCOS CON CHECKBOXES ===== -->
+        <div class="col-md-6">
+            <label class="fw-bold">🥤 Refrescos</label>
+            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                {% for ref in refrescos %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="refrescos" value="{{ ref.id }}" id="ref_{{ ref.id }}"
+                        {% if selecciones and ref.id|string in selecciones.get('refrescos', []) %}checked{% endif %}>
+                    <label class="form-check-label" for="ref_{{ ref.id }}">
+                        {{ ref.nombre }} - ${{ "%.2f"|format(ref.precio) }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ===== EXTRAS CON CHECKBOXES ===== -->
+        <div class="col-md-6">
+            <label class="fw-bold">➕ Extras</label>
+            <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                {% for extra in extras %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="extras" value="{{ extra.id }}" id="extra_{{ extra.id }}"
+                        {% if selecciones and extra.id|string in selecciones.get('extras', []) %}checked{% endif %}>
+                    <label class="form-check-label" for="extra_{{ extra.id }}">
+                        {{ extra.nombre }} - ${{ "%.2f"|format(extra.precio) }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row g-3 mt-3">
+        <div class="col-md-4">
+            <a href="#" id="btnPizzaPersonalizada" class="btn btn-warning w-100" style="border-radius: 50px;">
+                ✨ Pizza personalizada
+            </a>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-success w-100" style="border-radius: 50px;">
+                ✅ Confirmar pedido
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+// Activar/desactivar dirección según tipo de entrega
+document.addEventListener('DOMContentLoaded', function() {
+    const tipoEnvio = document.querySelector('#tipo_envio');
+    const direccionInput = document.querySelector('input[name="direccion"]');
+    
+    function toggleDireccion() {
+        if (tipoEnvio.value === 'domicilio') {
+            direccionInput.disabled = false;
+            direccionInput.required = true;
+            direccionInput.style.background = 'white';
+        } else {
+            direccionInput.disabled = true;
+            direccionInput.required = false;
+            direccionInput.style.background = '#f0f0f0';
+        }
+    }
+    
+    tipoEnvio.addEventListener('change', toggleDireccion);
+    toggleDireccion();
+});
+
+// Botón de pizza personalizada - guarda selecciones antes de ir
+document.addEventListener('DOMContentLoaded', function() {
+    const btnPizza = document.getElementById('btnPizzaPersonalizada');
+    
+    btnPizza.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Crear formulario oculto
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ url_for("guardar_selecciones") }}';
+        
+        // Guardar combos seleccionados
+        document.querySelectorAll('input[name="combos"]:checked').forEach(function(cb) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'combos';
+            input.value = cb.value;
+            form.appendChild(input);
+        });
+        
+        // Guardar pizzas seleccionadas
+        document.querySelectorAll('input[name="pizzas"]:checked').forEach(function(cb) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'pizzas';
+            input.value = cb.value;
+            form.appendChild(input);
+        });
+        
+        // Guardar refrescos seleccionados
+        document.querySelectorAll('input[name="refrescos"]:checked').forEach(function(cb) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'refrescos';
+            input.value = cb.value;
+            form.appendChild(input);
+        });
+        
+        // Guardar extras seleccionados
+        document.querySelectorAll('input[name="extras"]:checked').forEach(function(cb) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'extras';
+            input.value = cb.value;
+            form.appendChild(input);
+        });
+        
+        // Guardar dirección
+        const direccion = document.querySelector('input[name="direccion"]');
+        if (direccion && direccion.value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'direccion_temp';
+            input.value = direccion.value;
+            form.appendChild(input);
+        }
+        
+        // Guardar tipo de envío
+        const tipoEnvio = document.querySelector('#tipo_envio');
+        if (tipoEnvio) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'tipo_envio_temp';
+            input.value = tipoEnvio.value;
+            form.appendChild(input);
+        }
+        
+        document.body.appendChild(form);
+        form.submit();
+    });
+});
+</script>
+{% endblock %}

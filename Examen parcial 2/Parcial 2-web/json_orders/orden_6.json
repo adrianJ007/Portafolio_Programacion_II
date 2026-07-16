@@ -1,0 +1,23 @@
+{
+    "pedido_id": 6,
+    "cliente": "Prueba",
+    "email": "adrianjz349@gmail.com",
+    "direccion": "",
+    "total": 14.5,
+    "costo_envio": 0.0,
+    "fecha": "2026-06-25T02:26:24.248293",
+    "lineas": [
+        [
+            "combo",
+            "4",
+            1,
+            13.0
+        ],
+        [
+            "refresco",
+            "2",
+            1,
+            1.5
+        ]
+    ]
+}

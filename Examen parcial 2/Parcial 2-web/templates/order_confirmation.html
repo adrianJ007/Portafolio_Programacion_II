@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Confirmación de Pedido{% endblock %}
+{% block content %}
+<div class="alert alert-success text-center">
+    <h2>¡Pedido realizado con éxito!</h2>
+    <p>Tu número de pedido es <strong>#{{ pedido_id }}</strong></p>
+    <p>Hemos enviado un correo de confirmación a {{ cliente_email }}</p>
+    <hr>
+    <h4>Total a pagar: ${{ total }}</h4>
+    <p>Método de pago: YAPPY Comercial</p>
+    <a href="{{ url_for('pagar_pedido', pedido_id=pedido_id) }}" class="btn btn-primary btn-lg">Proceder al pago</a>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver al inicio</a>
+</div>
+{% endblock %}

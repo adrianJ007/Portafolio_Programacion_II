@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Detalle Pedido #{{ pedido.id }}{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Pedido #{{ pedido.id }}</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Cliente:</strong> {{ pedido.cliente_nombre }}</p>
+        <p><strong>Email:</strong> {{ pedido.cliente_email }}</p>
+        <p><strong>Dirección:</strong> {{ pedido.cliente_direccion or 'No especificada' }}</p>
+        <p><strong>Total:</strong> ${{ "%.2f"|format(pedido.total) }}</p>
+        <p><strong>Estado:</strong>
+            {% if pedido.estado == 'pendiente' %}
+                <span class="badge bg-warning">Pendiente</span>
+            {% elif pedido.estado == 'aprobado' %}
+                <span class="badge bg-success">Aprobado</span>
+            {% elif pedido.estado == 'rechazado' %}
+                <span class="badge bg-danger">Rechazado</span>
+            {% elif pedido.estado == 'pagado' %}
+                <span class="badge bg-info">Pagado</span>
+            {% endif %}
+        </p>
+        <h5>Productos:</h5>
+        <ul>
+            {% for linea in lineas %}
+            <li>{{ linea.cantidad }}x {{ linea.tipo_item }} - ${{ "%.2f"|format(linea.precio_unitario) }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

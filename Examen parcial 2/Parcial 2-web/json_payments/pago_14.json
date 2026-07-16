@@ -1,0 +1,7 @@
+{
+    "pedido_id": 14,
+    "monto": 42.5,
+    "metodo": "YAPPY",
+    "fecha_pago": "2026-06-30T10:32:50.205601",
+    "estado": "confirmado"
+}

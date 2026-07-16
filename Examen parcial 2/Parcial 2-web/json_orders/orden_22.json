@@ -1,0 +1,41 @@
+{
+    "pedido_id": 22,
+    "cliente": "pedro",
+    "email": "pjvaldesm@gmail.com",
+    "direccion": "",
+    "total": 36.75,
+    "costo_envio": 0.0,
+    "fecha": "2026-07-03T12:28:10.111141",
+    "lineas": [
+        [
+            "combo",
+            "3",
+            1,
+            12.0
+        ],
+        [
+            "combo",
+            "4",
+            1,
+            13.0
+        ],
+        [
+            "pizza",
+            "3",
+            1,
+            9.5
+        ],
+        [
+            "refresco",
+            "7",
+            1,
+            0.75
+        ],
+        [
+            "refresco",
+            "8",
+            1,
+            1.5
+        ]
+    ]
+}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Pago confirmado{% endblock %}
+{% block content %}
+<div class="text-center mt-5">
+    <div style="font-size: 5rem;">✅</div>
+    <h2>¡Pago confirmado!</h2>
+    <p>Tu pedido ha sido pagado exitosamente.</p>
+    <p>Revisa tu correo para el JSON adjunto.</p>
+    <a href="{{ url_for('index_cliente') }}" class="btn btn-primary">Volver al inicio</a>
+</div>
+{% endblock %}
