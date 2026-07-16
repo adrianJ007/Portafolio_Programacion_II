@@ -1,239 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio de Ciberseguridad - Adrian Jimenez</title>
-    <style>
-        /* Paleta de colores inspirada en la UTP */
-        :root {
-            --primary-color: #6a1b9a; /* Morado */
-            --secondary-color: #2e7d32; /* Verde */
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-muted: #666666;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        /* Sección de Cabecera y Perfil */
-        .profile-header {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            border-top: 6px solid var(--primary-color);
-        }
-
-        .logo {
-            width: 120px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .profile-info {
-            text-align: center;
-            flex-grow: 1;
-            padding: 0 20px;
-        }
-
-        .profile-info h1 {
-            margin: 0 0 5px 0;
-            color: var(--primary-color);
-            font-size: 2.4em;
-        }
-
-        .profile-info h2 {
-            margin: 0 0 10px 0;
-            color: var(--secondary-color);
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-
-        .profile-info p {
-            margin: 5px 0;
-            color: var(--text-muted);
-            font-size: 1.1em;
-        }
-
-        /* Cuadrícula de Proyectos */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        .folder-card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border-left: 5px solid var(--secondary-color);
-        }
-
-        .folder-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-
-        .folder-title {
-            font-size: 1.3em;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        li {
-            margin: 12px 0;
-        }
-
-        /* Estilo de los Botones/Enlaces */
-        a {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            border-radius: 6px;
-            background-color: #f8f9fa;
-            transition: all 0.3s ease;
-            border: 1px solid #e9ecef;
-        }
-
-        a:hover {
-            background-color: #e3f2fd;
-            color: var(--primary-color);
-            border-color: #bbdefb;
-        }
-
-        .pdf-link::before { content: "📄"; margin-right: 10px; font-size: 1.2em; }
-        .code-link::before { content: "💻"; margin-right: 10px; font-size: 1.2em; }
-        .pkt-link::before { content: "⚙️"; margin-right: 10px; font-size: 1.2em; }
-        .pptx-link::before { content: "📊"; margin-right: 10px; font-size: 1.2em; }
-
-        /* Adaptabilidad para móviles */
-        @media (max-width: 768px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .logo {
-                margin: 20px 0;
-            }
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portafolio Ciberseguridad - Adrian Jimenez</title>
+    <!-- Enlace al CSS externo -->
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
 <div class="container">
 
-    <!-- Cabecera de Perfil con Logos -->
+    <!-- ===== HEADER ===== -->
     <header class="profile-header">
-        <img src="image_91f5c9.png" alt="Logo Universidad Tecnológica de Panamá" class="logo">
-        
+        <img src="imagenes/image_91f5c9.png" alt="Logo UTP" class="logo" />
+
         <div class="profile-info">
-            <h1>Adrian Jimenez</h1>
-            <h2>Licenciatura en Ciberseguridad</h2>
-            <p>Universidad Tecnológica de Panamá</p>
-            <p>Facultad de Ingeniería de Sistemas Computacionales</p>
+            <h1>Adrian <span>Jimenez</span></h1>
+            <h2>🔐 Licenciatura en Ciberseguridad</h2>
+            <p class="subtitle">📚 Universidad Tecnológica de Panamá</p>
+            <p class="subtitle">🏛️ Facultad de Ingeniería de Sistemas Computacionales</p>
+            <span class="badge-semestre">📅 Semestre II - 2026</span>
         </div>
 
-        <img src="image_91f603.png" alt="Logo Facultad de Sistemas Computacionales" class="logo">
+        <img src="imagenes/image_91f603.png" alt="Logo FISC" class="logo" />
     </header>
 
-    <!-- Contenedor Grid para los Proyectos -->
+    <!-- ===== GRID DE PROYECTOS ===== -->
     <div class="portfolio-grid">
 
+        <!-- Taller práctico 1 -->
         <div class="folder-card">
-            <div class="folder-title">📁 Taller practico 1</div>
+            <div class="folder-title"><span class="icon-folder">📁</span> Taller práctico 1</div>
             <ul>
-                <li><a href="Taller practico 1/Examen parcial 1.pdf" class="pdf-link">Examen parcial 1.pdf</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Taller%20practico%201/PROBELMAS%201%20Y%202.py" class="code-link" target="_blank">PROBELMAS 1 Y 2.py</a></li>
+                <li><a href="Taller practico 1/Examen parcial 1.pdf" class="pdf-link"><span class="icon">📄</span> Examen parcial 1.pdf</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Taller%20practico%201/PROBELMAS%201%20Y%202.py" class="code-link" target="_blank"><span class="icon">💻</span> PROBLEMAS 1 Y 2.py</a></li>
             </ul>
         </div>
 
+        <!-- Ejercicio práctico 1 -->
         <div class="folder-card">
-            <div class="folder-title">📁 Ejercicio práctico 1</div>
+            <div class="folder-title"><span class="icon-folder">📁</span> Ejercicio práctico 1</div>
             <ul>
-                <li><a href="Ejercicio practico 1/ejercicio_practico1.pdf" class="pdf-link">ejercicio_practico1.pdf</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%201/Ejercicio%20practico%201-web/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%201/Ejercicio_practico_1.pkt" class="pkt-link" target="_blank">Ejercicio_practico_1.pkt</a></li>
+                <li><a href="Ejercicio practico 1/ejercicio_practico1.pdf" class="pdf-link"><span class="icon">📄</span> ejercicio_practico1.pdf</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%201/Ejercicio%20practico%201-web/app.py" class="code-link" target="_blank"><span class="icon">💻</span> app.py (Web)</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%201/Ejercicio_practico_1.pkt" class="pkt-link" target="_blank"><span class="icon">⚙️</span> Ejercicio_practico_1.pkt</a></li>
             </ul>
         </div>
 
+        <!-- Ejercicio práctico 2 -->
         <div class="folder-card">
-            <div class="folder-title">📁 Ejercicio práctico 2</div>
+            <div class="folder-title"><span class="icon-folder">📁</span> Ejercicio práctico 2</div>
             <ul>
-                <li><a href="Ejercicio practico 2/Ejercicio practico_2.pdf" class="pdf-link">Ejercicio practico_2.pdf</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%202/Ejercicio%20practico%202/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
+                <li><a href="Ejercicio practico 2/Ejercicio practico_2.pdf" class="pdf-link"><span class="icon">📄</span> Ejercicio practico_2.pdf</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%202/Ejercicio%20practico%202/app.py" class="code-link" target="_blank"><span class="icon">💻</span> app.py (Web)</a></li>
             </ul>
         </div>
 
+        <!-- Examen parcial 1 -->
         <div class="folder-card">
-            <div class="folder-title">📁 Examen parcial 1</div>
+            <div class="folder-title"><span class="icon-folder">📁</span> Examen parcial 1</div>
             <ul>
-                <li><a href="Examen parcial 1/examen_parcial_1.pdf" class="pdf-link">examen_parcial_1.pdf</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%201/Examen%20Parcial%201/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%201/Examen%20parcial_1.pkt" class="pkt-link" target="_blank">Examen parcial_1.pkt</a></li>
+                <li><a href="Examen parcial 1/examen_parcial_1.pdf" class="pdf-link"><span class="icon">📄</span> examen_parcial_1.pdf</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%201/Examen%20Parcial%201/app.py" class="code-link" target="_blank"><span class="icon">💻</span> app.py (Web)</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%201/Examen%20parcial_1.pkt" class="pkt-link" target="_blank"><span class="icon">⚙️</span> Examen parcial_1.pkt</a></li>
             </ul>
         </div>
 
+        <!-- Examen parcial 2 -->
         <div class="folder-card">
-            <div class="folder-title">📁 Examen parcial 2</div>
+            <div class="folder-title"><span class="icon-folder">📁</span> Examen parcial 2</div>
             <ul>
-                <li><a href="Examen parcial 2/Parcial 2.pdf" class="pdf-link">Parcial 2.pdf</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%202/Parcial%202-web/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%202/Red%20Parcial%202.pkt" class="pkt-link" target="_blank">Red Parcial 2.pkt</a></li>
-            </ul>
-        </div>
-        
-        <div class="folder-card">
-            <div class="folder-title">📁 SEMESTRAL</div>
-            <ul>
-                <li><a href="SEMESTRAL/SEMESTRAL/Examen Final-Proyecto.pdf" class="pdf-link">Examen Final-Proyecto.pdf</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/SEMESTRAL/SEMESTRAL/turismo_chiriqui%20(2)/turismo_chiriqui/run.py" class="code-link" target="_blank">run.py (Turismo Chiriquí)</a></li>
-                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/SEMESTRAL/SEMESTRAL/SEMESTRAL%20PARTE%203.pkt" class="pkt-link" target="_blank">SEMESTRAL PARTE 3.pkt</a></li>
+                <li><a href="Examen parcial 2/Parcial 2.pdf" class="pdf-link"><span class="icon">📄</span> Parcial 2.pdf</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%202/Parcial%202-web/app.py" class="code-link" target="_blank"><span class="icon">💻</span> app.py (Web)</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%202/Red%20Parcial%202.pkt" class="pkt-link" target="_blank"><span class="icon">⚙️</span> Red Parcial 2.pkt</a></li>
             </ul>
         </div>
 
+        <!-- SEMESTRAL -->
         <div class="folder-card">
-            <div class="folder-title">📁 Investigación</div>
+            <div class="folder-title"><span class="icon-folder">📁</span> SEMESTRAL</div>
             <ul>
-                <li><a href="Investigacion/Python_Investigacion1_AdrianJimenez.pdf" class="pdf-link">Python_Investigacion1_AdrianJimenez.pdf</a></li>
-                <li><a href="Investigacion/Python_Investigacion1_AdrianJimenez.pptx" class="pptx-link">Python_Investigacion1_AdrianJimenez.pptx</a></li>
+                <li><a href="SEMESTRAL/SEMESTRAL/Examen Final-Proyecto.pdf" class="pdf-link"><span class="icon">📄</span> Examen Final-Proyecto.pdf</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/SEMESTRAL/SEMESTRAL/turismo_chiriqui%20(2)/turismo_chiriqui/run.py" class="code-link" target="_blank"><span class="icon">💻</span> run.py (Turismo Chiriquí)</a></li>
+                <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/SEMESTRAL/SEMESTRAL/SEMESTRAL%20PARTE%203.pkt" class="pkt-link" target="_blank"><span class="icon">⚙️</span> SEMESTRAL PARTE 3.pkt</a></li>
+            </ul>
+        </div>
+
+        <!-- Investigación -->
+        <div class="folder-card">
+            <div class="folder-title"><span class="icon-folder">📁</span> Investigación</div>
+            <ul>
+                <li><a href="Investigacion/Python_Investigacion1_AdrianJimenez.pdf" class="pdf-link"><span class="icon">📄</span> Python_Investigacion1_AdrianJimenez.pdf</a></li>
+                <li><a href="Investigacion/Python_Investigacion1_AdrianJimenez.pptx" class="pptx-link"><span class="icon">📊</span> Python_Investigacion1_AdrianJimenez.pptx</a></li>
             </ul>
         </div>
 
     </div>
+    <!-- Fin grid -->
+
 </div>
+<!-- Fin container -->
 
 </body>
 </html>
