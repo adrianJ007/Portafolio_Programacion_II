@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Portafolio</title>
+    <title>Mi Portafolio - Ciberseguridad</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -25,6 +25,21 @@
             color: #2c3e50;
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
+        }
+        .about-section {
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #2980b9;
+        }
+        .about-section h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.5em;
+        }
+        .about-section p {
+            line-height: 1.6;
         }
         .folder-section {
             margin-bottom: 30px;
@@ -56,7 +71,6 @@
             color: #2980b9;
             text-decoration: underline;
         }
-        /* Estilo especial para resaltar los PDFs */
         .pdf-link {
             color: #e74c3c;
             font-weight: bold;
@@ -93,13 +107,28 @@
 <div class="container">
     <h1>Portafolio de Proyectos</h1>
 
+    <!-- Sección Sobre Mí -->
+    <div class="about-section">
+        <h2>Sobre mí</h2>
+        <p>Hola, soy estudiante de la Licenciatura en Ciberseguridad en la Universidad Tecnológica de Panamá (UTP). Este espacio funciona como mi portafolio digital, donde documento y organizo los proyectos y laboratorios técnicos que he desarrollado durante el semestre. Aquí encontrarás implementaciones de infraestructura de redes, desarrollo de aplicaciones web con Python y diversas prácticas enfocadas en la seguridad y administración de sistemas.</p>
+    </div>
+
+    <!-- Sección Taller Práctico 1 -->
+    <div class="folder-section">
+        <div class="folder-title">📁 Taller practico 1</div>
+        <ul>
+            <li><a href="Taller practico 1/Examen parcial 1.pdf" class="pdf-link">Examen parcial 1.pdf</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Taller%20practico%201/PROBELMAS%201%20Y%202.py" class="code-link" target="_blank">PROBELMAS 1 Y 2.py</a></li>
+        </ul>
+    </div>
+
     <!-- Sección Ejercicio Práctico 1 -->
     <div class="folder-section">
         <div class="folder-title">📁 Ejercicio práctico 1</div>
         <ul>
             <li><a href="Ejercicio practico 1/ejercicio_practico1.pdf" class="pdf-link">ejercicio_practico1.pdf</a></li>
-            <li><a href="Ejercicio practico 1/Ejercicio practico 1-web/app.py" class="code-link">app.py (Web)</a></li>
-            <li><a href="Ejercicio practico 1/Ejercicio_practico_1.pkt" class="pkt-link">Ejercicio_practico_1.pkt</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%201/Ejercicio%20practico%201-web/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%201/Ejercicio_practico_1.pkt" class="pkt-link" target="_blank">Ejercicio_practico_1.pkt</a></li>
         </ul>
     </div>
 
@@ -108,7 +137,7 @@
         <div class="folder-title">📁 Ejercicio práctico 2</div>
         <ul>
             <li><a href="Ejercicio practico 2/Ejercicio practico_2.pdf" class="pdf-link">Ejercicio practico_2.pdf</a></li>
-            <li><a href="Ejercicio practico 2/Ejercicio practico 2/app.py" class="code-link">app.py (Web)</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Ejercicio%20practico%202/Ejercicio%20practico%202/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
         </ul>
     </div>
 
@@ -117,8 +146,8 @@
         <div class="folder-title">📁 Examen parcial 1</div>
         <ul>
             <li><a href="Examen parcial 1/examen_parcial_1.pdf" class="pdf-link">examen_parcial_1.pdf</a></li>
-            <li><a href="Examen parcial 1/Examen Parcial 1/app.py" class="code-link">app.py (Web)</a></li>
-            <li><a href="Examen parcial 1/Examen parcial_1.pkt" class="pkt-link">Examen parcial_1.pkt</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%201/Examen%20Parcial%201/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%201/Examen%20parcial_1.pkt" class="pkt-link" target="_blank">Examen parcial_1.pkt</a></li>
         </ul>
     </div>
 
@@ -127,8 +156,18 @@
         <div class="folder-title">📁 Examen parcial 2</div>
         <ul>
             <li><a href="Examen parcial 2/Parcial 2.pdf" class="pdf-link">Parcial 2.pdf</a></li>
-            <li><a href="Examen parcial 2/Parcial 2-web/app.py" class="code-link">app.py (Web)</a></li>
-            <li><a href="Examen parcial 2/Red Parcial 2.pkt" class="pkt-link">Red Parcial 2.pkt</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%202/Parcial%202-web/app.py" class="code-link" target="_blank">app.py (Web)</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/Examen%20parcial%202/Red%20Parcial%202.pkt" class="pkt-link" target="_blank">Red Parcial 2.pkt</a></li>
+        </ul>
+    </div>
+    
+    <!-- Sección SEMESTRAL -->
+    <div class="folder-section">
+        <div class="folder-title">📁 SEMESTRAL</div>
+        <ul>
+            <li><a href="SEMESTRAL/SEMESTRAL/Examen Final-Proyecto.pdf" class="pdf-link">Examen Final-Proyecto.pdf</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/SEMESTRAL/SEMESTRAL/turismo_chiriqui%20(2)/turismo_chiriqui/run.py" class="code-link" target="_blank">run.py (Turismo Chiriquí)</a></li>
+            <li><a href="https://github.com/adrianJ007/Portafolio_Programacion_II/blob/main/SEMESTRAL/SEMESTRAL/SEMESTRAL%20PARTE%203.pkt" class="pkt-link" target="_blank">SEMESTRAL PARTE 3.pkt</a></li>
         </ul>
     </div>
 
