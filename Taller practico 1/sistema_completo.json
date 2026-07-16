@@ -1,0 +1,11 @@
+{
+    "profesores": [
+        {
+            "nombre": "Administrador",
+            "cedula": "admin123",
+            "email": "admin@email.com",
+            "contraseña": "admin123",
+            "asignaturas": []
+        }
+    ]
+}
