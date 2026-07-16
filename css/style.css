@@ -1,24 +1,30 @@
 /* ========================================
    PORTFOLIO PROGRAMACIÓN II - UTP
-   Estilos mejorados con diseño moderno
+   Estilo GitHub Dark - Moderno y Técnico
    ======================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
 
 :root {
-    --primary: #6a1b9a;
-    --primary-light: #9c4dcc;
-    --primary-dark: #4a148c;
-    --secondary: #2e7d32;
-    --secondary-light: #4caf50;
-    --bg: #f0f2f5;
-    --card-bg: #ffffff;
-    --text: #1a1a2e;
-    --text-muted: #6c757d;
-    --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.14);
-    --radius: 16px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2333;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2333;
+    --border-color: #30363d;
+    --border-hover: #58a6ff;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --text-muted: #484f58;
+    --accent-purple: #7c3aed;
+    --accent-green: #238636;
+    --accent-blue: #58a6ff;
+    --accent-orange: #d29922;
+    --accent-red: #f85149;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.6);
+    --radius: 6px;
+    --transition: all 0.2s ease;
 }
 
 * {
@@ -29,48 +35,50 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg-primary);
+    color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
-    padding: 30px 20px;
+    padding: 24px;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
 }
 
-/* ----- HEADER ----- */
+/* ----- HEADER / PERFIL (GitHub Style) ----- */
 .profile-header {
-    background: var(--card-bg);
-    padding: 32px 40px;
+    background: var(--bg-secondary);
+    padding: 24px 32px;
     border-radius: var(--radius);
+    border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 48px;
-    border-top: 6px solid var(--primary);
+    gap: 24px;
+    margin-bottom: 32px;
     transition: var(--transition);
 }
 
 .profile-header:hover {
+    border-color: var(--border-hover);
     box-shadow: var(--shadow-hover);
 }
 
 .logo {
-    width: 100px;
+    width: 72px;
     height: auto;
     object-fit: contain;
     flex-shrink: 0;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
-    transition: transform 0.3s ease;
+    filter: brightness(0.9);
+    transition: var(--transition);
 }
 
 .logo:hover {
-    transform: scale(1.04);
+    filter: brightness(1.1);
+    transform: scale(1.05);
 }
 
 .profile-info {
@@ -80,58 +88,60 @@ body {
 
 .profile-info h1 {
     margin: 0;
-    color: var(--primary-dark);
-    font-size: 2.6rem;
+    color: var(--text-primary);
+    font-size: 2.2rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.5px;
 }
 
 .profile-info h1 span {
-    color: var(--secondary);
+    color: var(--accent-purple);
 }
 
 .profile-info h2 {
-    margin: 4px 0 8px 0;
-    color: var(--secondary);
-    font-size: 1.3rem;
-    font-weight: 600;
+    margin: 2px 0 6px 0;
+    color: var(--accent-green);
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 .profile-info .subtitle {
-    color: var(--text-muted);
-    font-size: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
     margin: 2px 0;
 }
 
 .badge-semestre {
     display: inline-block;
-    background: var(--primary);
+    background: var(--accent-purple);
     color: white;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-top: 6px;
+    padding: 2px 12px;
+    border-radius: 12px;
+    margin-top: 4px;
     letter-spacing: 0.3px;
 }
 
-/* ----- SOBRE MÍ ----- */
+/* ----- SOBRE MÍ (GitHub Style) ----- */
 .about-section {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border-radius: var(--radius);
+    border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
-    padding: 40px;
-    margin-bottom: 40px;
+    padding: 32px;
+    margin-bottom: 32px;
     transition: var(--transition);
 }
 
 .about-section:hover {
+    border-color: var(--border-hover);
     box-shadow: var(--shadow-hover);
 }
 
 .about-container {
     display: flex;
-    gap: 40px;
+    gap: 32px;
     align-items: center;
 }
 
@@ -140,74 +150,94 @@ body {
 }
 
 .profile-photo {
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--primary-light);
-    box-shadow: 0 8px 24px rgba(106, 27, 154, 0.2);
-    transition: transform 0.3s ease;
+    border: 3px solid var(--accent-purple);
+    box-shadow: 0 0 0 1px var(--border-color), 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: var(--transition);
 }
 
 .profile-photo:hover {
+    border-color: var(--accent-blue);
     transform: scale(1.04);
+    box-shadow: 0 0 0 2px var(--accent-blue), 0 8px 32px rgba(88, 166, 255, 0.2);
 }
 
 .about-content h2 {
-    color: var(--primary-dark);
-    font-size: 1.8rem;
-    margin-bottom: 16px;
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.about-content h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--accent-purple);
+    margin-top: 6px;
 }
 
 .about-content p {
-    color: var(--text);
-    margin-bottom: 12px;
-    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.about-content p strong {
+    color: var(--text-primary);
 }
 
 .about-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 16px;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 .tag {
-    background: #f0f0f5;
-    color: var(--primary-dark);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-size: 0.75rem;
     font-weight: 500;
-    border: 1px solid #e0e0e8;
+    border: 1px solid var(--border-color);
     transition: var(--transition);
+    cursor: default;
 }
 
 .tag:hover {
-    background: var(--primary);
+    background: var(--accent-purple);
     color: white;
-    border-color: var(--primary);
-    transform: translateY(-2px);
+    border-color: var(--accent-purple);
+    transform: translateY(-1px);
 }
 
-/* ----- CERTIFICADO ----- */
+/* ----- CERTIFICADO (GitHub Style) ----- */
 .certificate-section {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border-radius: var(--radius);
+    border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
-    padding: 40px;
-    margin-bottom: 48px;
-    border-left: 6px solid var(--secondary);
+    padding: 32px;
+    margin-bottom: 40px;
     transition: var(--transition);
+    border-left: 4px solid var(--accent-green);
 }
 
 .certificate-section:hover {
+    border-color: var(--border-hover);
+    border-left-color: var(--accent-blue);
     box-shadow: var(--shadow-hover);
 }
 
 .certificate-container {
     display: flex;
-    gap: 40px;
+    gap: 32px;
     align-items: center;
 }
 
@@ -216,22 +246,23 @@ body {
 }
 
 .certificate-info h2 {
-    color: var(--primary-dark);
-    font-size: 1.8rem;
-    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    margin-bottom: 2px;
+    font-weight: 600;
 }
 
 .certificate-info h3 {
-    color: var(--secondary);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 12px;
+    color: var(--accent-green);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 10px;
 }
 
 .certificate-info p {
-    color: var(--text);
-    margin-bottom: 16px;
-    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    font-size: 0.95rem;
 }
 
 .certificate-skills {
@@ -239,12 +270,20 @@ body {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 20px;
+    gap: 6px 16px;
 }
 
 .certificate-skills li {
-    color: var(--text);
-    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.certificate-skills li::before {
+    content: '▸';
+    color: var(--accent-green);
 }
 
 .certificate-image {
@@ -252,92 +291,102 @@ body {
 }
 
 .cert-img {
-    max-width: 280px;
+    max-width: 240px;
     height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    border: 2px solid #eef0f3;
-    transition: transform 0.3s ease;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
 }
 
 .cert-img:hover {
-    transform: scale(1.03);
+    border-color: var(--accent-blue);
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
 }
 
 /* ----- TÍTULO DE SECCIÓN ----- */
 .section-title {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .section-title h2 {
-    color: var(--primary-dark);
-    font-size: 2rem;
-    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 600;
 }
 
 .section-title p {
-    color: var(--text-muted);
-    font-size: 1.05rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 2px;
 }
 
-/* ----- GRID DE PROYECTOS ----- */
+/* ----- GRID DE PROYECTOS (Cuadrados) ----- */
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 28px;
-    margin-bottom: 48px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-/* ----- TARJETAS ----- */
+/* ----- TARJETAS (Cuadradas, estilo GitHub) ----- */
 .folder-card {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border-radius: var(--radius);
-    padding: 24px 26px 28px;
+    padding: 20px 22px 24px;
+    border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
-    border-left: 5px solid var(--secondary);
     transition: var(--transition);
     position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-.folder-card::after {
+.folder-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    background: var(--bg-card-hover);
+}
+
+/* Línea superior decorativa */
+.folder-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary-light));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    height: 2px;
+    background: var(--border-color);
+    border-radius: var(--radius) var(--radius) 0 0;
+    transition: var(--transition);
 }
 
-.folder-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-hover);
-}
-
-.folder-card:hover::after {
-    opacity: 1;
+.folder-card:hover::before {
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
 }
 
 .folder-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--primary-dark);
-    margin-bottom: 18px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f0f0f0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .folder-title .icon-folder {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
+/* ----- ENLACES (Estilo GitHub) ----- */
 ul {
     list-style: none;
     padding: 0;
@@ -345,76 +394,77 @@ ul {
 }
 
 li {
-    margin: 10px 0;
+    margin: 6px 0;
 }
 
 a {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    background: #f8f9fc;
-    color: var(--text);
-    font-weight: 500;
-    font-size: 0.92rem;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: 0.85rem;
     text-decoration: none;
-    border: 1px solid #eef0f3;
+    border: 1px solid transparent;
     transition: var(--transition);
 }
 
 a:hover {
-    background: #eef3ff;
-    border-color: var(--primary-light);
-    color: var(--primary-dark);
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(106, 27, 154, 0.10);
+    background: var(--bg-primary);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+    transform: translateX(2px);
 }
 
 a .icon {
-    font-size: 1.2rem;
-    width: 28px;
+    font-size: 1.1rem;
+    width: 24px;
     text-align: center;
     flex-shrink: 0;
 }
 
-a.pdf-link .icon { color: #dc3545; }
-a.code-link .icon { color: #0d6efd; }
-a.pkt-link .icon { color: #fd7e14; }
-a.pptx-link .icon { color: #d63384; }
+/* Colores de iconos en GitHub Dark */
+a.pdf-link .icon { color: var(--accent-red); }
+a.code-link .icon { color: var(--accent-blue); }
+a.pkt-link .icon { color: var(--accent-orange); }
+a.pptx-link .icon { color: #da6b9b; }
 
-/* ----- FOOTER ----- */
+/* ----- FOOTER (GitHub Style) ----- */
 .footer {
     text-align: center;
-    padding: 32px 0 16px;
-    border-top: 1px solid #e0e0e8;
+    padding: 28px 0 12px;
+    border-top: 1px solid var(--border-color);
     color: var(--text-muted);
 }
 
 .footer p {
-    margin: 4px 0;
+    margin: 2px 0;
+    font-size: 0.85rem;
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 24px;
-    margin-top: 8px;
+    gap: 20px;
+    margin-top: 6px;
 }
 
 .footer-links a {
     background: transparent;
     border: none;
     padding: 0;
-    font-size: 0.95rem;
-    color: var(--primary);
-    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 400;
 }
 
 .footer-links a:hover {
     background: transparent;
     transform: none;
-    color: var(--primary-dark);
+    color: var(--accent-blue);
     text-decoration: underline;
 }
 
@@ -423,20 +473,24 @@ a.pptx-link .icon { color: #d63384; }
     .profile-header {
         flex-wrap: wrap;
         justify-content: center;
-        padding: 28px 24px;
+        padding: 20px 24px;
     }
 
     .logo {
-        width: 80px;
+        width: 60px;
     }
 
     .profile-info h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .about-container {
         flex-direction: column;
         text-align: center;
+    }
+
+    .about-content h2::after {
+        margin: 6px auto 0;
     }
 
     .certificate-container {
@@ -451,39 +505,39 @@ a.pptx-link .icon { color: #d63384; }
 
 @media (max-width: 768px) {
     body {
-        padding: 16px;
+        padding: 12px;
     }
 
     .profile-header {
         flex-direction: column;
         text-align: center;
-        padding: 24px 18px;
-        gap: 16px;
+        padding: 16px 14px;
+        gap: 12px;
     }
 
     .logo {
-        width: 70px;
+        width: 56px;
     }
 
     .profile-info h1 {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
     }
 
     .profile-info h2 {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
     }
 
     .about-section {
-        padding: 24px;
+        padding: 20px;
     }
 
     .profile-photo {
-        width: 140px;
-        height: 140px;
+        width: 120px;
+        height: 120px;
     }
 
     .certificate-section {
-        padding: 24px;
+        padding: 20px;
     }
 
     .cert-img {
@@ -492,16 +546,16 @@ a.pptx-link .icon { color: #d63384; }
 
     .portfolio-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 16px;
     }
 
     .folder-card {
-        padding: 18px 20px 22px;
+        padding: 16px 18px 20px;
     }
 
     a {
-        font-size: 0.85rem;
-        padding: 10px 14px;
+        font-size: 0.8rem;
+        padding: 8px 10px;
     }
 
     .footer-links {
@@ -512,18 +566,22 @@ a.pptx-link .icon { color: #d63384; }
 
 @media (max-width: 480px) {
     .profile-info h1 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
 
     .folder-title {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .about-content h2 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
 
     .certificate-info h2 {
+        font-size: 1.3rem;
+    }
+
+    .section-title h2 {
         font-size: 1.4rem;
     }
 }
@@ -532,7 +590,7 @@ a.pptx-link .icon { color: #d63384; }
 @keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(16px);
     }
     to {
         opacity: 1;
@@ -541,23 +599,43 @@ a.pptx-link .icon { color: #d63384; }
 }
 
 .folder-card {
-    animation: fadeUp 0.5s ease forwards;
+    animation: fadeUp 0.4s ease forwards;
 }
 
-.folder-card:nth-child(1) { animation-delay: 0.05s; }
-.folder-card:nth-child(2) { animation-delay: 0.10s; }
-.folder-card:nth-child(3) { animation-delay: 0.15s; }
-.folder-card:nth-child(4) { animation-delay: 0.20s; }
-.folder-card:nth-child(5) { animation-delay: 0.25s; }
-.folder-card:nth-child(6) { animation-delay: 0.30s; }
-.folder-card:nth-child(7) { animation-delay: 0.35s; }
+.folder-card:nth-child(1) { animation-delay: 0.03s; }
+.folder-card:nth-child(2) { animation-delay: 0.06s; }
+.folder-card:nth-child(3) { animation-delay: 0.09s; }
+.folder-card:nth-child(4) { animation-delay: 0.12s; }
+.folder-card:nth-child(5) { animation-delay: 0.15s; }
+.folder-card:nth-child(6) { animation-delay: 0.18s; }
+.folder-card:nth-child(7) { animation-delay: 0.21s; }
 
 .about-section {
-    animation: fadeUp 0.6s ease forwards;
-    animation-delay: 0.1s;
+    animation: fadeUp 0.5s ease forwards;
+    animation-delay: 0.05s;
 }
 
 .certificate-section {
-    animation: fadeUp 0.6s ease forwards;
-    animation-delay: 0.2s;
+    animation: fadeUp 0.5s ease forwards;
+    animation-delay: 0.1s;
+}
+
+/* ----- SCROLLBAR (GitHub Style) ----- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-color);
 }
